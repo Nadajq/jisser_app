@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "359974279916",
+    "project_id": "jisser-b9307",
+    "storage_bucket": "jisser-b9307.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359974279916:android:4d355af1a8ee03f544a3c9",
+        "android_client_info": {
+          "package_name": "com.example.jisser_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPeDkgIL52Fzvio3V4D8OY0ao-QTmMHRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
