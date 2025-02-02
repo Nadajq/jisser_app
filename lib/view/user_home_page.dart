@@ -9,7 +9,7 @@ class UserHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("icon"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("jisser home page"),
       ),
     );

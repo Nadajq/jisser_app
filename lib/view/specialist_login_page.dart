@@ -7,7 +7,7 @@ class SpecialistLoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("icon"),
+        title: const Text("icon"),
       ),
       body: const Center(
         child: Text("Specialist Login Page"),

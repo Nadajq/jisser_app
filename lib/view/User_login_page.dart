@@ -12,7 +12,7 @@ class UserLoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.language,color: Colors.indigo,),// Language change icon
+          icon: const Icon(Icons.language,color: Colors.indigo,),// Language change icon
           onPressed: () {
             // Add your language-switching logic here
             print("Change language");

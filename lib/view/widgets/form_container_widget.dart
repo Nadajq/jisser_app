@@ -62,7 +62,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
           border: InputBorder.none,
           filled: true,
           hintText: widget.hintText,
-          hintStyle: TextStyle(color: Colors.black45),
+          hintStyle: const TextStyle(color: Colors.black45),
           prefixIcon: widget.isPasswordField == true
               ? GestureDetector(
             onTap: () {
