@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserHomePage extends StatelessWidget {
-  const UserHomePage({super.key});
+class SpecialistLoginPage extends StatelessWidget {
+  const SpecialistLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +9,8 @@ class UserHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("icon"),
       ),
-      body: Center(
-        child: Text("jisser home page"),
+      body: const Center(
+        child: Text("Specialist Login Page"),
       ),
     );
   }

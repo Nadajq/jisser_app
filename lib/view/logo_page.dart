@@ -25,13 +25,15 @@ class _logoPageState extends State<logoPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
+      backgroundColor: Color(0xFFE7F0F4), //0xFFC4DDE7
       body: Center(
         child: Text(
           "جسر",
           style: TextStyle(
-            color: Colors.blue,
+              color: Color(0xFF546E78),
             fontWeight: FontWeight.bold,
+            fontSize: 47
           ),
         ),
       ),
