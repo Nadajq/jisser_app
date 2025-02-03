@@ -14,7 +14,7 @@ class logoPage extends StatefulWidget {
 class _logoPageState extends State<logoPage> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => widget.child!),

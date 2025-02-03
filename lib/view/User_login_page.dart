@@ -28,11 +28,12 @@ class UserLoginPage extends StatelessWidget {
           crossAxisAlignment:
               CrossAxisAlignment.center, // Centers content horizontally
           children: [
-            // Image.asset(
-            //  'assets/logo.png', // Replace with your image path
-            //   width: 150, // Adjust size as needed
-            //   height: 150,
-            //  ),
+            Image.asset(
+              'assets/jisserLogo.jpeg',
+              width: 150,
+              height: 150,
+
+            ),
             const Text(
               "جسر",
               style: TextStyle(
