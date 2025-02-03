@@ -93,7 +93,7 @@ class SpecialistLoginPage extends StatelessWidget {
                         ),
                             (route) => false);
                   },
-                  child: const Text("إنشاء حساب",style: TextStyle(color: Colors.blue ),
+                  child: const Text("إنشاء حساب أخصائي",style: TextStyle(color: Colors.blue ),
                   ),
 
                 ),

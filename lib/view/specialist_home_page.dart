@@ -7,7 +7,7 @@ class SpecialistHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Specialist home page'),
+      body: Center(child: Text('Specialist home page')),
     );
   }
 }
