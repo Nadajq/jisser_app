@@ -25,23 +25,31 @@ class _logoPageState extends State<logoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFFE7F0F4), //0xFFC4DDE7
+    return  Scaffold(
+      //backgroundColor: Color(0xFFE7F0F4), //0xFFC4DDE7
       body: Center(
-        child: Column(
-          children: [
-           // Image.asset(
-           //   'assets/images/jisserLogo.png',
-           //   width: 150,
-         //   ),
-            Text(
-              "جسر",
-              style: TextStyle(
-                  color: Color(0xFF546E78),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 47),
-            ),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment:
+            MainAxisAlignment.center, // Moves content towards the top
+            crossAxisAlignment:
+            CrossAxisAlignment.center,
+            children: [
+             Image.asset(
+               'assets/jisserLogo.jpeg',
+                width: 150,
+               height: 150,
+
+              ),
+              Text(
+                "جسر",
+                style: TextStyle(
+                    color: Color(0xFF546E78),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 47),
+              ),
+            ],
+          ),
         ),
       ),
     );
