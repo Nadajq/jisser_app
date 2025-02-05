@@ -8,8 +8,8 @@ class Specialist {
   String qualification;
   String yearsOfExperience;
 
-
-  Specialist({
+// constructor is a special function inside a class that is automatically called when you create an object from that class.
+  Specialist({  //used to initialize the properties of the object.
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -33,11 +33,11 @@ class Specialist {
     "دكتوراه",
   ];
 }
-List<Specialist> specialistsInfo = [
-  Specialist(
-    id: "",
+List<Specialist> specialistsInfo = [//list of Specialist objects that stores information about multiple specialists.
+  Specialist(//When we create an object, we use the constructor.
+    id: "", //creates an  (object) of the Specialist class with specific values.
     name: 'د. أحمد محمد',
-    imageUrl: 'path_to_image_1.jpg',
+    imageUrl: 'assets/specialist1.png',
     email: 'ahmed@example.com',
     password: 'password123',
     specialty: "أخصائي تخاطب",
@@ -47,7 +47,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'أ. فاطمة علي',
-    imageUrl: 'path_to_image_2.jpg',
+    imageUrl: 'assets/specialist2.png',
     email: 'fatima@example.com',
     password: 'password456',
     specialty: "أخصائي نفسي أقدم الاستشارات النفسية و التوحد وذويهم",
@@ -57,7 +57,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'أ. علي يوسف',
-    imageUrl: 'path_to_image_3.jpg',
+    imageUrl: 'assets/specialist3.png',
     email: 'ali@example.com',
     password: 'password789',
     specialty: "أخصائي علاج وظيفي",
@@ -67,7 +67,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'د. ليلى حسين',
-    imageUrl: 'path_to_image_4.jpg',
+    imageUrl: 'assets/specialist4.png',
     email: 'layla@example.com',
     password: 'password012',
     specialty: "أخصائي تحليل سلوك تطبيقي",
@@ -77,7 +77,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'أ. يوسف عبدالله',
-    imageUrl: 'path_to_image_5.jpg',
+    imageUrl: '',
     email: 'youssef@example.com',
     password: 'password345',
     specialty: "أخصائي تخاطب",
@@ -87,7 +87,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'أ. سارة خالد',
-    imageUrl: 'path_to_image_6.jpg',
+    imageUrl: ' ',
     email: 'sara@example.com',
     password: 'password678',
     specialty: "أخصائي نفسي",
@@ -97,7 +97,7 @@ List<Specialist> specialistsInfo = [
   Specialist(
     id: "",
     name: 'د. مصطفى إبراهيم',
-    imageUrl: 'path_to_image_7.jpg',
+    imageUrl: '',
     email: 'mustafa@example.com',
     password: 'password910',
     specialty: "أخصائي علاج وظيفي",
@@ -106,7 +106,7 @@ List<Specialist> specialistsInfo = [
   ),
   Specialist(id: "",
     name: 'أ. هند عبدالله',
-    imageUrl: 'path_to_image_8.jpg',
+    imageUrl: ' ',
     email: 'hend@example.com',
     password: 'password112',
     specialty: "أخصائي تحليل سلوك تطبيقي",
