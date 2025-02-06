@@ -45,7 +45,7 @@ class SpecialistHomePage extends StatelessWidget {
                           'د. سهى هاني السعدي',
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.bold,color: Color(0xFF546E78)
                           ),
                         ),
                         SizedBox(height: 8),
@@ -130,7 +130,7 @@ class SpecialistHomePage extends StatelessWidget {
         ));
   }
 }
-
+//We created a custom widget (InfoRow) to reuse a styled row in our UI, keeping the code clean .
 class InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
