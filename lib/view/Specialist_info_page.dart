@@ -8,24 +8,23 @@ class SpecialistHomePage extends StatelessWidget {
     return Directionality(
         textDirection: TextDirection.rtl, 
         child: Scaffold(
-          backgroundColor: Colors.grey[200],
+         // backgroundColor: Colors.grey[200],
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
+              icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
               onPressed: () {},
             ),
             title: Center(
-              child: Image.asset(
-                'assets/logo.png',
-                height: 40,
-              ),
+            child: Image.asset(
+            'assets/jisserLogo.jpeg',
+              width: 40,
+              height: 40,
             ),
-            actions: [
-              SizedBox(width: 48),
-            ],
           ),
+          actions: [SizedBox(width: 48)], // توازن لموائمة الصورة في المنتصف
+        ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -34,9 +33,9 @@ class SpecialistHomePage extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: 40,
+                      radius: 50,
                       backgroundImage:
-                          AssetImage('assets/doctor.jpg'), 
+                          AssetImage('assets/specialist2.png'),
                     ),
                     SizedBox(width: 16),
                     Column(
@@ -61,7 +60,7 @@ class SpecialistHomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: 44),
                 InfoRow(
                     icon: Icons.school,
                     label: 'المؤهل العلمي',
@@ -104,15 +103,16 @@ class SpecialistHomePage extends StatelessWidget {
                     SessionDurationButton(label: '1 ساعة/ 250 ريال'),
                   ],
                 ),
-                Spacer(),
+                const SizedBox(height: 80,),
                 SizedBox(
                   width: double.infinity,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.indigo,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: Text(
@@ -149,7 +149,7 @@ class InfoRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon, color: Colors.blue),
+          Icon(icon, color: Colors.indigo),
           SizedBox(width: 8),
           Text('$label: ',
               style: TextStyle(
@@ -177,12 +177,12 @@ class SessionTimeButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: () {},
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Colors.blue),
+        side: BorderSide(color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
-      child: Text(label, style: TextStyle(color: Colors.blue)),
+      child: Text(label, style: TextStyle(color:Color(0xFF071164))),
     );
   }
 }
@@ -198,12 +198,12 @@ class SessionDurationButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: () {},
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Colors.blue),
+        side: BorderSide(color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
-      child: Text(label, style: TextStyle(color: Colors.blue)),
+      child: Text(label, style: TextStyle(color: Color(0xFF071164))),
     );
   }
 }

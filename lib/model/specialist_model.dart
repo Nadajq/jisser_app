@@ -50,8 +50,8 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     imageUrl: 'assets/specialist2.png',
     email: 'fatima@example.com',
     password: 'password456',
-    specialty: "أخصائي نفسي أقدم الاستشارات النفسية و التوحد وذويهم",
-    qualification: "حاصلة على ماجستير تربيه خاصه توحد USA - دبلوم ارشاد اسري",
+    specialty: "أخصائي نفسي ",
+    qualification: " ماجستير تربيه خاصه توحد USA - دبلوم ارشاد اسري",
     yearsOfExperience: "23 سنة",
   ),
   Specialist(

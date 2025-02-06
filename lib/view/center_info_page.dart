@@ -64,7 +64,7 @@ class CenterInfoPage extends StatelessWidget {
                        style: TextStyle(
                          fontSize: 24,
                          fontWeight: FontWeight.bold,
-                         color: Colors.blueAccent,
+                         color: Color(0xFF071164),
                        ),
                      ),
 
@@ -75,7 +75,7 @@ class CenterInfoPage extends StatelessWidget {
                        children: [
                          Icon(Icons.location_on, color: Colors.grey),
                          SizedBox(width: 5),
-                         Text('نجران', style: TextStyle(fontSize: 16)),
+                         Text('نجران', style: TextStyle(fontSize: 16,)),
                        ],
                      ),
                      SizedBox(height: 16),
@@ -92,7 +92,7 @@ class CenterInfoPage extends StatelessWidget {
                      // معلومات الاتصال
                      Row(
                        children: [
-                         Icon(Icons.email, color: Colors.blue),
+                         Icon(Icons.email, color: Colors.indigo),
                          SizedBox(width: 5),
                          Text('ew@gmail.com', style: TextStyle(fontSize: 16)),
                        ],
@@ -101,24 +101,28 @@ class CenterInfoPage extends StatelessWidget {
 
                      Row(
                        children: [
-                         Icon(Icons.phone, color: Colors.blue),
+                         Icon(Icons.phone, color: Colors.indigo),
                          SizedBox(width: 5),
                          Text('054 555 7819', style: TextStyle(fontSize: 16)),
                        ],
                      ),
 
-                     SizedBox(height: 50),
-                     Center(
-                       child: ElevatedButton(
-                         style: ElevatedButton.styleFrom(
-                             backgroundColor: Colors.blueAccent,
-                             padding: EdgeInsets.symmetric(
-                                 horizontal: 20, vertical: 10)),
-                         onPressed: () {
-                           "https://g.co/kgs/KKyFCie";
-                         }, // فتح رابط  عند الضغط
-                         child: Icon(Icons.map_sharp,
-                             color: Color(0xffffffff), size: 50),
+                     SizedBox(height: 10,),
+                     Padding(
+                       padding: const EdgeInsets.symmetric(horizontal: 20,),
+                       child: Align(
+                         alignment: Alignment.bottomLeft,
+                         child: ElevatedButton(
+                           style: ElevatedButton.styleFrom(
+                               backgroundColor: Colors.indigo,
+                               padding: EdgeInsets.symmetric(
+                                   horizontal: 10, vertical: 10)),
+                           onPressed: () {
+                             "https://g.co/kgs/KKyFCie";
+                           }, // فتح رابط  عند الضغط
+                           child: Icon(Icons.location_on_outlined,
+                               color: Color(0xffffffff), size: 50),
+                         ),
                        ),
                      )
                    ],
