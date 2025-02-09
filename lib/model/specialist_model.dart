@@ -77,7 +77,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
   Specialist(
     id: "",
     name: 'أ. يوسف عبدالله',
-    imageUrl: '',
+    imageUrl: 'assets/specialist5.jpg',
     email: 'youssef@example.com',
     password: 'password345',
     specialty: "أخصائي تخاطب",
@@ -87,7 +87,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
   Specialist(
     id: "",
     name: 'أ. سارة خالد',
-    imageUrl: ' ',
+    imageUrl: 'assets/specialist7.jpg',
     email: 'sara@example.com',
     password: 'password678',
     specialty: "أخصائي نفسي",
@@ -97,16 +97,17 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
   Specialist(
     id: "",
     name: 'د. مصطفى إبراهيم',
-    imageUrl: '',
+    imageUrl: 'assets/specialist6.jpg',
     email: 'mustafa@example.com',
     password: 'password910',
     specialty: "أخصائي علاج وظيفي",
     qualification: "دكتوراه",
     yearsOfExperience: "15 سنة",
   ),
-  Specialist(id: "",
+  Specialist(
+    id: "",
     name: 'أ. هند عبدالله',
-    imageUrl: ' ',
+    imageUrl: 'assets/specialist8.jpg',
     email: 'hend@example.com',
     password: 'password112',
     specialty: "أخصائي تحليل سلوك تطبيقي",

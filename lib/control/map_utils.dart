@@ -1,4 +1,4 @@
-import 'package:url_launcher/url_launcher.dart'; // استيراد مكتبة لفتح الروابط الخارجية
+/*import 'package:url_launcher/url_launcher.dart'; // استيراد مكتبة لفتح الروابط الخارجية
 //كلاس يحتوي على دالة لفتح الخرائط في جوجل ماب
 class MapUtils {
   MapUtils._();// مُنشئ خاص لمنع إنشاء كائنات من هذا الكلاس
@@ -11,9 +11,10 @@ class MapUtils {
         "https://www.google.com/maps/search/?api=1&query=$Latitude";
         // التحقق مما إذا كان يمكن فتح الرابط
     if (await canLaunch(googleMapUrl)) {
-      await launch(googleMapUrl);فتح الرابط
+      await launch(googleMapUrl);//فتح الرابط
     } else {
       throw 'Could not open the Map';// في حالة الفشل
     }
   }
 }
+*/
