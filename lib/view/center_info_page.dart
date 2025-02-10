@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/map_utils.dart'; // استيراد أداة فتح الخرائط
+
 
 class CenterInfoPage extends StatelessWidget {
   const CenterInfoPage({super.key});
@@ -12,11 +14,13 @@ class CenterInfoPage extends StatelessWidget {
          // جعل كل النصوص من اليمين إلى اليسار
          textDirection: TextDirection.rtl,
          child: AutismAssociationScreen(),
+          // الانتقال إلى صفحة عرض المعلومات
+
        ),
      );
    }
  }
-
+// الشاشة الرئيسية التي تعرض تفاصيل
  class AutismAssociationScreen extends StatelessWidget {
    @override
    Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class CenterInfoPage extends StatelessWidget {
        appBar: AppBar(
          backgroundColor: Colors.white,
          leading: IconButton(
-           icon: Icon(Icons.arrow_back, color: Colors.blueAccent, size: 28),
+           icon: Icon(Icons.arrow_back, color: Colors.blueAccent, size: 28),// أيقونة الرجوع للخلف
            onPressed: () {
              // تنفيذ الرجوع للخلف
              Navigator.pop(context);
@@ -33,7 +37,7 @@ class CenterInfoPage extends StatelessWidget {
          ),
          title: Center(
            child: Image.asset(
-             'assets/jisserLogo.jpeg',
+             'assets/jisserLogo.jpeg', // إدراج صورة الشعار في منتصف شريط التطبيق
              width: 40,
              height: 40,
            ),
@@ -111,15 +115,15 @@ class CenterInfoPage extends StatelessWidget {
                      Padding(
                        padding: const EdgeInsets.symmetric(horizontal: 20,),
                        child: Align(
-                         alignment: Alignment.bottomLeft,
+                         alignment: Alignment.bottomLeft, // وضع الزر في الزاوية اليسرى
                          child: ElevatedButton(
                            style: ElevatedButton.styleFrom(
                                backgroundColor: Colors.indigo,
                                padding: EdgeInsets.symmetric(
                                    horizontal: 10, vertical: 10)),
                            onPressed: () {
-                             "https://g.co/kgs/KKyFCie";
-                           }, // فتح رابط  عند الضغط
+                               MapUtils.openMap("https://g.co/kgs/KKyFCie");
+                           }, // فتح الموقع على الخرائط
                            child: Icon(Icons.location_on_outlined,
                                color: Color(0xffffffff), size: 50),
                          ),
