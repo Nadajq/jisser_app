@@ -4,9 +4,6 @@ import 'package:jisser_app/view/user_home_page.dart';
 import 'package:jisser_app/view/user_sign_up_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 
-import 'Specialist_info_page.dart';
-import 'center_info_page.dart';
-
 class UserLoginPage extends StatelessWidget {
   const UserLoginPage({super.key});
 
@@ -72,7 +69,7 @@ class UserLoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const SpecialistHomePage(), /*UserHomePage()*/)); //button to go to user home page
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>  UserHomePage())); //button to go to user home page
               },
               child: Container(
                 width: double.infinity,
