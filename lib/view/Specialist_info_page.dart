@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/model/specialist_model.dart';
 
 // الصفحة الرئيسية للطبيب المتخصص
-class SpecialistHomePage extends StatefulWidget {
-  const SpecialistHomePage({Key? key}) : super(key: key);
+class SpecialistInfoPage extends StatefulWidget {
+  final Specialist specialist; // Receive the specialist data
+  const SpecialistInfoPage({Key? key, required this.specialist})
+      : super(key: key);
 
   @override
-  _SpecialistHomePageState createState() => _SpecialistHomePageState();
+  _SpecialistInfoPageState createState() => _SpecialistInfoPageState();
 }
 
 // الفئة المسؤولة عن الحالة والتفاعل مع واجهة المستخدم
-class _SpecialistHomePageState extends State<SpecialistHomePage> {
+class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
   // متغيرات لحفظ الخيارات المحددة
+
   String _selectedTime = "5:00 م";
   String _selectedDuration = "30 دقيقة/150 ريال";
 
   @override
   Widget build(BuildContext context) {
+
     return Directionality(
       // لضبط اتجاه النص والعناصر من اليمين إلى اليسار
       textDirection: TextDirection.rtl,
@@ -25,7 +30,9 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           title: Center(
             child: Image.asset(
@@ -46,14 +53,14 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/specialist2.png'),
+                    backgroundImage: AssetImage(widget.specialist.imageUrl),
                   ),
                   SizedBox(width: 16), // مسافة بين الصورة والنص
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'د. سهى هاني السعدي',
+                        widget.specialist.name,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -62,7 +69,7 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
                       ),
                       SizedBox(height: 8), // مسافة بين النصوص
                       Text(
-                        'أخصائي نفسي',
+                        widget.specialist.specialty,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -78,9 +85,13 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
               InfoRow(
                 icon: Icons.school,
                 label: 'المؤهل العلمي',
-                value: 'ماجستير تربية خاصة - USA',
+                value: widget.specialist.qualification,
               ),
-              InfoRow(icon: Icons.history, label: 'الخبرة', value: '23 سنة'),
+              InfoRow(
+                icon: Icons.history,
+                label: 'الخبرة',
+                value: widget.specialist.yearsOfExperience,
+              ),
               InfoRow(
                 icon: Icons.menu_book,
                 label: 'تقديم الجلسات',
@@ -152,6 +163,7 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
                     // إضافة الحجز
                   },
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
                     shape: RoundedRectangleBorder(

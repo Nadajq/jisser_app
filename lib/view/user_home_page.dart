@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-
-
-
+import '../model/specialist_model.dart';
+import 'Specialist_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
   @override
   _UserHomePageState createState() => _UserHomePageState();
 }
-class _UserHomePageState extends State<UserHomePage>{
+
+class _UserHomePageState extends State<UserHomePage> {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -19,7 +19,7 @@ class _UserHomePageState extends State<UserHomePage>{
             print("Change language");
           },
         ),
-    /*leading: Container(
+        /*leading: Container(
           padding: EdgeInsets.all(7),
           child: Image.asset(
               "assets/menu.png",
@@ -32,9 +32,9 @@ class _UserHomePageState extends State<UserHomePage>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-            "assets/jisserLogo.jpeg",
-          height: 30,
-        )
+              "assets/jisserLogo.jpeg",
+              height: 30,
+            )
           ],
         ),
         actions: [
@@ -66,54 +66,79 @@ class _UserHomePageState extends State<UserHomePage>{
             SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
                 children: [
-                  _buildCenterCard("جمعية إرادة", "assets/center1.png", "نجران"),
+                  _buildCenterCard(
+                      "جمعية إرادة", "assets/center1.png", "نجران"),
                   SizedBox(width: 10),
-                  _buildCenterCard(" مركز عبداللطيف", "assets/img.png", "الخبر"),
+                  _buildCenterCard(
+                      " مركز عبداللطيف", "assets/img.png", "الخبر"),
                   SizedBox(width: 10),
-                  _buildCenterCard("مركز احتواء", "assets/center3.png", "الرياض"),
+                  _buildCenterCard(
+                      "مركز احتواء", "assets/center3.png", "الرياض"),
                   SizedBox(width: 10),
                   _buildCenterCard("مركز شمعة", "assets/center4.png", "الدمام"),
-
                 ],
               ),
             ),
             SizedBox(height: 20),
-            Text("الأخصائيين", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF08174A)), textAlign: TextAlign.right),
+            Text("الأخصائيين",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF08174A)),
+                textAlign: TextAlign.right),
             SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: [
-                  _buildSpecialistCard("د. أحمد أبو زيد", "أخصائي تخاطب و لغة", "assets/specialist1.png", 4.0),
-                  SizedBox(width: 10),
-                  _buildSpecialistCard("د. ريم العتيبي", "أخصائية تحليل السلوك التطبيقي", "assets/specialist2.png", 5.0),
-                  SizedBox(width: 10),
-                  _buildSpecialistCard("د. ماجد الشمري", "استشاري طب نفسي للأطفال و المراهقين", "assets/specialist3.png", 4.8),
-                  SizedBox(width: 10),
-                  _buildSpecialistCard("د. نورة الغامدي", "أخصائية نفسية للاطفال", "assets/specialist4.png", 4.6),
-                  _buildSpecialistCard("د. ريم العتيبي", "أخصائية تحليل السلوك التطبيقي", "assets/specialist2.png", 5.0),
-                  SizedBox(width: 10),
-                  _buildSpecialistCard("د. ماجد الشمري", "استشاري طب نفسي للأطفال و المراهقين", "assets/specialist3.png", 4.8),
-                  SizedBox(width: 10),
-                  _buildSpecialistCard("د. نورة الغامدي", "أخصائية نفسية للاطفال", "assets/specialist4.png", 4.6),
-
-                ],
+                children: specialistsInfo.map((specialist) {
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigate to SpecialistInfoPage and pass the selected specialist
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SpecialistInfoPage(specialist: specialist),
+                        ),
+                      );
+                    },
+                    child: _buildSpecialistCard(
+                      specialist.name,
+                      specialist.specialty,
+                      specialist.imageUrl,
+                      specialist.rating,
+                      // Rating can be dynamic if you have this data in the specialist object
+                      specialist.qualification,
+                      specialist.yearsOfExperience,
+                      specialist.sessionTimes,
+                    ),
+                  );
+                }).toList(),
               ),
             ),
             SizedBox(height: 30),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB), "assets/puzzle.png"),
-            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج", Color(0xFFF0E392), "assets/puzzle.png"),
-            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد", Color(0xFF374553), "assets/puzzle.png"),
-            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد", Color(0xFFF0C9AC), "assets/puzzle.png"),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB), "assets/puzzle.png"),
-            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج", Color(0xFFF0E392), "assets/puzzle.png"),
-            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد", Color(0xFF374553), "assets/puzzle.png"),
-            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد", Color(0xFFF0C9AC), "assets/puzzle.png"),
-
+            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB),
+                "assets/puzzle.png"),
+            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
+                Color(0xFFF0E392), "assets/puzzle.png"),
+            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
+                Color(0xFF374553), "assets/puzzle.png"),
+            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
+                Color(0xFFF0C9AC), "assets/puzzle.png"),
+            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB),
+                "assets/puzzle.png"),
+            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
+                Color(0xFFF0E392), "assets/puzzle.png"),
+            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
+                Color(0xFF374553), "assets/puzzle.png"),
+            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
+                Color(0xFFF0C9AC), "assets/puzzle.png"),
           ],
         ),
       ),
@@ -127,7 +152,7 @@ class _UserHomePageState extends State<UserHomePage>{
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color:  Colors.black26),
+        border: Border.all(color: Colors.black26),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
@@ -144,14 +169,19 @@ class _UserHomePageState extends State<UserHomePage>{
           SizedBox(height: 19),
           Align(
             alignment: Alignment.centerRight,
-            child: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Color(0xFF08174A))),
+            child: Text(title,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Color(0xFF08174A))),
           ),
           SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Icon(Icons.location_on, color: Colors.grey, size: 17),
-              Text(location, style: TextStyle(color: Colors.grey, fontSize: 14)),
+              Text(location,
+                  style: TextStyle(color: Colors.grey, fontSize: 14)),
             ],
           ),
         ],
@@ -159,35 +189,75 @@ class _UserHomePageState extends State<UserHomePage>{
     );
   }
 
-  Widget _buildSpecialistCard(String name, String specialty, String imagePath, double rating) {
-    return Container(
-      width: 110,
-      padding: EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-      Container(
-      decoration: BoxDecoration(
-      shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey, width: 1), // إضافة إطار أسود
-      ),
-      child: CircleAvatar(
-            radius: 40,
-            backgroundImage: AssetImage(imagePath),
+  Widget _buildSpecialistCard(
+      String name,
+      String specialty,
+      String imagePath,
+      double rating,
+      String qualification,
+      String yearsOfExperience,
+      List<String> sessionTimes) {
+    // Create a Specialist object for each card
+    Specialist specialist = Specialist(
+      id: "",
+      // Generate or leave empty for now
+      name: name,
+      imageUrl: imagePath,
+      email: '',
+      // Optional
+      password: '',
+      // Optional
+      specialty: specialty,
+      qualification: qualification,
+      // Optional
+      yearsOfExperience: yearsOfExperience,
+      // Optional
+      rating: rating,
+      sessionTimes: sessionTimes,
+    );
+    return GestureDetector(
+      onTap: () {
+        // Navigate to SpecialistInfoPage and pass the Specialist object
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SpecialistInfoPage(specialist: specialist),
           ),
-      ),
-
-          SizedBox(height: 5),
-          Text(name, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-          Text(specialty, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.grey)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.star, color: Colors.amber, size: 14),
-              Text("$rating", style: TextStyle(fontSize: 12)),
-            ],
-          ),
-        ],
+        );
+      },
+      child: Container(
+        width: 110,
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border:
+                    Border.all(color: Colors.grey, width: 1), // إضافة إطار أسود
+              ),
+              child: CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage(imagePath),
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(name,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            Text(specialty,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.star, color: Colors.amber, size: 14),
+                Text("$rating", style: TextStyle(fontSize: 12)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -210,14 +280,16 @@ class _UserHomePageState extends State<UserHomePage>{
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, // يجعل الصورة تأتي أولًا على اليمين
+        mainAxisAlignment: MainAxisAlignment.start,
+        // يجعل الصورة تأتي أولًا على اليمين
         children: [
-
-
           Expanded(
             child: Text(
               text,
-              style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 17),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 17),
               textAlign: TextAlign.right, // التأكد من محاذاة النص لليمين
             ),
           ),
@@ -228,4 +300,3 @@ class _UserHomePageState extends State<UserHomePage>{
     );
   }
 }
-

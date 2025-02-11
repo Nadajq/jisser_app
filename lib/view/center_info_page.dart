@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jisser_app/map_utils.dart'; // استيراد أداة فتح الخرائط
+import 'package:jisser_app/control/map_utils.dart'; // استيراد أداة فتح الخرائط
 
 
 class CenterInfoPage extends StatelessWidget {
@@ -122,7 +122,7 @@ class CenterInfoPage extends StatelessWidget {
                                padding: EdgeInsets.symmetric(
                                    horizontal: 10, vertical: 10)),
                            onPressed: () {
-                               MapUtils.openMap("https://g.co/kgs/KKyFCie");
+                              // MapUtils.openMap("https://g.co/kgs/KKyFCie");
                            }, // فتح الموقع على الخرائط
                            child: Icon(Icons.location_on_outlined,
                                color: Color(0xffffffff), size: 50),
