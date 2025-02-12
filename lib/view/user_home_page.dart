@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../model/center_model.dart';
 import '../model/specialist_model.dart';
 import 'Specialist_info_page.dart';
+import 'center_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
   @override
@@ -39,7 +41,7 @@ class _UserHomePageState extends State<UserHomePage> {
         ),
         actions: [
           Container(
-            padding: EdgeInsets.all(7),
+            padding: const EdgeInsets.all(7),
             child: Image.asset(
               "assets/menu.png", // القائمة على اليمين
               height: 20,
@@ -59,38 +61,46 @@ class _UserHomePageState extends State<UserHomePage> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: [
-                  _buildCenterCard(
-                      "جمعية إرادة", "assets/center1.png", "نجران"),
-                  SizedBox(width: 10),
-                  _buildCenterCard(
-                      " مركز عبداللطيف", "assets/img.png", "الخبر"),
-                  SizedBox(width: 10),
-                  _buildCenterCard(
-                      "مركز احتواء", "assets/center3.png", "الرياض"),
-                  SizedBox(width: 10),
-                  _buildCenterCard("مركز شمعة", "assets/center4.png", "الدمام"),
-                ],
+                children: centerslist.map((centers) {
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigate to CenterInfoPage and pass the selected center
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CenterInfoPage(centers: centers),
+                        ),
+                      );
+                    },
+                    child: _buildCenterCard(centers.name,
+                      centers.location,
+                      centers.description,
+                      centers.email,
+                      centers.phone,
+                      centers.imagePath,
+                      centers.map,),
+                  );
+                }).toList(),
               ),
             ),
-            SizedBox(height: 20),
-            Text("الأخصائيين",
+            const SizedBox(height: 20),
+            const Text("الأخصائيين",
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF08174A)),
                 textAlign: TextAlign.right),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               reverse: true, // Reverse the scroll direction (right to left)
@@ -122,39 +132,66 @@ class _UserHomePageState extends State<UserHomePage> {
                 }).toList(),
               ),
             ),
-            SizedBox(height: 30),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB),
+            const SizedBox(height: 30),
+            _buildInfoCard("ما هو اضطراب طيف التوحد؟", const Color(0xFFA3C7EB),
                 "assets/puzzle.png"),
             _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
-                Color(0xFFF0E392), "assets/puzzle.png"),
+                const Color(0xFFF0E392), "assets/puzzle.png"),
             _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
-                Color(0xFF374553), "assets/puzzle.png"),
+                const Color(0xFF374553), "assets/puzzle.png"),
             _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
-                Color(0xFFF0C9AC), "assets/puzzle.png"),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", Color(0xFFA3C7EB),
+                const Color(0xFFF0C9AC), "assets/puzzle.png"),
+            _buildInfoCard("ما هو اضطراب طيف التوحد؟", const Color(0xFFA3C7EB),
                 "assets/puzzle.png"),
             _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
-                Color(0xFFF0E392), "assets/puzzle.png"),
+                const Color(0xFFF0E392), "assets/puzzle.png"),
             _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
-                Color(0xFF374553), "assets/puzzle.png"),
+                const Color(0xFF374553), "assets/puzzle.png"),
             _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
-                Color(0xFFF0C9AC), "assets/puzzle.png"),
+                const Color(0xFFF0C9AC), "assets/puzzle.png"),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCenterCard(String title, String imagePath, String location) {
-    return Container(
+  Widget _buildCenterCard(  String name,
+      String location,
+      String description,
+      String email,
+      String phone,
+      String imagePath,
+      String map) {
+    // Create a Center object for each card
+    Centers centers = Centers(
+      name: name,
+      location: location,
+      description: description,
+      email: email,
+      phone: phone,
+      imagePath: imagePath,
+      map: map,
+    );
+
+    return GestureDetector(
+        onTap: () {
+      // Navigate to CenterInfoPage and pass the Center object
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CenterInfoPage(centers: centers),
+        ),
+      );
+    },
+    child: Container(
       width: 145,
-      padding: EdgeInsets.all(19),
+      padding: const EdgeInsets.all(19),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.black26),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
             spreadRadius: 2,
@@ -165,27 +202,28 @@ class _UserHomePageState extends State<UserHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(imagePath, height: 100, width: 100),
-          SizedBox(height: 19),
+          Image.asset(centers.imagePath, height: 100, width: 100),
+          const SizedBox(height: 19),
           Align(
             alignment: Alignment.centerRight,
-            child: Text(title,
-                style: TextStyle(
+            child: Text(centers.name,
+                style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: Color(0xFF08174A))),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Icon(Icons.location_on, color: Colors.grey, size: 17),
-              Text(location,
-                  style: TextStyle(color: Colors.grey, fontSize: 14)),
+              const Icon(Icons.location_on, color: Colors.grey, size: 17),
+              Text(centers.location,
+                  style: const TextStyle(color: Colors.grey, fontSize: 14)),
             ],
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -227,7 +265,7 @@ class _UserHomePageState extends State<UserHomePage> {
       },
       child: Container(
         width: 110,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -242,18 +280,18 @@ class _UserHomePageState extends State<UserHomePage> {
                 backgroundImage: AssetImage(imagePath),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(name,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             Text(specialty,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
+                style: const TextStyle(fontSize: 12, color: Colors.grey)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.star, color: Colors.amber, size: 14),
-                Text("$rating", style: TextStyle(fontSize: 12)),
+                const Icon(Icons.star, color: Colors.amber, size: 14),
+                Text("$rating", style: const TextStyle(fontSize: 12)),
               ],
             ),
           ],
@@ -265,13 +303,13 @@ class _UserHomePageState extends State<UserHomePage> {
   Widget _buildInfoCard(String text, Color color, String imagePath) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(14),
-      margin: EdgeInsets.symmetric(vertical: 0),
+      padding: const EdgeInsets.all(14),
+      margin: const EdgeInsets.symmetric(vertical: 0),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black26,
             blurRadius: 5,
             spreadRadius: 3,
@@ -286,14 +324,14 @@ class _UserHomePageState extends State<UserHomePage> {
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   fontSize: 17),
               textAlign: TextAlign.right, // التأكد من محاذاة النص لليمين
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Image.asset(imagePath, height: 50, width: 50),
         ],
       ),

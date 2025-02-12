@@ -1,30 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:jisser_app/control/map_utils.dart'; // استيراد أداة فتح الخرائط
+import 'package:jisser_app/control/map_utils.dart';
+
+import '../model/center_model.dart'; // استيراد أداة فتح الخرائط
 
 
 class CenterInfoPage extends StatelessWidget {
-  const CenterInfoPage({super.key});
+  final Centers centers;
+  const CenterInfoPage({super.key, required this.centers});
 
-  @override
-  Widget build(BuildContext context) {
-     return MaterialApp(
-       debugShowCheckedModeBanner: false,
-
-       home: Directionality(
-         // جعل كل النصوص من اليمين إلى اليسار
-         textDirection: TextDirection.rtl,
-         child: AutismAssociationScreen(),
-          // الانتقال إلى صفحة عرض المعلومات
-
-       ),
-     );
-   }
- }
-// الشاشة الرئيسية التي تعرض تفاصيل
- class AutismAssociationScreen extends StatelessWidget {
    @override
    Widget build(BuildContext context) {
-     return Scaffold(
+
+     return Directionality(
+         textDirection: TextDirection.rtl,
+       child: Scaffold(
        backgroundColor: Colors.white,
        appBar: AppBar(
          backgroundColor: Colors.white,
@@ -48,7 +37,7 @@ class CenterInfoPage extends StatelessWidget {
          child: Column(
            children: [
              Image.asset(
-               'assets/center1.png', //
+               centers.imagePath, //
                width: double.infinity,
                height: 250,
                fit: BoxFit.cover,
@@ -64,7 +53,7 @@ class CenterInfoPage extends StatelessWidget {
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
                      Text(
-                       'جمعية إرادة التوحد',
+                       centers.name,
                        style: TextStyle(
                          fontSize: 24,
                          fontWeight: FontWeight.bold,
@@ -79,15 +68,14 @@ class CenterInfoPage extends StatelessWidget {
                        children: [
                          Icon(Icons.location_on, color: Colors.grey),
                          SizedBox(width: 5),
-                         Text('نجران', style: TextStyle(fontSize: 16,)),
+                         Text(centers.location, style: TextStyle(fontSize: 16,)),
                        ],
                      ),
                      SizedBox(height: 16),
 
                      // وصف الجمعية
                      Text(
-                       'جمعية إرادة التوحد جمعية تُعنى بخدمة ذوي اضطراب التوحد بمنطقة نجران، '
-                       'وتسعى لمساعدة ذوي اضطراب التوحد وأسرهم ودعمهم تدريبًا وتأهيلاً وتعليمًا ليكونوا أعضاء فاعلين في المجتمع لتحقيق ذواتهم.',
+                       centers.description,
                        textAlign: TextAlign.right,
                        style: TextStyle(fontSize: 16),
                      ),
@@ -98,7 +86,7 @@ class CenterInfoPage extends StatelessWidget {
                        children: [
                          Icon(Icons.email, color: Colors.indigo),
                          SizedBox(width: 5),
-                         Text('ew@gmail.com', style: TextStyle(fontSize: 16)),
+                         Text(centers.email, style: TextStyle(fontSize: 16)),
                        ],
                      ),
                      SizedBox(height: 10),
@@ -107,7 +95,7 @@ class CenterInfoPage extends StatelessWidget {
                        children: [
                          Icon(Icons.phone, color: Colors.indigo),
                          SizedBox(width: 5),
-                         Text('054 555 7819', style: TextStyle(fontSize: 16)),
+                         Text(centers.phone, style: TextStyle(fontSize: 16)),
                        ],
                      ),
 
@@ -135,6 +123,7 @@ class CenterInfoPage extends StatelessWidget {
              ),
            ],
          ),
+       ),
        ),
      );
    }

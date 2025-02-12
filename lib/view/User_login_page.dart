@@ -5,6 +5,8 @@ import 'package:jisser_app/view/user_sign_up_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 
 import 'Specialist_info_page.dart';
+import 'admin/admin_login_page.dart';
+import 'blog_info_page.dart';
 import 'center_info_page.dart';
 
 class UserLoginPage extends StatelessWidget {
@@ -72,7 +74,7 @@ class UserLoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>  UserHomePage(), )); //button to go to user home page
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>  BlogInfoPage(), )); //button to go to user home page
               },
               child: Container(
                 width: double.infinity,
@@ -120,6 +122,21 @@ class UserLoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Center(child: Text("تسجيل الدخول كمختص",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const AdminLoginPage(),)); //button to go to Specialist LoginPage
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color:  Colors.indigo.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Center(child: Text("تسجيل الدخول كمسؤل",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
               ),
             ),
         ],

@@ -15,10 +15,16 @@ class SpecialistInfoPage extends StatefulWidget {
 class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
   // متغيرات لحفظ الخيارات المحددة
 
-  String _selectedTime = "5:00 م";
+  String? _selectedTime ;
   String _selectedDuration = "30 دقيقة/150 ريال";
 
   @override
+  void initState(){
+    super.initState();//تعيين أول وقت كقيمة افتراضية
+    if(widget.specialist.sessionTimes.isNotEmpty){
+      _selectedTime = widget.specialist.sessionTimes.first; // تعيين أول وقت كافتراضي
+    }
+  }
   Widget build(BuildContext context) {
 
     return Directionality(
@@ -31,7 +37,7 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context);//الرجوع إلى الصفحة السابقة
             },
           ),
           title: Center(
@@ -106,26 +112,15 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
               ),
               const SizedBox(height: 8),
               Row(
-                // أزرار اختيار وقت الجلسة
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildRadioButton("5:00 م", _selectedTime, (value) {
+                children: widget.specialist.sessionTimes.map((time) {// المرور على كل وقت متاح في قائمة الجلسات
+                  return buildRadioButton(time,// تمرير الوقت الحالي ليتم عرضه على زر الاختيار
+                      _selectedTime!, (value) {
                     setState(() {
-                      _selectedTime = value!;
+                      _selectedTime = value!;// تحديث الوقت المختار عند التغيير
                     });
-                  }),
-                  buildRadioButton("6:00 م", _selectedTime, (value) {
-                    // تغيير القيمة عند الاختيار
-                    setState(() {
-                      _selectedTime = value!;
-                    });
-                  }),
-                  buildRadioButton("8:00 م", _selectedTime, (value) {
-                    setState(() {
-                      _selectedTime = value!;
-                    });
-                  }),
-                ],
+                  });
+                }).toList(),
               ),
 
               SizedBox(height: 24), // مسافة بين الأقسام
@@ -188,7 +183,7 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
 
 // دالة لإنشاء زر اختيار
   Widget buildRadioButton(
-      String text, String groupValue, Function(String?) onChanged) {
+      String text, String? groupValue, Function(String?) onChanged) {
     return Row(
       children: [
         Radio<String>(

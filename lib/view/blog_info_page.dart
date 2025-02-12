@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp()); // تشغيل التطبيق الرئيسي
-}
-
-class MyApp extends StatelessWidget {
+class BlogInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // إخفاء شريط التصحيح
-      home: AutismInfoPage(), // تعيين الصفحة الرئيسية
-    );
-  }
-}
-
-class AutismInfoPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+    return Directionality(
+      // لضبط اتجاه النص والعناصر من اليمين إلى اليسار
+      textDirection: TextDirection.rtl,
+        child: Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // تعيين لون الخلفية
-        elevation: 1, // تعيين ارتفاع الظل
+        backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue), // زر الرجوع
-          onPressed: () {}, // تنفيذ عند الضغط
+          icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
+          onPressed: () {
+            Navigator.pop(context);//الرجوع إلى الصفحة السابقة
+          },
         ),
-        centerTitle: true, // توسيط العنوان
-        title: Image.asset('assets/icon.png', height: 40), // إضافة صورة أيقونة
+        title: Center(
+          child: Image.asset(
+            'assets/jisserLogo.jpeg', // شعار التطبيق
+            width: 40,
+            height: 40,
+          ),
+        ),
+        actions: [SizedBox(width: 48)], // لتوازن العناصر في الشريط العلوي
       ),
-      body: Container(
+      body:SingleChildScrollView(
+        child: Column(
+            children: [
+            SizedBox(height: 40), // مسافة بين AppBar والمحتوى
+
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height, // جعل الحاوية بحجم الشاشة
         padding: EdgeInsets.all(16), // إضافة هوامش داخلية
         decoration: BoxDecoration(
           color: Colors.blue.shade100, // تعيين لون الخلفية
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // إضافة حواف دائرية
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40)), // إضافة حواف دائرية
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -59,6 +63,10 @@ class AutismInfoPage extends StatelessWidget {
           ),
         ),
       ),
+      ],
+        ),
+        ),
+        ),
     );
   }
 }

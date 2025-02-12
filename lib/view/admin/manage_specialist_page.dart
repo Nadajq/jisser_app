@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp()); // تشغيل التطبيق واستدعاء MyApp
-}
 
-class MyApp extends StatelessWidget {
+class ManageSpecialistPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // إخفاء شعار وضع التصحيح
-      home: SpecialistsPage(), // تعيين الصفحة الرئيسية للتطبيق
-    );
-  }
+  _ManageSpecialistPageState createState() => _ManageSpecialistPageState(); // إنشاء حالة الصفحة
 }
 
-class SpecialistsPage extends StatefulWidget {
-  @override
-  _SpecialistsPageState createState() => _SpecialistsPageState(); // إنشاء حالة الصفحة
-}
-
-class _SpecialistsPageState extends State<SpecialistsPage> {
+class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
   // قائمة تحتوي على بيانات الأخصائيين مثل الاسم، المعرف، الهاتف، والحالة
   List<Map<String, String>> specialists = [
     {'name': 'د. أحمد', 'id': 'A1b2C34d', 'phone': 'كالوريوس', 'status': 'نشط'},
