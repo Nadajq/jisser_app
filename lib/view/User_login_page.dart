@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jisser_app/view/specialist_login_page.dart';
+import 'package:jisser_app/view/specialist/specialist_login_page.dart';
 import 'package:jisser_app/view/user_home_page.dart';
 import 'package:jisser_app/view/user_sign_up_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';

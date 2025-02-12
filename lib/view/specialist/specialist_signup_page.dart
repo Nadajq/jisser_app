@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jisser_app/model/specialist_model.dart';
-import 'package:jisser_app/view/specialist_home_page.dart';
-import 'package:jisser_app/view/specialist_login_page.dart';
+import 'package:jisser_app/view/specialist/specialist_home_page.dart';
+import 'package:jisser_app/view/specialist/specialist_login_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 
 class SpecialistSignupPage extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jisser_app/view/specialist_home_page.dart';
-import 'package:jisser_app/view/specialist_signup_page.dart';
+import 'package:jisser_app/view/specialist/specialist_home_page.dart';
+import 'package:jisser_app/view/specialist/specialist_signup_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 
 
