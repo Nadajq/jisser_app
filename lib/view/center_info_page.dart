@@ -123,7 +123,7 @@ class CenterInfoPage extends StatelessWidget {
                                    horizontal: 10, vertical: 10)),
                            onPressed: () {
                               // MapUtils.openMap("https://g.co/kgs/KKyFCie");
-                           }, // فتح الموقع على الخرائط
+                           }, //فتح الموقع على الخرائط
                            child: Icon(Icons.location_on_outlined,
                                color: Color(0xffffffff), size: 50),
                          ),
