@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/model/blogs_model.dart';
 
 class BlogInfoPage extends StatelessWidget {
+  final Blogs blogs;
+
+  const BlogInfoPage({super.key, required this.blogs});
   @override
   Widget build(BuildContext context) {
+
     return Directionality(
       // لضبط اتجاه النص والعناصر من اليمين إلى اليسار
       textDirection: TextDirection.rtl,
@@ -11,7 +16,7 @@ class BlogInfoPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
+          icon: const Icon(Icons.arrow_back, color: Colors.blueAccent),
           onPressed: () {
             Navigator.pop(context);//الرجوع إلى الصفحة السابقة
           },
@@ -23,41 +28,38 @@ class BlogInfoPage extends StatelessWidget {
             height: 40,
           ),
         ),
-        actions: [SizedBox(width: 48)], // لتوازن العناصر في الشريط العلوي
+        actions: const [ SizedBox(width: 48)], // لتوازن العناصر في الشريط العلوي
       ),
       body:SingleChildScrollView(
         child: Column(
             children: [
-            SizedBox(height: 40), // مسافة بين AppBar والمحتوى
+            const SizedBox(height: 40), // مسافة بين AppBar والمحتوى
 
         Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height, // جعل الحاوية بحجم الشاشة
-        padding: EdgeInsets.all(16), // إضافة هوامش داخلية
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height, // جعل الحاوية بحجم الشاشة
+          ),
+        padding: const EdgeInsets.all(16), // إضافة هوامش داخلية
         decoration: BoxDecoration(
-          color: Colors.blue.shade100, // تعيين لون الخلفية
-          borderRadius: BorderRadius.vertical(top: Radius.circular(40)), // إضافة حواف دائرية
+          color: blogs.bgcolor, // تعيين لون الخلفية
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(40)), // إضافة حواف دائرية
         ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, // محاذاة العناصر إلى اليسار
             children: [
               Text(
-                'ماهو اضطراب طيف التوحد؟', // عنوان رئيسي
-                style: TextStyle(
+               blogs.title, // عنوان رئيسي
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 10), // إضافة مسافة بين العناصر
-              Text(
-                'اضطراب طيف التوحد عبارة عن حالة ترتبط بنمو الدماغ وتؤثر على كيفية تفسير الشخص للأخرين والتعامل معهم على المستوى الاجتماعي...'
-                ' مما يتسبب في حدوث مشكلات في التفاعل والتواصل الاجتماعي. كما يتضمن الاضطراب أنماطًا سلوكية متكررة ومقيدة.\n\n'
-                'يتضمن اضطراب طيف التوحد حالات كانت تُعتبر منفصلة في السابق، مثل التوحد، متلازمة أسبرجر، والاضطراب التحللي الطفولي، واضطراب النمو المتفشي غير المحدد، والتي تم دمجها الآن في اضطراب طيف التوحد.\n\n'
-                'يبدأ اضطراب طيف التوحد في الطفولة المبكرة، ويتسبب في مشكلات على مستوى الأداء الاجتماعي سواء في المدرسة أو العمل. غالبًا تظهر العلامات المبكرة في عمر عامين أو أكثر.\n\n'
-                'لا يوجد علاج حاليًا لاضطراب طيف التوحد، ولكن العلاج المبكر المكثف يمكن أن يحدث فارقًا كبيرًا في حياة الأطفال المصابين.',
-                style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.5), // تنسيق النص
+              const SizedBox(height: 10), // إضافة مسافة بين العناصر
+              Text( blogs.content,
+                style: const TextStyle(fontSize: 16, color: Colors.black87, height: 1.5), // تنسيق النص
               ),
             ],
           ),

@@ -74,7 +74,7 @@ class UserLoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>  BlogInfoPage(), )); //button to go to user home page
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>  UserHomePage(), )); //button to go to user home page
               },
               child: Container(
                 width: double.infinity,

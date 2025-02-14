@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/view/blog_info_page.dart';
 
+import '../model/blogs_model.dart';
 import '../model/center_model.dart';
 import '../model/specialist_model.dart';
 import 'Specialist_info_page.dart';
 import 'center_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
+  const UserHomePage({super.key});
+
   @override
   _UserHomePageState createState() => _UserHomePageState();
 }
@@ -133,22 +137,24 @@ class _UserHomePageState extends State<UserHomePage> {
               ),
             ),
             const SizedBox(height: 30),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", const Color(0xFFA3C7EB),
-                "assets/puzzle.png"),
-            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
-                const Color(0xFFF0E392), "assets/puzzle.png"),
-            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
-                const Color(0xFF374553), "assets/puzzle.png"),
-            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
-                const Color(0xFFF0C9AC), "assets/puzzle.png"),
-            _buildInfoCard("ما هو اضطراب طيف التوحد؟", const Color(0xFFA3C7EB),
-                "assets/puzzle.png"),
-            _buildInfoCard("التشخيص المبكر: مفتاح للتدخل الفعال وتحسين النتائج",
-                const Color(0xFFF0E392), "assets/puzzle.png"),
-            _buildInfoCard("دور الأسرة في رحلة علاج طفل التوحد",
-                const Color(0xFF374553), "assets/puzzle.png"),
-            _buildInfoCard("10 نصائح لتواصل أفضل مع طفل مصاب بالتوحد",
-                const Color(0xFFF0C9AC), "assets/puzzle.png"),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: blogsList.map((blog) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlogInfoPage(blogs: blog),
+                        ),
+                      );
+                    },
+                    child: _buildInfoCard(blog.title,  blog.bgcolor ,  "assets/puzzle.png", blog.content),
+                  );
+                }).toList(),
+              ),
+            ),
           ],
         ),
       ),
@@ -190,8 +196,8 @@ class _UserHomePageState extends State<UserHomePage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.black26),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
             spreadRadius: 2,
@@ -300,16 +306,34 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  Widget _buildInfoCard(String text, Color color, String imagePath) {
-    return Container(
+  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath , String content) {
+    Color finalBgColor = bgcolor ?? Colors.blue; // Default color if null
+
+    Blogs blogs = Blogs(
+        id: '',
+        title: title,
+        content: content,
+      bgcolor: finalBgColor, // Use the valid color here
+    );
+    return GestureDetector(
+        onTap: () {
+      // Navigate to SpecialistInfoPage and pass the Specialist object
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BlogInfoPage(blogs: blogs),
+        ),
+      );
+    },
+    child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       margin: const EdgeInsets.symmetric(vertical: 0),
       decoration: BoxDecoration(
-        color: color,
+        color: finalBgColor,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black26,
             blurRadius: 5,
             spreadRadius: 3,
@@ -323,7 +347,7 @@ class _UserHomePageState extends State<UserHomePage> {
         children: [
           Expanded(
             child: Text(
-              text,
+              blogs.title,
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -335,6 +359,7 @@ class _UserHomePageState extends State<UserHomePage> {
           Image.asset(imagePath, height: 50, width: 50),
         ],
       ),
+    ),
     );
   }
 }
