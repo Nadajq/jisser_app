@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 
-class ManageSpecialistPage extends StatelessWidget {
+class ManageSpecialistPage extends StatefulWidget {
+  @override
+  State<ManageSpecialistPage> createState() => _ManageSpecialistPageState();
+}
+
+class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
+  List<Map<String, dynamic>> specialists = [
+    {'name': 'د.أحمد', 'id': 'A1b2C3d4', 'المؤهل': 'بكالوريس', 'active': true},
+    {'name': 'د.ماجد', 'id': 'XyZ9kLmN', 'المؤهل': 'دكتوراه', 'active': true},
+    {'name': 'أ.سارة', 'id': 'qR5sTuV8', 'المؤهل': 'دكتوراه', 'active': false},
+    {'name': 'أ.مريم', 'id': 'mNpQrSt1', 'المؤهل': 'ماجستير', 'active': false},
+    {'name': 'د.نوره', 'id': 'wX3Yz2A4', 'المؤهل': 'دكتوراه', 'active': false},
+    {'name': 'د.خالد', 'id': 'B2C3D4E5', 'المؤهل': 'بكالوريس', 'active': false},
+    {'name': 'د.رحاب', 'id': 'F6G7H8J9', 'المؤهل': 'ماجستير', 'active': true},
+    {'name': 'د.علي', 'id': 'JkLmNoP2', 'المؤهل': 'ماجستير', 'active': true},
+    {'name': 'أ.محمد', 'id': 'T5UuWx4Y', 'المؤهل': 'دكتوراه', 'active': true},
+    {
+      'name': 'د. عبدالله',
+      'id': 'Z2A1B0C9',
+      'المؤهل': 'بكالوريس',
+      'active': false
+    },
+    {'name': 'د.ماجد', 'id': '1234EfGh', 'المؤهل': 'ماجستير', 'active': true},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Color(0xfff3f7f9),
+        backgroundColor: const Color(0xfff3f7f9),
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -16,8 +40,8 @@ class ManageSpecialistPage extends StatelessWidget {
             height: 40,
           ),
           centerTitle: true,
-          actions: [
-            const Padding(
+          actions: const [
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Icon(
                 Icons.email,
@@ -33,38 +57,38 @@ class ManageSpecialistPage extends StatelessWidget {
             ),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'إدارة الأخصائيين',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'إدارة الأخصائيين',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: 300,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'بحث',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 300,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'بحث',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
               ),
-              SingleChildScrollView(
+            ),
+            Expanded(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
                   padding: const EdgeInsets.all(8),
@@ -75,8 +99,8 @@ class ManageSpecialistPage extends StatelessWidget {
                   ),
                   child: DataTable(
                     columnSpacing: 18.0,
-                    dataRowHeight: 35,
-                    headingRowHeight: 35,
+                    dataRowHeight: 45,
+                    headingRowHeight: 40,
                     headingTextStyle: const TextStyle(
                       color: Color(0xff2b2c2c),
                       fontWeight: FontWeight.bold,
@@ -88,16 +112,45 @@ class ManageSpecialistPage extends StatelessWidget {
                     columns: const [
                       DataColumn(label: Text('اسم الأخصائي')),
                       DataColumn(label: Text('id')),
+                      DataColumn(label: Text('المؤهل')),
                       DataColumn(label: Text('الحالة')),
                       DataColumn(label: Text('تعديل')),
                       DataColumn(label: Text('حذف')),
                     ],
-                    rows: _buildSpecialistRows(),
+                    rows: specialists.map((specialist) {
+                      return DataRow(cells: [
+                        DataCell(Text(specialist['name'])),
+                        DataCell(Text(specialist['id'])),
+                        DataCell(Text(specialist['المؤهل'])),
+                        DataCell(Switch(
+                          value: specialist['active'],
+                          onChanged: (value) {
+                            setState(() {
+                              specialist['active'] = value;
+                            });
+                          },
+                        )),
+                        DataCell(IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.green),
+                          onPressed: () {
+                            _editSpecialist(specialist);
+                          },
+                        )),
+                        DataCell(IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              specialists.remove(specialist);
+                            });
+                          },
+                        )),
+                      ]);
+                    }).toList(),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
@@ -147,27 +200,43 @@ class ManageSpecialistPage extends StatelessWidget {
     );
   }
 
-  List<DataRow> _buildSpecialistRows() {
-    final specialists = [
-      {'name': 'د. سارة', 'status': 'نشط', 'id': 'A1b2C3d4'},
-      {'name': 'د. ريم', 'status': 'غير نشط', 'id': 'XyZ9kLmN'},
-      {'name': 'د. محمد', 'status': 'نشط', 'id': 'qR5sTuV8'},
-      {'name': 'د. مها', 'status': 'نشط', 'id': 'mNpQrSt1'},
-      {'name': 'د. عبدالله', 'status': 'غير نشط', 'id': 'wX3Yz24'},
-      {'name': 'د. عبدالعزيز', 'status': 'نشط', 'id': 'B2C3D4E5'},
-      {'name': 'د. عبير', 'status': 'غير نشط', 'id': 'F6G7H8J9'},
-      {'name': 'د. يوسف', 'status': 'نشط', 'id': 'JkLmNoP2'},
-      {'name': 'د. جنى', 'status': 'نشط', 'id': 'T5UuWx4Y'},
-      {'name': 'د. احمد', 'status': 'غير نشط', 'id': 'Z2A1B0C9'},
-    ];
+  void _editSpecialist(Map<String, dynamic> specialist) {
+    TextEditingController nameController =
+        TextEditingController(text: specialist['name']);
 
-    return specialists.map((specialist) {
-      return DataRow(cells: [
-        DataCell(Text(specialist['name']!)),
-        DataCell(Text(specialist['status']!)),
-        DataCell(Text(specialist['id']!)),
-        const DataCell(Icon(Icons.delete, color: Colors.red, size: 18)),
-      ]);
-    }).toList();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تعديل الأخصائي'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: 'اسم الأخصائي'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('إلغاء'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  specialist['name'] = nameController.text;
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
