@@ -46,7 +46,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
             },
           ),
         ], // أيقونة الإشعارات
-        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black)));
+        title: Center(child: Text('إدارة الأخصائيين'), style: TextStyle(color: Colors.black));
       ),
       body: Column(
         children: [
