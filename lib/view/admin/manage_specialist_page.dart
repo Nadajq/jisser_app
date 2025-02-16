@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ManageSpecialistsPage extends StatelessWidget {
+class ManageSpecialistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
