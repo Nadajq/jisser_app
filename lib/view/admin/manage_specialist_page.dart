@@ -1,118 +1,194 @@
 import 'package:flutter/material.dart';
 
-
-class ManageSpecialistPage extends StatefulWidget {
+class ManageSpecialistPage extends StatelessWidget {
   @override
-  _ManageSpecialistPageState createState() => _ManageSpecialistPageState(); // إنشاء حالة الصفحة
-}
+   Widget build(BuildContext context) {
+    return Directionality(
+      // Set the text direction to right-to-left (to suit Arabic language)
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        // Set the background color of the page
+        backgroundColor: Color(0xfff3f7f9),
 
-class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
-  // قائمة تحتوي على بيانات الأخصائيين مثل الاسم، المعرف، الهاتف، والحالة
-  List<Map<String, String>> specialists = [
-    {'name': 'د. أحمد', 'id': 'A1b2C34d', 'phone': 'كالوريوس', 'status': 'نشط'},
-    {'name': 'د. أحمد', 'id': 'XyZ9kLNm', 'phone': 'دكتوراه', 'status': 'نشط'},
-    {'name': 'د. أحمد', 'id': 'qR5TsUv8', 'phone': 'ماجستير', 'status': 'معطل'},
-    {'name': 'د. أحمد', 'id': 'mNQr9rS1', 'phone': 'ماجستير', 'status': 'نشط'},
-  ];
+        // Define the AppBar (top bar of the application)
+        appBar: AppBar(
+          backgroundColor: Colors.white, // Set the AppBar background color
+          elevation: 0, // Remove shadow from AppBar
 
-  // دالة لحذف الأخصائي من القائمة
-  void _deleteSpecialist(int index) {
-    setState(() {
-      specialists.removeAt(index);
-    });
-  }
-
-  // دالة لتغيير حالة الأخصائي بين نشط ومعطل
-  void _toggleStatus(int index) {
-    setState(() {
-      specialists[index]['status'] =
-          specialists[index]['status'] == 'نشط' ? 'معطل' : 'نشط';
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1, // إضافة ارتفاع طفيف لشريط التطبيق
-        leading: Icon(Icons.email, color: Colors.blue), // أيقونة البريد
-        actions: [
-          IconButton(
-            icon: Icon(Icons.folder, color: Colors.red),
-            onPressed: () {
-              // إضافة حدث الخروج
-              Navigator.pop(context);
-            },
+          // Add a logo in the center of the AppBar
+          title: Image.asset(
+            'assets/jisserLogo.jpeg',
+            width: 40,
+            height: 40,
           ),
-        ], // أيقونة الإشعارات
-        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black))),
-      ),
-      body: Column(
-        children: [
-          // حقل البحث لتصفية قائمة الأخصائيين
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'بحث',
-                prefixIcon: Icon(Icons.search), // أيقونة البحث
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+
+          // Center the title
+          centerTitle: true,
+
+          // Add an email icon on the right
+          actions: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Icon(
+                Icons.email,
+                color: Colors.blue,
               ),
             ),
-          ),
-          // عرض قائمة الأخصائيين
-          Expanded(
-            child: ListView.builder(
-              itemCount: specialists.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: ListTile(
-                    title: Text(specialists[index]['name']!), // عرض اسم الأخصائي
-                    subtitle: Text('ID: ${specialists[index]['id']} - ${specialists[index]['phone']}'), // عرض المعرف والهاتف
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // زر تغيير حالة الأخصائي
-                        IconButton(
-                          icon: Icon(
-                            specialists[index]['status'] == 'نشط' ? Icons.check_circle : Icons.cancel,
-                            color: specialists[index]['status'] == 'نشط' ? Colors.green : Colors.red,
-                          ),
-                          onPressed: () => _toggleStatus(index),
-                        ),
-                        // زر تعديل الأخصائي
-                        IconButton(
-                          icon: Icon(Icons.edit, color: Colors.blue),
-                          onPressed: () {},
-                        ),
-                        // زر حذف الأخصائي
-                        IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => _deleteSpecialist(index),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+          ],
+
+          // Add a logout icon on the left
+          leading: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Icon(
+              Icons.logout_sharp,
+              color: Colors.red,
             ),
           ),
-        ],
-      ),
-      // شريط التنقل السفلي
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.people), Text('المستخدمين')]), label: ''),
-          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.person), Text('الأخصائيين')]), label: ''),
-          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.event), Text('الجلسات')]), label: ''),
-          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.menu_book), Text('المدونة')]), label: ''),
-        ],
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
+        ),
+  // Define the body (main part) of the page
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Center the elements on the page
+            children: [
+              // Add a heading with text style formatting
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'إدارة الأخصائيين', // Text shown to the user
+                  style: TextStyle(
+                    fontSize: 18, // Font size
+                    fontWeight: FontWeight.bold, // Make the text bold
+                    color: Colors.black, // Text color
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20), // Add some space between the title and the next elements
+
+              // Add a search field
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 300, // Set the width of the search field
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'بحث', // Placeholder text for the search field
+                      prefixIcon: const Icon(Icons.search), // Add a search icon inside the field
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10), // Round the corners of the field
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+ // Add a table to display user data
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal, // Allow horizontal scrolling if there is a lot of data
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color of the table
+                    border: Border.all(color: const Color(0xffeae9e9)), // Border color of the table
+                    borderRadius: BorderRadius.circular(8), // Rounded corners for the table
+                  ),
+                  child: DataTable(
+                    columnSpacing: 18.0, // Space between columns
+                    dataRowHeight: 35, // Height of data rows
+                    headingRowHeight: 35, // Height of the heading row
+                    headingTextStyle: const TextStyle(
+                      color: Color(0xff2b2c2c), // Color of the heading text
+                      fontWeight: FontWeight.bold, // Bold heading text
+                      fontSize: 12, // Font size for the heading
+                    ),
+                    dataTextStyle: const TextStyle(
+                      fontSize: 11, // Font size for data rows
+                    ),
+                    columns: const [
+                      DataColumn(label: Text('اسم الأخصائي')), // Column for user name
+                      DataColumn(label: Text('ID')), // Column for ID
+                      DataColumn(label: Text('المؤهل العلمي')),
+                      DataColumn(label: Text('الحالة')),
+                      DataColumn(label: Text('تعديل')), // Column for email
+                      DataColumn(label: Text('حذف')), // Column for delete button
+                    ],
+                    rows: _buildUserRows(), // Function to build the user rows
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+   // Add a Bottom Navigation Bar for page navigation
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white, // Background color of the bar
+          selectedItemColor: Colors.blue, // Color of the selected item
+          unselectedItemColor: Colors.blue, // Color of unselected items
+          type: BottomNavigationBarType.fixed, // Fixed type for the bar
+          items: const [
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.groups), // Icon for users
+                  Text('المستخدمين'), // Label for users
+                ],
+              ),
+              label: '', // No label here
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.medical_services), // Icon for specialists
+                  Text('الأخصائيين'), // Label for specialists
+                ],
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.group), // Icon for sessions
+                  Text('الجلسات'),
+                ],
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.menu_book), // Icon for blog
+                  Text('المدونة'),
+                ],
+              ),
+              label: '',
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+ List<DataRow> _buildUserRows() {
+    final users = [
+      {'name': 'د.أحمد', 'id': 'A1b2C34d', 'المؤهل': 'بكالوريس', 'الحالة': 'نشط'},
+      {'name': 'ريم', 'id': 'XyZ9kLmN', 'email': 'sc@email.com'},
+      {'name': 'محمد', 'id': 'qR5sTuV8', 'email': 'ms@outlook.com'},
+      {'name': 'مها', 'id': 'mNpQrSt1', 'email': 'ew@gmail.com'},
+      {'name': 'عبدالله', 'id': 'wX3Yz24', 'email': 'lj@gmail.com'},
+      {'name': 'عبدالعزيز', 'id': 'B2C3D4E5', 'email': 'lb@yahoo.com'},
+      {'name': 'عبير', 'id': 'F6G7H8J9', 'email': 'ce@outlook.com'},
+      {'name': 'يوسف', 'id': 'JkLmNoP2', 'email': 'er@yahoo.com'},
+      {'name': 'جنى', 'id': 'T5UuWx4Y', 'email': 'pr@gmail.com'},
+      {'name': 'احمد', 'id': 'Z2A1B0C9', 'email': 'kc@email.com'},
+    ];
+     return users
+        .map(
+          (user) => DataRow(cells: [
+            DataCell(Text(user['name']!)), // Display user name
+            DataCell(Text(user['id']!)), // Display user ID
+            DataCell(Text(user['email']!)), // Display user email
+            const DataCell(Icon(Icons.delete, color: Colors.red, size: 18)), // Add a delete icon
+          ]),
+        )
+        .toList();
+  }
+
