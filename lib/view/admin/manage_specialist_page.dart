@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class manageSpecialistsPage extends StatelessWidget {
+class ManageSpecialistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -87,8 +87,9 @@ class manageSpecialistsPage extends StatelessWidget {
                     ),
                     columns: const [
                       DataColumn(label: Text('اسم الأخصائي')),
-                      DataColumn(label: Text('المعُرف')),
-                      DataColumn(label: Text('البريد الإلكتروني')),
+                      DataColumn(label: Text('id')),
+                      DataColumn(label: Text('الحالة')),
+                      DataColumn(label: Text('تعديل')),
                       DataColumn(label: Text('حذف')),
                     ],
                     rows: _buildSpecialistRows(),
@@ -148,28 +149,25 @@ class manageSpecialistsPage extends StatelessWidget {
 
   List<DataRow> _buildSpecialistRows() {
     final specialists = [
-      {'name': 'د. سارة', 'id': 'A1b2C3d4', 'email': 'jd@gmail.com'},
-      {'name': 'د. ريم', 'id': 'XyZ9kLmN', 'email': 'sc@email.com'},
-      {'name': 'د. محمد', 'id': 'qR5sTuV8', 'email': 'ms@outlook.com'},
-      {'name': 'د. مها', 'id': 'mNpQrSt1', 'email': 'ew@gmail.com'},
-      {'name': 'د. عبدالله', 'id': 'wX3Yz24', 'email': 'lj@gmail.com'},
-      {'name': 'د. عبدالعزيز', 'id': 'B2C3D4E5', 'email': 'lb@yahoo.com'},
-      {'name': 'د. عبير', 'id': 'F6G7H8J9', 'email': 'ce@outlook.com'},
-      {'name': 'د. يوسف', 'id': 'JkLmNoP2', 'email': 'er@yahoo.com'},
-      {'name': 'د. جنى', 'id': 'T5UuWx4Y', 'email': 'pr@gmail.com'},
-      {'name': 'د. احمد', 'id': 'Z2A1B0C9', 'email': 'kc@email.com'},
+      {'name': 'د. سارة', 'status': 'نشط', 'id': 'A1b2C3d4'},
+      {'name': 'د. ريم', 'status': 'غير نشط', 'id': 'XyZ9kLmN'},
+      {'name': 'د. محمد', 'status': 'نشط', 'id': 'qR5sTuV8'},
+      {'name': 'د. مها', 'status': 'نشط', 'id': 'mNpQrSt1'},
+      {'name': 'د. عبدالله', 'status': 'غير نشط', 'id': 'wX3Yz24'},
+      {'name': 'د. عبدالعزيز', 'status': 'نشط', 'id': 'B2C3D4E5'},
+      {'name': 'د. عبير', 'status': 'غير نشط', 'id': 'F6G7H8J9'},
+      {'name': 'د. يوسف', 'status': 'نشط', 'id': 'JkLmNoP2'},
+      {'name': 'د. جنى', 'status': 'نشط', 'id': 'T5UuWx4Y'},
+      {'name': 'د. احمد', 'status': 'غير نشط', 'id': 'Z2A1B0C9'},
     ];
 
-    return specialists
-        .map(
-          (specialist) => DataRow(cells: [
+    return specialists.map((specialist) {
+      return DataRow(cells: [
         DataCell(Text(specialist['name']!)),
+        DataCell(Text(specialist['status']!)),
         DataCell(Text(specialist['id']!)),
-        DataCell(Text(specialist['email']!)),
         const DataCell(Icon(Icons.delete, color: Colors.red, size: 18)),
-      ]),
-    )
-        .toList();
+      ]);
+    }).toList();
   }
 }
-
