@@ -4,28 +4,18 @@ class ManageSpecialistPage extends StatelessWidget {
   @override
    Widget build(BuildContext context) {
     return Directionality(
-      // Set the text direction to right-to-left (to suit Arabic language)
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        // Set the background color of the page
         backgroundColor: Color(0xfff3f7f9),
-
-        // Define the AppBar (top bar of the application)
         appBar: AppBar(
-          backgroundColor: Colors.white, // Set the AppBar background color
-          elevation: 0, // Remove shadow from AppBar
-
-          // Add a logo in the center of the AppBar
+          backgroundColor: Colors.white,
+          elevation: 0,
           title: Image.asset(
             'assets/jisserLogo.jpeg',
             width: 40,
             height: 40,
           ),
-
-          // Center the title
           centerTitle: true,
-
-          // Add an email icon on the right
           actions: [
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -35,110 +25,94 @@ class ManageSpecialistPage extends StatelessWidget {
               ),
             ),
           ],
-
-          // Add a logout icon on the left
-          leading: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
+          leading: IconButton(
+            icon: const Icon(
               Icons.logout_sharp,
               color: Colors.red,
             ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
-  // Define the body (main part) of the page
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Center the elements on the page
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Add a heading with text style formatting
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  'إدارة الأخصائيين', // Text shown to the user
+                  'إدارة الأخصائيين',
                   style: TextStyle(
-                    fontSize: 18, // Font size
-                    fontWeight: FontWeight.bold, // Make the text bold
-                    color: Colors.black, // Text color
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
-              const SizedBox(height: 20), // Add some space between the title and the next elements
-
-              // Add a search field
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  width: 300, // Set the width of the search field
+                  width: 300,
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'بحث', // Placeholder text for the search field
-                      prefixIcon: const Icon(Icons.search), // Add a search icon inside the field
+                      hintText: 'بحث',
+                      prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10), // Round the corners of the field
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                 ),
               ),
- // Add a table to display user data
               SingleChildScrollView(
-                scrollDirection: Axis.horizontal, // Allow horizontal scrolling if there is a lot of data
+                scrollDirection: Axis.horizontal,
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the table
-                    border: Border.all(color: const Color(0xffeae9e9)), // Border color of the table
-                    borderRadius: BorderRadius.circular(8), // Rounded corners for the table
+                    color: Colors.white,
+                    border: Border.all(color: const Color(0xffeae9e9)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: DataTable(
-                    columnSpacing: 18.0, // Space between columns
-                    dataRowHeight: 35, // Height of data rows
-                    headingRowHeight: 35, // Height of the heading row
+                    columnSpacing: 18.0,
+                    dataRowHeight: 35,
+                    headingRowHeight: 35,
                     headingTextStyle: const TextStyle(
-                      color: Color(0xff2b2c2c), // Color of the heading text
-                      fontWeight: FontWeight.bold, // Bold heading text
-                      fontSize: 12, // Font size for the heading
+                      color: Color(0xff2b2c2c),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
                     dataTextStyle: const TextStyle(
-                      fontSize: 11, // Font size for data rows
+                      fontSize: 11,
                     ),
                     columns: const [
-                      DataColumn(label: Text('اسم الأخصائي')), // Column for user name
-                      DataColumn(label: Text('ID')), // Column for ID
+                      DataColumn(label: Text('اسم الأخصائي')),
+                      DataColumn(label: Text('ID')),
                       DataColumn(label: Text('المؤهل العلمي')),
                       DataColumn(label: Text('الحالة')),
-                      DataColumn(label: Text('تعديل')), // Column for email
-                      DataColumn(label: Text('حذف')), // Column for delete button
+                      DataColumn(label: Text('تعديل')),
+                      DataColumn(label: Text('حذف')),
                     ],
-                    rows: _buildUserRows(), // Function to build the user rows
+                    rows: _buildUserRows(),
                   ),
                 ),
               ),
             ],
           ),
         ),
-
-   // Add a Bottom Navigation Bar for page navigation
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white, // Background color of the bar
-          selectedItemColor: Colors.blue, // Color of the selected item
-          unselectedItemColor: Colors.blue, // Color of unselected items
-          type: BottomNavigationBarType.fixed, // Fixed type for the bar
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.blue,
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.groups), // Icon for users
-                  Text('المستخدمين'), // Label for users
-                ],
-              ),
-              label: '', // No label here
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.medical_services), // Icon for specialists
-                  Text('الأخصائيين'), // Label for specialists
+                  Icon(Icons.groups),
+                  Text('المستخدمين'),
                 ],
               ),
               label: '',
@@ -146,7 +120,16 @@ class ManageSpecialistPage extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.group), // Icon for sessions
+                  Icon(Icons.medical_services),
+                  Text('الأخصائيين'),
+                ],
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.group),
                   Text('الجلسات'),
                 ],
               ),
@@ -155,7 +138,7 @@ class ManageSpecialistPage extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.menu_book), // Icon for blog
+                  Icon(Icons.menu_book),
                   Text('المدونة'),
                 ],
               ),
@@ -170,25 +153,23 @@ class ManageSpecialistPage extends StatelessWidget {
  List<DataRow> _buildUserRows() {
     final users = [
       {'name': 'د.أحمد', 'id': 'A1b2C34d', 'المؤهل': 'بكالوريس', 'الحالة': 'نشط'},
-      {'name': 'ريم', 'id': 'XyZ9kLmN', 'email': 'sc@email.com'},
-      {'name': 'محمد', 'id': 'qR5sTuV8', 'email': 'ms@outlook.com'},
-      {'name': 'مها', 'id': 'mNpQrSt1', 'email': 'ew@gmail.com'},
-      {'name': 'عبدالله', 'id': 'wX3Yz24', 'email': 'lj@gmail.com'},
-      {'name': 'عبدالعزيز', 'id': 'B2C3D4E5', 'email': 'lb@yahoo.com'},
-      {'name': 'عبير', 'id': 'F6G7H8J9', 'email': 'ce@outlook.com'},
-      {'name': 'يوسف', 'id': 'JkLmNoP2', 'email': 'er@yahoo.com'},
-      {'name': 'جنى', 'id': 'T5UuWx4Y', 'email': 'pr@gmail.com'},
-      {'name': 'احمد', 'id': 'Z2A1B0C9', 'email': 'kc@email.com'},
+      {'name': 'ريم', 'id': 'XyZ9kLmN'},
+      {'name': 'محمد', 'id': 'qR5sTuV8'},
+      {'name': 'مها', 'id': 'mNpQrSt1'},
+      {'name': 'عبدالله', 'id': 'wX3Yz24'},
+      {'name': 'عبدالعزيز', 'id': 'B2C3D4E5'},
+      {'name': 'عبير', 'id': 'F6G7H8J9'},
+      {'name': 'يوسف', 'id': 'JkLmNoP2'},
+      {'name': 'جنى', 'id': 'T5UuWx4Y'},
+      {'name': 'احمد', 'id': 'Z2A1B0C9'},
     ];
      return users
         .map(
           (user) => DataRow(cells: [
-            DataCell(Text(user['name']!)), // Display user name
-            DataCell(Text(user['id']!)), // Display user ID
-            DataCell(Text(user['email']!)), // Display user email
-            const DataCell(Icon(Icons.delete, color: Colors.red, size: 18)), // Add a delete icon
+            DataCell(Text(user['name']!)),
+            DataCell(Text(user['id']!)),
+            const DataCell(Icon(Icons.delete, color: Colors.red, size: 18)),
           ]),
         )
         .toList();
   }
-
