@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ManageSpecialistPage extends StatefulWidget {
   @override
   _ManageSpecialistPageState createState() => _ManageSpecialistPageState(); // إنشاء حالة الصفحة
@@ -37,8 +36,16 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
         backgroundColor: Colors.white,
         elevation: 1, // إضافة ارتفاع طفيف لشريط التطبيق
         leading: Icon(Icons.email, color: Colors.blue), // أيقونة البريد
-        actions: [Icon(Icons.notifications, color: Colors.red)], // أيقونة الإشعارات
-        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black))),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.folder, color: Colors.red),
+            onPressed: () {
+              // إضافة حدث الخروج
+              Navigator.pop(context);
+            },
+          ),
+        ], // أيقونة الإشعارات
+        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black)));
       ),
       body: Column(
         children: [
@@ -99,8 +106,11 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'المستخدمين'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'الأخصائيين'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'الجلسات'),
-          BottomNavigationBarItem(icon: Icon(Icons.archive), label: 'المحفوظات'),
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'المدونة'),
         ],
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
