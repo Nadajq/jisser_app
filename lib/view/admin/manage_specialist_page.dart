@@ -46,7 +46,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
             },
           ),
         ], // أيقونة الإشعارات
-        title: Center(child: Text('إدارة الأخصائيين'), style: TextStyle(color: Colors.black));
+        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black))),
       ),
       body: Column(
         children: [
@@ -104,10 +104,10 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
       // شريط التنقل السفلي
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'المستخدمين'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'الأخصائيين'),
-          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'الجلسات'),
-          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'المدونة'),
+          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.people), Text('المستخدمين')]), label: ''),
+          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.person), Text('الأخصائيين')]), label: ''),
+          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.event), Text('الجلسات')]), label: ''),
+          BottomNavigationBarItem(icon: Column(children: [Icon(Icons.menu_book), Text('المدونة')]), label: ''),
         ],
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
