@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class ManageSpecialistPage extends StatefulWidget {
   @override
   _ManageSpecialistPageState createState() => _ManageSpecialistPageState(); // إنشاء حالة الصفحة
@@ -45,7 +46,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
             },
           ),
         ], // أيقونة الإشعارات
-        title: Center(child: Text('إدارة الأخصائيين'), style: TextStyle(color: Colors.black)));
+        title: Center(child: Text('إدارة الأخصائيين', style: TextStyle(color: Colors.black)));
       ),
       body: Column(
         children: [
