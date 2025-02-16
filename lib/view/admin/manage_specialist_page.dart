@@ -16,12 +16,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
     {'name': 'د.رحاب', 'id': 'F6G7H8J9', 'المؤهل': 'ماجستير', 'active': true},
     {'name': 'د.علي', 'id': 'JkLmNoP2', 'المؤهل': 'ماجستير', 'active': true},
     {'name': 'أ.محمد', 'id': 'T5UuWx4Y', 'المؤهل': 'دكتوراه', 'active': true},
-    {
-      'name': 'د. عبدالله',
-      'id': 'Z2A1B0C9',
-      'المؤهل': 'بكالوريس',
-      'active': false
-    },
+    {'name': 'د. عبدالله','id': 'Z2A1B0C9','المؤهل': 'بكالوريس','active': false},
     {'name': 'د.ماجد', 'id': '1234EfGh', 'المؤهل': 'ماجستير', 'active': true},
   ];
 
