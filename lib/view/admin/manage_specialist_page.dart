@@ -6,6 +6,7 @@ class ManageSpecialistPage extends StatefulWidget {
 }
 
 class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
+  TextEditingController _searchController = TextEditingController();
   List<Map<String, dynamic>> specialists = [
     {'name': 'د.أحمد', 'id': 'A1b2C3d4', 'المؤهل': 'بكالوريس', 'active': true},
     {'name': 'د.ماجد', 'id': 'XyZ9kLmN', 'المؤهل': 'دكتوراه', 'active': true},
@@ -16,9 +17,34 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
     {'name': 'د.رحاب', 'id': 'F6G7H8J9', 'المؤهل': 'ماجستير', 'active': true},
     {'name': 'د.علي', 'id': 'JkLmNoP2', 'المؤهل': 'ماجستير', 'active': true},
     {'name': 'أ.محمد', 'id': 'T5UuWx4Y', 'المؤهل': 'دكتوراه', 'active': true},
-    {'name': 'د. عبدالله','id': 'Z2A1B0C9','المؤهل': 'بكالوريس','active': false},
+    {
+      'name': 'د. عبدالله',
+      'id': 'Z2A1B0C9',
+      'المؤهل': 'بكالوريس',
+      'active': false
+    },
     {'name': 'د.ماجد', 'id': '1234EfGh', 'المؤهل': 'ماجستير', 'active': true},
   ];
+
+  List<Map<String, dynamic>> _filteredSpecialists = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredSpecialists = specialists; // Initially, show all specialists
+  }
+
+  void _filterSpecialists(String query) {
+    setState(() {
+      _filteredSpecialists = specialists.where((specialist) {
+        final name = specialist['name']!.toLowerCase();
+        final qualification = specialist['المؤهل']!.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return name.contains(searchLower) ||
+            qualification.contains(searchLower);
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +98,10 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
               child: SizedBox(
                 width: 300,
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    _filterSpecialists(value);
+                  },
                   decoration: InputDecoration(
                     hintText: 'بحث',
                     prefixIcon: const Icon(Icons.search),
@@ -112,7 +142,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                       DataColumn(label: Text('تعديل')),
                       DataColumn(label: Text('حذف')),
                     ],
-                    rows: specialists.map((specialist) {
+                    rows: _filteredSpecialists.map((specialist) {
                       return DataRow(cells: [
                         DataCell(Text(specialist['name'])),
                         DataCell(Text(specialist['id'])),
