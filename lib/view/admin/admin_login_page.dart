@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 
 import 'manage_specialist_page.dart';
+import 'manage_users_page.dart';
 
 class AdminLoginPage extends StatelessWidget {
   const AdminLoginPage({super.key});
@@ -70,7 +71,7 @@ class AdminLoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>  ManageSpecialistPage(), )); //button to go to user home page
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>  ManageUsersPage(), )); //button to go to user home page
               },
               child: Container(
                 width: double.infinity,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'edit_specialist_page.dart';
+
 class ManageSpecialistPage extends StatefulWidget {
   @override
   State<ManageSpecialistPage> createState() => _ManageSpecialistPageState();
@@ -52,32 +54,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: const Color(0xfff3f7f9),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Image.asset(
-            'assets/jisserLogo.jpeg',
-            width: 40,
-            height: 40,
-          ),
-          centerTitle: true,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                Icons.email,
-                color: Colors.blue,
-              ),
-            ),
-          ],
-          leading: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.logout_sharp,
-              color: Colors.red,
-            ),
-          ),
-        ),
+
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -147,18 +124,22 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                         DataCell(Text(specialist['name'])),
                         DataCell(Text(specialist['id'])),
                         DataCell(Text(specialist['المؤهل'])),
-                        DataCell(Switch(
-                          value: specialist['active'],
-                          onChanged: (value) {
-                            setState(() {
-                              specialist['active'] = value;
-                            });
-                          },
-                        )),
+                        DataCell(Icon(
+                          specialist['active'] ? Icons.check_circle : Icons.cancel,  // Green check or red cross
+                          color: specialist['active'] ? Colors.green : Colors.red,  // Green for active, red for inactive
+                        ),),
                         DataCell(IconButton(
                           icon: const Icon(Icons.edit, color: Colors.green),
-                          onPressed: () {
-                            _editSpecialist(specialist);
+                          onPressed: () async {
+                            // Navigate to the edit page and pass the current specialist
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditSpecialistPage(
+                                  //specialist: specialist, // Pass the current specialist data
+                                ),
+                              ),
+                            );
                           },
                         )),
                         DataCell(IconButton(
@@ -177,50 +158,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.blue,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.groups),
-                  Text('المستخدمين'),
-                ],
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.medical_services),
-                  Text('الأخصائيين'),
-                ],
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.group),
-                  Text('الجلسات'),
-                ],
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.menu_book),
-                  Text('المدونة'),
-                ],
-              ),
-              label: '',
-            ),
-          ],
-        ),
+
       ),
     );
   }

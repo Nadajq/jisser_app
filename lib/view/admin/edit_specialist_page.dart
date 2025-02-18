@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
 
-class editSpecialistPage extends StatelessWidget {
+
+
+class EditSpecialistPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: EditSpecialistAccountScreen(),
-    );
-  }
+  _EditSpecialistPageState createState() =>
+      _EditSpecialistPageState();
 }
 
-class EditSpecialistAccountScreen extends StatefulWidget {
-  @override
-  _EditSpecialistAccountScreenState createState() =>
-      _EditSpecialistAccountScreenState();
-}
-
-class _EditSpecialistAccountScreenState
-    extends State<EditSpecialistAccountScreen> {
+class _EditSpecialistPageState
+    extends State<EditSpecialistPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   String? specialization;
@@ -35,7 +27,7 @@ class _EditSpecialistAccountScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffe3e1e1),
+        backgroundColor: const Color(0xFFEAF7FA), // لون الخلفية
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,

@@ -1,37 +1,20 @@
 import 'package:flutter/material.dart';
 
-// الدالة الرئيسية لتشغيل التطبيق
-void main() {
-  runApp(const MyApp());
-}
 
-// تعريف الكلاس الرئيسي للتطبيق
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // إخفاء شريط وضع التطوير
-      home: const Directionality(
-        textDirection: TextDirection.rtl, // جعل اتجاه النص من اليمين إلى اليسار
-        child: AddBlogScreen(), // عرض شاشة تعديل المدونة
-      ),
-    );
-  }
-}
 
 // تعريف كلاس شاشة تعديل المدونة
-class AddBlogScreen extends StatelessWidget {
-  const AddBlogScreen({Key? key}) : super(key: key);
+class EditBlogPage extends StatelessWidget {
+  const EditBlogPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEAF7FA), // لون الخلفية
       appBar: AppBar(
-        backgroundColor: Colors.white, // لون شريط العنوان
-        elevation: 0, // إزالة الظل من شريط العنوان
+        backgroundColor: Colors.white,
+        // لون شريط العنوان
+        elevation: 0,
+        // إزالة الظل من شريط العنوان
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -43,13 +26,17 @@ class AddBlogScreen extends StatelessWidget {
         ),
         centerTitle: true,
         title: Image.asset(
-          'images/logo.jpg', // شعار التطبيق
+          'assets/jisserLogo.jpeg', // Logo in the center
+          width: 40,
           height: 40,
         ),
+
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20), // إضافة هوامش جانبية
-        child: SingleChildScrollView( // لجعل المحتوى قابلًا للتمرير
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        // إضافة هوامش جانبية
+        child: SingleChildScrollView(
+          // لجعل المحتوى قابلًا للتمرير
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,7 +103,8 @@ class AddBlogScreen extends StatelessWidget {
                         fillColor: Colors.white,
                       ),
                       onTap: () async {
-                        FocusScope.of(context).requestFocus(FocusNode()); // إخفاء لوحة المفاتيح
+                        FocusScope.of(context)
+                            .requestFocus(FocusNode()); // إخفاء لوحة المفاتيح
 
                         // إظهار التقويم لاختيار التاريخ
                         DateTime? pickedDate = await showDatePicker(
@@ -163,7 +151,7 @@ class AddBlogScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 15),
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.indigo,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -188,3 +176,4 @@ class AddBlogScreen extends StatelessWidget {
       ),
     );
   }
+}

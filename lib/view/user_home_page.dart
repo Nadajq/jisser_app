@@ -71,11 +71,11 @@ class _UserHomePageState extends State<UserHomePage> {
           children: [
             const SizedBox(height: 10),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.horizontal,// Allows horizontal scrolling.
               reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: centerslist.map((centers) {
+                children: centerslist.map((centers) {// Go through each center in centerslist and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       // Navigate to CenterInfoPage and pass the selected center
@@ -86,7 +86,7 @@ class _UserHomePageState extends State<UserHomePage> {
                         ),
                       );
                     },
-                    child: _buildCenterCard(centers.name,
+                    child: _buildCenterCard(centers.name,// Calls a function that creates a card widget displaying center details.
                       centers.location,
                       centers.description,
                       centers.email,
@@ -94,7 +94,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       centers.imagePath,
                       centers.map,),
                   );
-                }).toList(),
+                }).toList(),// Convert the mapped widgets into a list
               ),
             ),
             const SizedBox(height: 20),
@@ -110,7 +110,7 @@ class _UserHomePageState extends State<UserHomePage> {
               reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: specialistsInfo.map((specialist) {
+                children: specialistsInfo.map((specialist) {// Go through each center in specialistsInfo list and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       // Navigate to SpecialistInfoPage and pass the selected specialist
@@ -122,25 +122,24 @@ class _UserHomePageState extends State<UserHomePage> {
                         ),
                       );
                     },
-                    child: _buildSpecialistCard(
+                    child: _buildSpecialistCard(// Calls a function that creates a card widget displaying Specialist details.
                       specialist.name,
                       specialist.specialty,
                       specialist.imageUrl,
                       specialist.rating,
-                      // Rating can be dynamic if you have this data in the specialist object
                       specialist.qualification,
                       specialist.yearsOfExperience,
                       specialist.sessionTimes,
                     ),
                   );
-                }).toList(),
+                }).toList(),// Convert the mapped widgets into a list
               ),
             ),
             const SizedBox(height: 30),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
-                children: blogsList.map((blog) {
+                children: blogsList.map((blog) {// Go through each center in blogslist and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -149,10 +148,10 @@ class _UserHomePageState extends State<UserHomePage> {
                           builder: (context) => BlogInfoPage(blogs: blog),
                         ),
                       );
-                    },
+                    },// Calls a function that creates a card widget displaying blog details.
                     child: _buildInfoCard(blog.title,  blog.bgcolor ,  "assets/puzzle.png", blog.content),
                   );
-                }).toList(),
+                }).toList(),// Convert the mapped widgets into a list
               ),
             ),
           ],
@@ -161,7 +160,8 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  Widget _buildCenterCard(  String name,
+  Widget _buildCenterCard(//function creates and returns a card widget displaying center details.
+      String name,
       String location,
       String description,
       String email,
@@ -233,7 +233,7 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  Widget _buildSpecialistCard(
+  Widget _buildSpecialistCard(//function creates and returns a card widget displaying Specialist details.
       String name,
       String specialty,
       String imagePath,
@@ -305,7 +305,7 @@ class _UserHomePageState extends State<UserHomePage> {
       ),
     );
   }
-
+//function creates and returns a card widget displaying blog details.
   Widget _buildInfoCard(String title, Color? bgcolor, String imagePath , String content) {
     Color finalBgColor = bgcolor ?? Colors.blue; // Default color if null
 
@@ -317,7 +317,7 @@ class _UserHomePageState extends State<UserHomePage> {
     );
     return GestureDetector(
         onTap: () {
-      // Navigate to SpecialistInfoPage and pass the Specialist object
+      // Navigate to BlogInfoPage and pass the blogs object
       Navigator.push(
         context,
         MaterialPageRoute(
