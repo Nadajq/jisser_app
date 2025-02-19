@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/model/specialist_model.dart';
 
 import 'edit_specialist_page.dart';
 
 class ManageSpecialistPage extends StatefulWidget {
+  const ManageSpecialistPage({super.key});
+
   @override
   State<ManageSpecialistPage> createState() => _ManageSpecialistPageState();
 }
 
 class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
   TextEditingController _searchController = TextEditingController();
-  List<Map<String, dynamic>> specialists = [
+  List<Specialist> _filteredSpecialists = [];
+  /*List<Map<String, dynamic>> specialists = [
     {'name': 'د.أحمد', 'id': 'A1b2C3d4', 'المؤهل': 'بكالوريس', 'active': true},
     {'name': 'د.ماجد', 'id': 'XyZ9kLmN', 'المؤهل': 'دكتوراه', 'active': true},
     {'name': 'أ.سارة', 'id': 'qR5sTuV8', 'المؤهل': 'دكتوراه', 'active': false},
@@ -28,19 +32,19 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
     {'name': 'د.ماجد', 'id': '1234EfGh', 'المؤهل': 'ماجستير', 'active': true},
   ];
 
-  List<Map<String, dynamic>> _filteredSpecialists = [];
+  List<Map<String, dynamic>> _filteredSpecialists = [];*/
 
   @override
   void initState() {
     super.initState();
-    _filteredSpecialists = specialists; // Initially, show all specialists
+    _filteredSpecialists = specialistsInfo; // Initially, show all specialists
   }
 
   void _filterSpecialists(String query) {
     setState(() {
-      _filteredSpecialists = specialists.where((specialist) {
-        final name = specialist['name']!.toLowerCase();
-        final qualification = specialist['المؤهل']!.toLowerCase();
+      _filteredSpecialists = specialistsInfo.where((specialist) {
+        final name = specialist.name.toLowerCase();
+        final qualification = specialist.qualification.toLowerCase();
         final searchLower = query.toLowerCase();
         return name.contains(searchLower) ||
             qualification.contains(searchLower);
@@ -121,12 +125,12 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                     ],
                     rows: _filteredSpecialists.map((specialist) {
                       return DataRow(cells: [
-                        DataCell(Text(specialist['name'])),
-                        DataCell(Text(specialist['id'])),
-                        DataCell(Text(specialist['المؤهل'])),
+                        DataCell(Text(specialist.name)),
+                        DataCell(Text(specialist.id)),
+                        DataCell(Text(specialist.qualification)),
                         DataCell(Icon(
-                          specialist['active'] ? Icons.check_circle : Icons.cancel,  // Green check or red cross
-                          color: specialist['active'] ? Colors.green : Colors.red,  // Green for active, red for inactive
+                          specialist.active ? Icons.check_circle : Icons.cancel,  // Green check or red cross
+                          color: specialist.active ? Colors.green : Colors.red,  // Green for active, red for inactive
                         ),),
                         DataCell(IconButton(
                           icon: const Icon(Icons.edit, color: Colors.green),
@@ -136,7 +140,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => EditSpecialistPage(
-                                  //specialist: specialist, // Pass the current specialist data
+                                  specialist: specialist, // Pass the current specialist data
                                 ),
                               ),
                             );
@@ -146,7 +150,8 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
                             setState(() {
-                              specialists.remove(specialist);
+                              specialistsInfo.remove(specialist);
+                              _filteredSpecialists = List.from(specialistsInfo);
                             });
                           },
                         )),

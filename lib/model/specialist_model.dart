@@ -9,6 +9,7 @@ class Specialist {
   final String yearsOfExperience;
   final double rating;
   final List<String> sessionTimes;
+  bool active;
 
 // constructor is a special function inside a class that is automatically called when you create an object from that class.
   Specialist({  //used to initialize the properties of the object.
@@ -22,6 +23,7 @@ class Specialist {
     required this.yearsOfExperience,
     required this.rating,
     required this.sessionTimes,
+    this.active = false,// ensure specialists are not available until confirmed.
   });
 
   static List<String> specialties = [
@@ -49,6 +51,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "10 سنوات",
     rating: 4.0,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
+
   ),
   Specialist(
     id: "2",

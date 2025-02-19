@@ -130,6 +130,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       specialist.qualification,
                       specialist.yearsOfExperience,
                       specialist.sessionTimes,
+                      specialist.active,
                     ),
                   );
                 }).toList(),// Convert the mapped widgets into a list
@@ -240,7 +241,9 @@ class _UserHomePageState extends State<UserHomePage> {
       double rating,
       String qualification,
       String yearsOfExperience,
-      List<String> sessionTimes) {
+      List<String> sessionTimes,
+      bool active,
+      ) {
     // Create a Specialist object for each card
     Specialist specialist = Specialist(
       id: "",
