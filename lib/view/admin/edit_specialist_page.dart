@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisser_app/model/specialist_model.dart';
 
+// Edit Specialist Page - Allows editing specialist details
 class EditSpecialistPage extends StatefulWidget {
   final Specialist specialist;
 
@@ -11,19 +12,21 @@ class EditSpecialistPage extends StatefulWidget {
 }
 
 class _EditSpecialistPageState extends State<EditSpecialistPage> {
+  // Controllers for text input fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   String? specialization;
   String? qualification;
-  String accountStatus = 'قيد المراجعة';
+  String accountStatus = 'قيد المراجعة'; // Default status: "Under Review"
 
+  // Lists of available specializations and qualifications
   final List<String> specializations = Specialist.specialties;
   final List<String> qualifications = Specialist.qualifications;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // Pre-fill fields with existing specialist data
     nameController.text = widget.specialist.name;
     emailController.text = widget.specialist.email;
     specialization = widget.specialist.specialty;
@@ -35,24 +38,23 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      //const Color(0xFFEAF7FA), // لون الخلفية
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
           onPressed: () {
-            Navigator.pop(context); //الرجوع إلى الصفحة السابقة
+            Navigator.pop(context);
           },
         ),
         title: Center(
           child: Image.asset(
-            'assets/jisserLogo.jpeg', // شعار التطبيق
+            'assets/jisserLogo.jpeg',
             width: 40,
             height: 40,
           ),
         ),
-        actions: [SizedBox(width: 48)], // لتوازن العناصر في الشريط العلوي
+        actions: [SizedBox(width: 48)],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,7 +64,7 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
             children: [
               SizedBox(height: 30),
               Text(
-                'تعديل حساب الأخصائي',
+                'تعديل حساب الأخصائي', // Edit Specialist Account
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -74,15 +76,13 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
               const SizedBox(height: 16),
               buildLabeledField(': البريد الإلكتروني', emailController),
               const SizedBox(height: 16),
-              buildLabeledDropdown(' : التخصص', specializations, specialization,
-                  (value) {
+              buildLabeledDropdown(' : التخصص', specializations, specialization, (value) {
                 setState(() {
                   specialization = value;
                 });
               }),
               const SizedBox(height: 16),
-              buildLabeledDropdown(
-                  ': المؤهل العلمي', qualifications, qualification, (value) {
+              buildLabeledDropdown(': المؤهل العلمي', qualifications, qualification, (value) {
                 setState(() {
                   qualification = value;
                 });
@@ -91,7 +91,7 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
               const Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  ': حالة الحساب  ',
+                  ': حالة الحساب  ', // Account Status
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -99,25 +99,21 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildStatusButton('نشط'),
+                  buildStatusButton('نشط'), // Active
                   const SizedBox(width: 8),
-                  buildStatusButton('غير نشط'),
+                  buildStatusButton('غير نشط'), // Inactive
                 ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   _submitForm();
-                  //ScaffoldMessenger.of(context).showSnackBar(
-                  //SnackBar(content: Text('تم تعديل البيانات بنجاح')),
-                  //);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff105793),
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
                 ),
-                child:
-                    const Text('تعديل', style: TextStyle(color: Colors.white)),
+                child: const Text('تعديل', style: TextStyle(color: Colors.white)), // Edit Button
               ),
             ],
           ),
@@ -126,46 +122,36 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
     );
   }
 
+  // Function to submit the updated specialist data
   void _submitForm() {
     final updatedSpecialist = Specialist(
-        id: widget.specialist.id,
-        name: nameController.text,
-        imageUrl: widget.specialist.imageUrl,
-        email: emailController.text,
-        password: widget.specialist.password,
-        specialty: specialization!,
-        qualification: qualification!,
-        yearsOfExperience: widget.specialist.yearsOfExperience,
-        rating: widget.specialist.rating,
-        sessionTimes: widget.specialist.sessionTimes,
+      id: widget.specialist.id,
+      name: nameController.text,
+      imageUrl: widget.specialist.imageUrl,
+      email: emailController.text,
+      password: widget.specialist.password,
+      specialty: specialization!,
+      qualification: qualification!,
+      yearsOfExperience: widget.specialist.yearsOfExperience,
+      rating: widget.specialist.rating,
+      sessionTimes: widget.specialist.sessionTimes,
       active: accountStatus == 'نشط',
     );
-    // Update the list with the new specialist data
+
+    // Update specialist information in the list
     int index = specialistsInfo.indexWhere((specialist) => specialist.id == updatedSpecialist.id);
     if (index != -1) {
-      specialistsInfo[index] = updatedSpecialist; // Replace the old specialist with the updated one
+      specialistsInfo[index] = updatedSpecialist;
     }
-    
+
+    // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم تعديل البيانات بنجاح')),
+      SnackBar(content: Text('تم تعديل البيانات بنجاح')), // Successfully updated
     );
-    // Navigate back after submitting the form
     Navigator.pop(context);
   }
-//update the specialistsInfo list with the updated data when the form is submitted
-  void updateSpecialistData(Specialist updatedSpecialist) {
-    // Find the index of the specialist in the list
-    int index = specialistsInfo.indexWhere((specialist) => specialist.id == updatedSpecialist.id);
 
-    if (index != -1) {
-      // Update the specialist at the found index
-      specialistsInfo[index] = updatedSpecialist;
-      print("Specialist data updated locally");
-    } else {
-      print("Specialist not found");
-    }
-  }
-
+  // Function to build labeled text fields
   Widget buildLabeledField(String label, TextEditingController controller) {
     return Row(
       children: [
@@ -174,13 +160,12 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
             controller: controller,
             textAlign: TextAlign.right,
             decoration: InputDecoration(
-              filled: true, // Enables background color
-              fillColor: Colors.grey[100],
+              filled: true,
+              fillColor: Colors.white,
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             ),
           ),
         ),
@@ -197,8 +182,8 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
     );
   }
 
-  Widget buildLabeledDropdown(String label, List<String> items,
-      String? selectedValue, Function(String?) onChanged) {
+  // Function to build labeled dropdowns
+  Widget buildLabeledDropdown(String label, List<String> items, String? selectedValue, Function(String?) onChanged) {
     return Row(
       children: [
         Expanded(
@@ -211,20 +196,19 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Align(
-                  alignment: Alignment.centerRight, // هذا يغير اتجاه النص
+                  alignment: Alignment.centerRight,
                   child: Text(value),
                 ),
               );
             }).toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
-              filled: true, // Enables background color
-              fillColor: Colors.grey[100],
+              filled: true,
+              fillColor: Colors.white,
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             ),
           ),
         ),
@@ -241,6 +225,7 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
     );
   }
 
+  // Function to build status selection buttons
   Widget buildStatusButton(String status) {
     final isSelected = status == accountStatus;
     return GestureDetector(
