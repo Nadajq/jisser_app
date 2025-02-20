@@ -9,6 +9,7 @@ class Specialist {
   final String yearsOfExperience;
   final double rating;
   final List<String> sessionTimes;
+  final List<String> sessionDurations; // Available durations for sessions
   bool active;
 
 // constructor is a special function inside a class that is automatically called when you create an object from that class.
@@ -23,6 +24,7 @@ class Specialist {
     required this.yearsOfExperience,
     required this.rating,
     required this.sessionTimes,
+    required this.sessionDurations,
     this.active = false,// ensure specialists are not available until confirmed.
   });
 
@@ -51,6 +53,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "10 سنوات",
     rating: 4.0,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
 
   ),
   Specialist(
@@ -59,11 +62,12 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     imageUrl: 'assets/specialist2.png',
     email: 'fatima@example.com',
     password: 'password456',
-    specialty: " أخصائي نفسي",
-    qualification: "ماجستير تربيه خاصه توحد USA",
+    specialty: "أخصائي نفسي",
+    qualification: "ماجستير",
     yearsOfExperience: "23 سنة",
     rating: 4.6,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
     id: "3",
@@ -76,6 +80,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "7 سنوات",
     rating: 5.0,
     sessionTimes: ["8:30 م", "11:00 ص", "3:00 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
     id: "4",
@@ -88,6 +93,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "12 سنة",
     rating: 4.8,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
     id: "5",
@@ -100,6 +106,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "8 سنوات",
     rating: 4.0,
     sessionTimes: ["8:30 م", "11:00 ص", "3:00 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
     id: "6",
@@ -112,6 +119,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "6 سنوات",
     rating: 5.0,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
     id: "7",
@@ -124,6 +132,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "15 سنة",
     rating: 4.7,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
 
   ),
   Specialist(
@@ -137,5 +146,6 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "9 سنوات",
     rating: 4.8,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
+    sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
 ];

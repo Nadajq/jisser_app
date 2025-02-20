@@ -4,6 +4,7 @@ import 'package:jisser_app/view/admin/manage_blog_page.dart';
 import 'package:jisser_app/view/admin/manage_sessions_page.dart';
 import 'package:jisser_app/view/admin/manage_specialist_page.dart';
 
+import '../../model/users_model.dart';
 import 'add_blog_page.dart';
 
 // Define the manageUsersPage widget as a StatefulWidget
@@ -15,6 +16,8 @@ class ManageUsersPage extends StatefulWidget {
 // Define the state of the manageUsersPage widget
 class _ManageUsersPage extends State<ManageUsersPage> {
   int _selectedIndex = 0; // Track selected tab index
+  final TextEditingController _searchController = TextEditingController();
+  List<Users> _filteredUsers = List.from(usersList);
   // Handle bottom navigation taps
   void _onItemTapped(int index) {
     setState(() {
@@ -39,10 +42,10 @@ class _ManageUsersPage extends State<ManageUsersPage> {
   // Method to filter users based on the search query
   void _filterUsers(String query) {
     setState(() {
-      _filteredUsers = users.where((user) {
+      _filteredUsers = usersList.where((user) {
         // Convert name and email to lowercase for case-insensitive matching
-        final name = user['name']!.toLowerCase();
-        final email = user['email']!.toLowerCase();
+        final name = user.name.toLowerCase();
+        final email = user.email.toLowerCase();
         final searchLower = query.toLowerCase();
         // Return true if the name or email contains the search query
         return name.contains(searchLower) || email.contains(searchLower);
@@ -54,8 +57,8 @@ class _ManageUsersPage extends State<ManageUsersPage> {
   void _deleteUser(String id) {
     setState(() {
       // Remove the user from the main list and the filtered list
-      users.removeWhere((user) => user['id'] == id);
-      _filteredUsers.removeWhere((user) => user['id'] == id);
+      usersList.removeWhere((user) => user.id == id);
+      _filteredUsers.removeWhere((user) => user.id == id);
     });
   }
 
@@ -222,16 +225,14 @@ class _ManageUsersPage extends State<ManageUsersPage> {
                 columns: const [
                   DataColumn(label: Text('اسم المستخدم')),
                   // User name column
-                  DataColumn(label: Text('المعُرف')),
+                  DataColumn(label: Text('id')),
                   // ID column
                   DataColumn(label: Text('البريد الإلكتروني')),
                   // Email column
                   DataColumn(label: Text('حذف')),
                   // Delete column
                 ],
-                rows: _buildUserRows(_filteredUsers.isEmpty
-                    ? users
-                    : _filteredUsers), // Display filtered or all users
+                rows: _buildUserRows(), // Display filtered or all users
               ),
             ),
           ),
@@ -240,43 +241,24 @@ class _ManageUsersPage extends State<ManageUsersPage> {
     );
   }
 
-  // Method to generate the rows for the DataTable
-  final TextEditingController _searchController = TextEditingController();
-  List<Map<String, String>> _filteredUsers = []; // List for filtered users
-  List<Map<String, String>> users = [
-    // Example user data
-    {'name': 'سارة', 'id': 'A1b2C3d4', 'email': 'jd@gmail.com'},
-    {'name': 'ريم', 'id': 'XyZ9kLmN', 'email': 'sc@email.com'},
-    {'name': 'محمد', 'id': 'qR5sTuV8', 'email': 'ms@outlook.com'},
-    {'name': 'مها', 'id': 'mNpQrSt1', 'email': 'ew@gmail.com'},
-    {'name': 'عبدالله', 'id': 'wX3Yz24', 'email': 'lj@gmail.com'},
-    {'name': 'عبدالعزيز', 'id': 'B2C3D4E5', 'email': 'lb@yahoo.com'},
-    {'name': 'عبير', 'id': 'F6G7H8J9', 'email': 'ce@outlook.com'},
-    {'name': 'يوسف', 'id': 'JkLmNoP2', 'email': 'er@yahoo.com'},
-    {'name': 'جنى', 'id': 'T5UuWx4Y', 'email': 'pr@gmail.com'},
-    {'name': 'احمد', 'id': 'Z2A1B0C9', 'email': 'kc@email.com'},
-  ];
 
   // Builds rows for the DataTable
-  List<DataRow> _buildUserRows(List<Map<String, String>> userList) {
-    return userList
-        .map(
-          (user) => DataRow(
-            cells: [
-              DataCell(Text(user['name']!)), // User's name
-              DataCell(Text(user['id']!)), // User's ID
-              DataCell(Text(user['email']!)), // User's email
-              DataCell(
-                // Delete button for each user
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-                  onPressed: () =>
-                      _deleteUser(user['id']!), // Deletes user on press
-                ),
-              ),
-            ],
+  List<DataRow> _buildUserRows() {
+    return _filteredUsers.map((user) {
+      return DataRow(
+        cells: [
+          DataCell(Text(user.name)), // User's name
+          DataCell(Text(user.id)), // User's ID
+          DataCell(Text(user.email)), // User's email
+          DataCell(
+            // Delete button for each user
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red, size: 18),
+              onPressed: () => _deleteUser(user.id), // Deletes user on press
+            ),
           ),
-        )
-        .toList(); // Convert each user data to DataRow
+        ],
+      );
+    }).toList(); // Convert each user data to DataRow
   }
 }

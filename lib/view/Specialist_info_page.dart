@@ -15,14 +15,18 @@ class SpecialistInfoPage extends StatefulWidget {
 class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
   // متغيرات لحفظ الخيارات المحددة
 
-  String? _selectedTime ;
-  String _selectedDuration = "30 دقيقة/150 ريال";
+  String? _selectedTime ;// Store selected time
+  String? _selectedDuration; // Store selected duration
 
   @override
   void initState(){
     super.initState();//تعيين أول وقت كقيمة افتراضية
     if(widget.specialist.sessionTimes.isNotEmpty){
       _selectedTime = widget.specialist.sessionTimes.first; // تعيين أول وقت كافتراضي
+    }
+    // تعيين أول مدة كقيمة افتراضية
+    if (widget.specialist.sessionDurations.isNotEmpty) {
+      _selectedDuration = widget.specialist.sessionDurations.first; // تعيين أول مدة كافتراضي
     }
   }
   Widget build(BuildContext context) {
@@ -133,20 +137,13 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildRadioButton("30 دقيقة/150 ريال", _selectedDuration,
-                      (value) {
+                children:  widget.specialist.sessionDurations.map((duration) {
+                  return buildRadioButton(duration, _selectedDuration, (value) {
                     setState(() {
                       _selectedDuration = value!;
                     });
-                  }),
-                  buildRadioButton("1 ساعة/250 ريال", _selectedDuration,
-                      (value) {
-                    setState(() {
-                      _selectedDuration = value!;
-                    });
-                  }),
-                ],
+                  });
+                }).toList(),
               ),
 
               SizedBox(height: 24), // مسافة بين الأقسام

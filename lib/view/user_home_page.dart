@@ -130,6 +130,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       specialist.qualification,
                       specialist.yearsOfExperience,
                       specialist.sessionTimes,
+                      specialist.sessionDurations,
                       specialist.active,
                     ),
                   );
@@ -242,6 +243,7 @@ class _UserHomePageState extends State<UserHomePage> {
       String qualification,
       String yearsOfExperience,
       List<String> sessionTimes,
+      List<String> sessionDurations,
       bool active,
       ) {
     // Create a Specialist object for each card
@@ -261,6 +263,7 @@ class _UserHomePageState extends State<UserHomePage> {
       // Optional
       rating: rating,
       sessionTimes: sessionTimes,
+      sessionDurations: sessionDurations,
     );
     return GestureDetector(
       onTap: () {

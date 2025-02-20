@@ -135,14 +135,17 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
       yearsOfExperience: widget.specialist.yearsOfExperience,
       rating: widget.specialist.rating,
       sessionTimes: widget.specialist.sessionTimes,
+      sessionDurations: widget.specialist.sessionDurations,
       active: accountStatus == 'نشط',
     );
 
-    // Update specialist information in the list
-    int index = specialistsInfo.indexWhere((specialist) => specialist.id == updatedSpecialist.id);
-    if (index != -1) {
-      specialistsInfo[index] = updatedSpecialist;
-    }
+    setState(() { // Update specialist information in the list
+      int index = specialistsInfo.indexWhere((specialist) =>
+      specialist.id == updatedSpecialist.id);
+      if (index != -1) {
+        specialistsInfo[index] = updatedSpecialist;
+      }
+    });
 
     // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
