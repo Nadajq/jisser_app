@@ -10,14 +10,11 @@ class ManageBlogPage extends StatelessWidget {
     );
   }
 }
-import 'package:flutter/material.dart';
 
-// دالة تشغيل التطبيق
-void main() {
-  runApp(const MyApp()); // تشغيل التطبيق وبدء عرض الواجهة
-}
 
-// الكلاس الرئيسي للتطبيق
+
+
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -151,7 +148,7 @@ class _BlogManagementScreenState extends State<BlogManagementScreen> {
                               scrollDirection: Axis.horizontal, // السماح بالتمرير الأفقي
                               child: DataTable(
                                 columnSpacing: 22, // المسافة بين الأعمدة
-                                dataRowMinHeight: 40, 
+                                dataRowMinHeight: 40,
                                 dataRowMaxHeight: 45,
                                 headingRowHeight: 45, // ارتفاع صف العناوين
                                 headingRowColor: MaterialStateProperty.all(
@@ -215,4 +212,4 @@ class _BlogManagementScreenState extends State<BlogManagementScreen> {
         ),
       ),
     );
-  }
+  }*/

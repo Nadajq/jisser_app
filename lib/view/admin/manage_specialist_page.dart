@@ -13,26 +13,7 @@ class ManageSpecialistPage extends StatefulWidget {
 class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
   TextEditingController _searchController = TextEditingController();
   List<Specialist> _filteredSpecialists = [];
-  /*List<Map<String, dynamic>> specialists = [
-    {'name': 'د.أحمد', 'id': 'A1b2C3d4', 'المؤهل': 'بكالوريس', 'active': true},
-    {'name': 'د.ماجد', 'id': 'XyZ9kLmN', 'المؤهل': 'دكتوراه', 'active': true},
-    {'name': 'أ.سارة', 'id': 'qR5sTuV8', 'المؤهل': 'دكتوراه', 'active': false},
-    {'name': 'أ.مريم', 'id': 'mNpQrSt1', 'المؤهل': 'ماجستير', 'active': false},
-    {'name': 'د.نوره', 'id': 'wX3Yz2A4', 'المؤهل': 'دكتوراه', 'active': false},
-    {'name': 'د.خالد', 'id': 'B2C3D4E5', 'المؤهل': 'بكالوريس', 'active': false},
-    {'name': 'د.رحاب', 'id': 'F6G7H8J9', 'المؤهل': 'ماجستير', 'active': true},
-    {'name': 'د.علي', 'id': 'JkLmNoP2', 'المؤهل': 'ماجستير', 'active': true},
-    {'name': 'أ.محمد', 'id': 'T5UuWx4Y', 'المؤهل': 'دكتوراه', 'active': true},
-    {
-      'name': 'د. عبدالله',
-      'id': 'Z2A1B0C9',
-      'المؤهل': 'بكالوريس',
-      'active': false
-    },
-    {'name': 'د.ماجد', 'id': '1234EfGh', 'المؤهل': 'ماجستير', 'active': true},
-  ];
 
-  List<Map<String, dynamic>> _filteredSpecialists = [];*/
 
   @override
   void initState() {
@@ -62,9 +43,11 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text(
+              child:
+              Text(
                 'إدارة الأخصائيين',
                 style: TextStyle(
                   fontSize: 18,
