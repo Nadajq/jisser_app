@@ -43,7 +43,7 @@ class Specialist {
 }
 List<Specialist> specialistsInfo = [//list of Specialist objects that stores information about multiple specialists.
   Specialist(//When we create an object, we use the constructor.
-    id: "1", //creates an  (object) of the Specialist class with specific values.
+    id: "sp1", //creates an  (object) of the Specialist class with specific values.
     name: 'د. أحمد محمد',
     imageUrl: 'assets/specialist1.png',
     email: 'ahmed@example.com',
@@ -57,7 +57,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
 
   ),
   Specialist(
-    id: "2",
+    id: "sp2",
     name: 'أ. فاطمة علي',
     imageUrl: 'assets/specialist2.png',
     email: 'fatima@example.com',
@@ -70,7 +70,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
-    id: "3",
+    id: "sp3",
     name: 'أ. علي يوسف',
     imageUrl: 'assets/specialist3.png',
     email: 'ali@example.com',
@@ -83,7 +83,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
-    id: "4",
+    id: "sp4",
     name: 'د. ليلى حسين',
     imageUrl: 'assets/specialist4.png',
     email: 'layla@example.com',
@@ -96,7 +96,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
-    id: "5",
+    id: "sp5",
     name: 'أ. يوسف عبدالله',
     imageUrl: 'assets/specialist5.jpg',
     email: 'youssef@example.com',
@@ -109,7 +109,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
-    id: "6",
+    id: "sp6",
     name: 'أ. سارة خالد',
     imageUrl: 'assets/specialist7.jpg',
     email: 'sara@example.com',
@@ -122,7 +122,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     sessionDurations: ["30 دقيقة", "1 ساعة"],
   ),
   Specialist(
-    id: "7",
+    id: "sp7",
     name: 'د. محمد علي',
     imageUrl: 'assets/specialist6.jpg',
     email: 'mohammed@example.com',
@@ -136,7 +136,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
 
   ),
   Specialist(
-    id: "8",
+    id: "sp8",
     name: 'أ. هند عبدالله',
     imageUrl: 'assets/specialist8.jpg',
     email: 'hend@example.com',

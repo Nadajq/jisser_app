@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jisser_app/model/specialist_model.dart';
 
+import '../model/sessions_model.dart';
+
 // الصفحة الرئيسية للطبيب المتخصص
 class SpecialistInfoPage extends StatefulWidget {
   final Specialist specialist; // Receive the specialist data
@@ -152,7 +154,28 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // إضافة الحجز
+                    // TODO: Show payment dialog or navigate to payment screen (optional for now)
+
+                    // Create the session
+                    Sessions newSession = Sessions(
+                      sessionId: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
+                      specialistId: widget.specialist.id,
+                      userId: "1", // Replace with logged-in user ID
+                      sessionDate: DateTime.now().toString().split(" ")[0], // Example date
+                      sessionTime: _selectedTime!,
+                      duration: _selectedDuration!,
+                      active: true,// Setting active to true when booked
+                    );
+                    // Add to sessions list
+                    setState(() {
+                      sessionsList.add(newSession);
+                    });
+                    // Show confirmation message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('تم حجز الجلسة بنجاح!'))
+                    );
+                    // Navigate back
+                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
