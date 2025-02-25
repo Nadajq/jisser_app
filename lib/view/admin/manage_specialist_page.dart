@@ -150,44 +150,4 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
       ),
     );
   }
-
-  void _editSpecialist(Map<String, dynamic> specialist) {
-    TextEditingController nameController =
-        TextEditingController(text: specialist['name']);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('تعديل الأخصائي'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'اسم الأخصائي'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('إلغاء'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  specialist['name'] = nameController.text;
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('حفظ'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
