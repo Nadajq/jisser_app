@@ -15,6 +15,7 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
+  Specialist? selectedSpecialist; // Store the selected specialist
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +114,9 @@ class _UserHomePageState extends State<UserHomePage> {
                 children: specialistsInfo.map((specialist) {// Go through each center in specialistsInfo list and create a widget for it
                   return GestureDetector(
                     onTap: () {
+                      setState(() {
+                        selectedSpecialist = specialist; // Store the selected specialist
+                      });
                       // Navigate to SpecialistInfoPage and pass the selected specialist
                       Navigator.push(
                         context,
@@ -123,6 +127,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       );
                     },
                     child: _buildSpecialistCard(// Calls a function that creates a card widget displaying Specialist details.
+                      specialist.id,
                       specialist.name,
                       specialist.specialty,
                       specialist.imageUrl,
@@ -236,6 +241,7 @@ class _UserHomePageState extends State<UserHomePage> {
   }
 
   Widget _buildSpecialistCard(//function creates and returns a card widget displaying Specialist details.
+      String id,
       String name,
       String specialty,
       String imagePath,
@@ -248,7 +254,7 @@ class _UserHomePageState extends State<UserHomePage> {
       ) {
     // Create a Specialist object for each card
     Specialist specialist = Specialist(
-      id: "",
+      id: id,
       // Generate or leave empty for now
       name: name,
       imageUrl: imagePath,

@@ -4,6 +4,7 @@ import 'package:jisser_app/view/admin/manage_blog_page.dart';
 import 'package:jisser_app/view/admin/manage_sessions_page.dart';
 import 'package:jisser_app/view/admin/manage_specialist_page.dart';
 
+import '../../model/sessions_model.dart';
 import '../../model/users_model.dart';
 import 'add_blog_page.dart';
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jisser_app/model/sessions_model.dart';
 
+import '../../model/specialist_model.dart';
+import '../../model/users_model.dart';
+
 
 class ManageSessionsPage extends StatefulWidget {
   const ManageSessionsPage({super.key});
@@ -16,20 +19,24 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
   @override
   void initState() {
     super.initState();
-    _filteredSessions = sessionsList; // تأكد من أن sessionsList معرّفة ومستوردة
+    _filteredSessions = List.from(sessionsList);  // تأكد من أن sessionsList معرّفة ومستوردة
   }
 
   void _filterSessions(String query) {
+    final searchLower = query.toLowerCase(); // Store lowercase once for efficiency
     setState(() {
       _filteredSessions = sessionsList.where((session) {
-        final name = session.specialistname.toLowerCase();
-        final userName = session.userName.toLowerCase();
-        final searchLower = query.toLowerCase();
-        return name.contains(searchLower) || userName.contains(searchLower);
+        final specialistName  = session.getSpecialistName(specialistsInfo).toLowerCase();
+        final userName = session.getUserName(usersList).toLowerCase();
+        return specialistName.contains(searchLower) || userName.contains(searchLower);
       }).toList();
     });
   }
-
+  @override
+  void dispose() {
+    _searchController.dispose(); // Free up memory
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -107,8 +114,8 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
                     ],
                     rows: _filteredSessions.map((session) {
                       return DataRow(cells: [
-                        DataCell(Text(session.specialistname)),
-                        DataCell(Text(session.userName)),
+                        DataCell(Text(session.getSpecialistName(specialistsInfo))),
+                        DataCell(Text(session.getUserName(usersList))),
                         DataCell(Text(session.sessionDate)),
                         DataCell(Text(session.sessionTime)),
                         DataCell(Text(session.duration)),
