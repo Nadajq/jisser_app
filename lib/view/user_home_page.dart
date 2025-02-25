@@ -156,7 +156,7 @@ class _UserHomePageState extends State<UserHomePage> {
                         ),
                       );
                     },// Calls a function that creates a card widget displaying blog details.
-                    child: _buildInfoCard(blog.title,  blog.bgcolor ,  "assets/puzzle.png", blog.content),
+                    child: _buildInfoCard(blog.title,  blog.bgcolor ,  "assets/puzzle.png", blog.content,blog.publishDate),
                   );
                 }).toList(),// Convert the mapped widgets into a list
               ),
@@ -318,14 +318,15 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 //function creates and returns a card widget displaying blog details.
-  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath , String content) {
+  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath , String content, String publishDate) {
     Color finalBgColor = bgcolor ?? Colors.blue; // Default color if null
 
     Blogs blogs = Blogs(
         id: '',
         title: title,
         content: content,
-      bgcolor: finalBgColor, // Use the valid color here
+      bgcolor: finalBgColor,
+      publishDate: publishDate,// Use the valid color here
     );
     return GestureDetector(
         onTap: () {

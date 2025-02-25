@@ -45,34 +45,7 @@ class Sessions {
             Users(id: '', name: 'غير متوفر', email: '', password: ''));
     return user.name;
   }
-// Function to get specialist name from ID
-/*String getSpecialistName(List<Specialist> specialistsInfo) {
-    return specialistsInfo
-        .firstWhere(
-            (s) => s.id == specialistId,
-        orElse: () =>
-            Specialist(id: '',
-                name: 'غير معروف',
-                imageUrl: '',
-                specialty: '',
-                qualification: '',
-                yearsOfExperience: '',
-                sessionTimes: [],
-                sessionDurations: [],
-                email: '',
-                password: '',
-                rating: 0.0),
-    )
-        .name;
-  }
 
-  // Function to get user name from ID
-  String getUserName(List<Users> usersList) {
-    return usersList
-        .firstWhere((u) => u.id == userId,
-        orElse: () => Users(id: '', name: 'غير معروف', email: '', password: ''))
-        .name;
-  }*/
 }
 
 List<Sessions> sessionsList = [

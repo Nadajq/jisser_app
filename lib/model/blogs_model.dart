@@ -7,15 +7,17 @@ class AppColors {
 }
 class Blogs {
   final String id;
-  final String title;
-  final String content;
+   String title;
+   String content;
   final Color bgcolor;
+   String publishDate;
 
   Blogs({
     required this.id,
     required this.title,
     required this.content,
     this.bgcolor = AppColors.color1, // Default color set
+    required this.publishDate,
   });
   // Helper method to convert hex color string to Color
   static Color getColorFromHex(String hexColor) {
@@ -64,6 +66,7 @@ List<Blogs> blogsList = [
 من المهم ملاحظة أن الأطفال المصابين قد لا يكون لديهم كل أو أي من السلوكيات المدرجة كأمثلة هنا.
 """,
     bgcolor: AppColors.color1,
+    publishDate:'2025-02-20' ,
   ),
   Blogs(
       id: '2',
@@ -95,6 +98,7 @@ List<Blogs> blogsList = [
 
 """,
     bgcolor:  AppColors.color2,
+    publishDate:'2025-02-20' ,
   ),
   Blogs(
       id: '3',
@@ -132,6 +136,7 @@ List<Blogs> blogsList = [
 لتعزيز قدرة الطفل التوحدي على التكيف مع التغييرات، من المهم تدريبه على استيعاب واقعه بشكل واقعي. يتطلب الأمر توجيه الطفل بلطف لفهم أن الحياة تحمل تقلبات وأنه يجب التعامل مع الأحداث كما تأتي. من الضروري أيضًا تقديم شرح مسبق للطفل حول الأنشطة المخطط لها. يُفضل البدء بتغييرات صغيرة وتدريجية قبل الانتقال إلى التغييرات الأكبر لتسهيل هذه العملية.
 """,
     bgcolor: AppColors.color3,
+    publishDate:'2025-02-20' ,
   ),
   Blogs(
       id: '4',
@@ -156,6 +161,7 @@ List<Blogs> blogsList = [
 يعتقد البعض أن جميع المصابين بالتوحد يعانون من تأخر عقلي، وهذا اعتقاد خاطئ، فالتوحد ليس بالضرورة أن يكون مرتبطًا بتدني مستوى الذكاء، بل يمكن أن يكون لدى العديد من المصابين بالتوحد مستويات ذكاء طبيعية أو حتى مرتفعة في بعض الحالات، وقد يكونون ذوي مهارات مميزة في مجالات معينة مثل: الرياضيات أو العلوم أو الفن.
 """,
     bgcolor: AppColors.color1,
+    publishDate:'2025-02-20' ,
   ),
   Blogs(
       id: '5',
@@ -190,6 +196,7 @@ o   الالتحاق بمجموعات الدعم الأسري والاستفاد
  إن البيئة المتفهمة العطوفة التي تساند الطفل لا بد أن تساهم في تحقيق تحسن ملحوظ في حالته، وخاصة إذا كان الطفل غير مصاب بمضاعفات إضافية أو إعاقات مصاحبة، أما إذا كان الذكاء مرتفعاً مثل حالات (الأسبرجرز) Asperger Syndrome وبدأت العناية بها بشكل مبكر، فيستطيع الطفل تحقيق النجاح في التعليم النظامي حتى التعليم الجامعي وما فوقه كما حصل في الحالات الأربعة المشهورة في العالم حتى الآن والتي حصلت على الدكتوراه بالرغم من أن إحداها لا تتواصل بالكلام.
 """,
     bgcolor:  AppColors.color2,
+    publishDate:'2025-02-20' ,
   ),
   Blogs(
       id: '6',
@@ -212,6 +219,7 @@ o   الالتحاق بمجموعات الدعم الأسري والاستفاد
 
 """,
     bgcolor: AppColors.color3,
+    publishDate:'2025-02-20' ,
   ),
 
 ];

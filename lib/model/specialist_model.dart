@@ -53,7 +53,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "10 سنوات",
     rating: 4.0,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
 
   ),
   Specialist(
@@ -67,7 +67,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "23 سنة",
     rating: 4.6,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
   Specialist(
     id: "sp3",
@@ -80,7 +80,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "7 سنوات",
     rating: 5.0,
     sessionTimes: ["8:30 م", "11:00 ص", "3:00 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
   Specialist(
     id: "sp4",
@@ -93,7 +93,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "12 سنة",
     rating: 4.8,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations:["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
   Specialist(
     id: "sp5",
@@ -106,7 +106,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "8 سنوات",
     rating: 4.0,
     sessionTimes: ["8:30 م", "11:00 ص", "3:00 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
   Specialist(
     id: "sp6",
@@ -119,7 +119,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "6 سنوات",
     rating: 5.0,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
   Specialist(
     id: "sp7",
@@ -132,7 +132,7 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "15 سنة",
     rating: 4.7,
     sessionTimes: ["10:00 ص", "2:00 م", "5:00 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations: ["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
 
   ),
   Specialist(
@@ -146,6 +146,6 @@ List<Specialist> specialistsInfo = [//list of Specialist objects that stores inf
     yearsOfExperience: "9 سنوات",
     rating: 4.8,
     sessionTimes: ["9:00 م", "8:00 م", "4:30 م"],
-    sessionDurations: ["30 دقيقة", "1 ساعة"],
+    sessionDurations:["30 دقيقة/ 75 ر.س", "1 ساعة/ 150 ر.س"],
   ),
 ];
