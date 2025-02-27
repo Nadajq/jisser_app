@@ -15,26 +15,16 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  Specialist? selectedSpecialist; // Store the selected specialist
+  Specialist? selectedSpecialist;
+  // Store the selected specialist
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String currentLanguage = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.language, color: Colors.indigo),
-          onPressed: () {
-            print("Change language");
-          },
-        ),
-        /*leading: Container(
-          padding: EdgeInsets.all(7),
-          child: Image.asset(
-              "assets/menu.png",
-          height: 20,
-            width: 20,
-          ),
-        ),*/
-
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -47,22 +37,63 @@ class _UserHomePageState extends State<UserHomePage> {
         actions: [
           Container(
             padding: const EdgeInsets.all(7),
-            child: Image.asset(
-              "assets/menu.png", // القائمة على اليمين
-              height: 20,
-              width: 20,
+            child: PopupMenuButton<int>(
+              icon: const Icon(Icons.menu, color: Colors.blueAccent),
+              offset: const Offset(0, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: ListTile(
+                    trailing: const Icon(Icons.mail, color: Colors.blueAccent),
+                    title: const Text('jisser@gmail.com',
+                        style: TextStyle(fontSize: 13)),
+                    visualDensity: VisualDensity(horizontal: -4, vertical: -2),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: ListTile(
+                    title: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Icon(Icons.language,
+                            color: Colors.blueAccent, size: 20),
+                        SizedBox(width: 5),
+                        Text(' تغيير اللغة', style: TextStyle(fontSize: 13)),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                PopupMenuItem<int>(
+                  value: 2,
+                  child: ListTile(
+                    title: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Icon(Icons.exit_to_app,
+                            color: Color(0xfff90606), size: 20),
+                        SizedBox(width: 5),
+                        Text(' تسجيل خروج ', style: TextStyle(fontSize: 13)),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],
-        /*actions: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-          )
-        ],*/
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -72,30 +103,35 @@ class _UserHomePageState extends State<UserHomePage> {
           children: [
             const SizedBox(height: 10),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,// Allows horizontal scrolling.
+              scrollDirection: Axis.horizontal, // Allows horizontal scrolling.
               reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: centerslist.map((centers) {// Go through each center in centerslist and create a widget for it
+                children: centerslist.map((centers) {
+                  // Go through each center in centerslist and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       // Navigate to CenterInfoPage and pass the selected center
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CenterInfoPage(centers: centers),
+                          builder: (context) =>
+                              CenterInfoPage(centers: centers),
                         ),
                       );
                     },
-                    child: _buildCenterCard(centers.name,// Calls a function that creates a card widget displaying center details.
+                    child: _buildCenterCard(
+                      centers
+                          .name, // Calls a function that creates a card widget displaying center details.
                       centers.location,
                       centers.description,
                       centers.email,
                       centers.phone,
                       centers.imagePath,
-                      centers.map,),
+                      centers.map,
+                    ),
                   );
-                }).toList(),// Convert the mapped widgets into a list
+                }).toList(), // Convert the mapped widgets into a list
               ),
             ),
             const SizedBox(height: 20),
@@ -111,11 +147,13 @@ class _UserHomePageState extends State<UserHomePage> {
               reverse: true, // Reverse the scroll direction (right to left)
               child: Row(
                 textDirection: TextDirection.rtl,
-                children: specialistsInfo.map((specialist) {// Go through each center in specialistsInfo list and create a widget for it
+                children: specialistsInfo.map((specialist) {
+                  // Go through each center in specialistsInfo list and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedSpecialist = specialist; // Store the selected specialist
+                        selectedSpecialist =
+                            specialist; // Store the selected specialist
                       });
                       // Navigate to SpecialistInfoPage and pass the selected specialist
                       Navigator.push(
@@ -126,7 +164,8 @@ class _UserHomePageState extends State<UserHomePage> {
                         ),
                       );
                     },
-                    child: _buildSpecialistCard(// Calls a function that creates a card widget displaying Specialist details.
+                    child: _buildSpecialistCard(
+                      // Calls a function that creates a card widget displaying Specialist details.
                       specialist.id,
                       specialist.name,
                       specialist.specialty,
@@ -139,14 +178,15 @@ class _UserHomePageState extends State<UserHomePage> {
                       specialist.active,
                     ),
                   );
-                }).toList(),// Convert the mapped widgets into a list
+                }).toList(), // Convert the mapped widgets into a list
               ),
             ),
             const SizedBox(height: 30),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
-                children: blogsList.map((blog) {// Go through each center in blogslist and create a widget for it
+                children: blogsList.map((blog) {
+                  // Go through each center in blogslist and create a widget for it
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -155,10 +195,11 @@ class _UserHomePageState extends State<UserHomePage> {
                           builder: (context) => BlogInfoPage(blogs: blog),
                         ),
                       );
-                    },// Calls a function that creates a card widget displaying blog details.
-                    child: _buildInfoCard(blog.title,  blog.bgcolor ,  "assets/puzzle.png", blog.content,blog.publishDate),
+                    }, // Calls a function that creates a card widget displaying blog details.
+                    child: _buildInfoCard(blog.title, blog.bgcolor,
+                        "assets/puzzle.png", blog.content, blog.publishDate),
                   );
-                }).toList(),// Convert the mapped widgets into a list
+                }).toList(), // Convert the mapped widgets into a list
               ),
             ),
           ],
@@ -167,7 +208,8 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  Widget _buildCenterCard(//function creates and returns a card widget displaying center details.
+  Widget _buildCenterCard(
+      //function creates and returns a card widget displaying center details.
       String name,
       String location,
       String description,
@@ -187,71 +229,72 @@ class _UserHomePageState extends State<UserHomePage> {
     );
 
     return GestureDetector(
-        onTap: () {
-      // Navigate to CenterInfoPage and pass the Center object
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CenterInfoPage(centers: centers),
+      onTap: () {
+        // Navigate to CenterInfoPage and pass the Center object
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CenterInfoPage(centers: centers),
+          ),
+        );
+      },
+      child: Container(
+        width: 145,
+        padding: const EdgeInsets.all(19),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.black26),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              spreadRadius: 2,
+              offset: Offset(2, 4),
+            ),
+          ],
         ),
-      );
-    },
-    child: Container(
-      width: 145,
-      padding: const EdgeInsets.all(19),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black26),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            spreadRadius: 2,
-            offset: Offset(2, 4),
-          ),
-        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(centers.imagePath, height: 100, width: 100),
+            const SizedBox(height: 19),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(centers.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Color(0xFF08174A))),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Icon(Icons.location_on, color: Colors.grey, size: 17),
+                Text(centers.location,
+                    style: const TextStyle(color: Colors.grey, fontSize: 14)),
+              ],
+            ),
+          ],
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(centers.imagePath, height: 100, width: 100),
-          const SizedBox(height: 19),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(centers.name,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color(0xFF08174A))),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Icon(Icons.location_on, color: Colors.grey, size: 17),
-              Text(centers.location,
-                  style: const TextStyle(color: Colors.grey, fontSize: 14)),
-            ],
-          ),
-        ],
-      ),
-    ),
     );
   }
 
-  Widget _buildSpecialistCard(//function creates and returns a card widget displaying Specialist details.
-      String id,
-      String name,
-      String specialty,
-      String imagePath,
-      double rating,
-      String qualification,
-      String yearsOfExperience,
-      List<String> sessionTimes,
-      List<String> sessionDurations,
-      bool active,
-      ) {
+  Widget _buildSpecialistCard(
+    //function creates and returns a card widget displaying Specialist details.
+    String id,
+    String name,
+    String specialty,
+    String imagePath,
+    double rating,
+    String qualification,
+    String yearsOfExperience,
+    List<String> sessionTimes,
+    List<String> sessionDurations,
+    bool active,
+  ) {
     // Create a Specialist object for each card
     Specialist specialist = Specialist(
       id: id,
@@ -301,7 +344,8 @@ class _UserHomePageState extends State<UserHomePage> {
             const SizedBox(height: 5),
             Text(name,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             Text(specialty,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 12, color: Colors.grey)),
@@ -317,62 +361,64 @@ class _UserHomePageState extends State<UserHomePage> {
       ),
     );
   }
+
 //function creates and returns a card widget displaying blog details.
-  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath , String content, String publishDate) {
+  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath,
+      String content, String publishDate) {
     Color finalBgColor = bgcolor ?? Colors.blue; // Default color if null
 
     Blogs blogs = Blogs(
-        id: '',
-        title: title,
-        content: content,
+      id: '',
+      title: title,
+      content: content,
       bgcolor: finalBgColor,
-      publishDate: publishDate,// Use the valid color here
+      publishDate: publishDate, // Use the valid color here
     );
     return GestureDetector(
-        onTap: () {
-      // Navigate to BlogInfoPage and pass the blogs object
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BlogInfoPage(blogs: blogs),
-        ),
-      );
-    },
-    child: Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      margin: const EdgeInsets.symmetric(vertical: 0),
-      decoration: BoxDecoration(
-        color: finalBgColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 5,
-            spreadRadius: 3,
-            offset: Offset(2, 2),
+      onTap: () {
+        // Navigate to BlogInfoPage and pass the blogs object
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlogInfoPage(blogs: blogs),
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        // يجعل الصورة تأتي أولًا على اليمين
-        children: [
-          Expanded(
-            child: Text(
-              blogs.title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 17),
-              textAlign: TextAlign.right, // التأكد من محاذاة النص لليمين
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(14),
+        margin: const EdgeInsets.symmetric(vertical: 0),
+        decoration: BoxDecoration(
+          color: finalBgColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 5,
+              spreadRadius: 3,
+              offset: Offset(2, 2),
             ),
-          ),
-          const SizedBox(width: 10),
-          Image.asset(imagePath, height: 50, width: 50),
-        ],
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+
+          children: [
+            Expanded(
+              child: Text(
+                blogs.title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 17),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Image.asset(imagePath, height: 50, width: 50),
+          ],
+        ),
       ),
-    ),
     );
   }
 }
