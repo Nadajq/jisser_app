@@ -54,13 +54,30 @@ class _ManageUsersPage extends State<ManageUsersPage> {
     });
   }
 
-  // Method to delete a user by their ID
-  void _deleteUser(String id) {
-    setState(() {
-      // Remove the user from the main list and the filtered list
-      usersList.removeWhere((user) => user.id == id);
-      _filteredUsers.removeWhere((user) => user.id == id);
-    });
+  void _deleteUser(Users users) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تأكيد الحذف'),
+        content: const Text('هل أنت متأكد أنك تريد حذف هذا المستخدم؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                usersList.remove(users);
+                _filteredUsers = List.from(usersList);
+              });
+              Navigator.pop(context);
+            },
+            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -255,7 +272,7 @@ class _ManageUsersPage extends State<ManageUsersPage> {
             // Delete button for each user
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-              onPressed: () => _deleteUser(user.id), // Deletes user on press
+              onPressed: () => _deleteUser(user), // Deletes user on press
             ),
           ),
         ],

@@ -7,6 +7,7 @@ class Centers {
   final String imagePath;
   final String map;
 
+
   Centers({
     required this.name,
     required this.location,
