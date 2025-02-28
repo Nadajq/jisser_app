@@ -104,10 +104,7 @@ class _ManageUsersPage extends State<ManageUsersPage> {
             // Email icon in the top-right corner
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                Icons.email,
-                color: Colors.blue,
-              ),
+
             ),
           ],
           leading: const Padding(
