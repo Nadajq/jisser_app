@@ -9,7 +9,8 @@ class Specialist {
   final String yearsOfExperience;
   final double rating;
   final List<String> sessionTimes;
-  final List<String> sessionDurations; // Available durations for sessions
+  final List<String> sessionDurations;
+   // Available durations for sessions
   bool active;
 
 // constructor is a special function inside a class that is automatically called when you create an object from that class.
