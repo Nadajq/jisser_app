@@ -39,8 +39,8 @@ class CenterInfoPage extends StatelessWidget {
              Image.asset(
                centers.imagePath, //
                width: double.infinity,
-               height: 250,
-               fit: BoxFit.cover,
+
+
              ),
 
              // المحتوى النصي والمعلومات
