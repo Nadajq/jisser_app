@@ -32,6 +32,31 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
       }).toList();
     });
   }
+  void _deleteSpecialists(Specialist specialist) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تأكيد الحذف'),
+        content: const Text('هل أنت متأكد أنك تريد حذف هذا الاخصائي؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                specialistsInfo.remove(specialist);
+                _filteredSpecialists = List.from(specialistsInfo);
+              });
+              Navigator.pop(context);
+            },
+            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +156,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                         )),
                         DataCell(IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            setState(() {
-                              specialistsInfo.remove(specialist);
-                              _filteredSpecialists = List.from(specialistsInfo);
-                            });
-                          },
+                          onPressed: () => _deleteSpecialists(specialist),
                         )),
                       ]);
                     }).toList(),

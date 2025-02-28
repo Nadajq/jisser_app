@@ -31,7 +31,7 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
     emailController.text = widget.specialist.email;
     specialization = widget.specialist.specialty;
     qualification = widget.specialist.qualification;
-    accountStatus = widget.special ist.active ? 'نشط' : 'غير نشط';
+    accountStatus = widget.specialist.active ? 'نشط' : 'غير نشط';
   }
 
   @override
