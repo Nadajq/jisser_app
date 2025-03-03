@@ -128,7 +128,8 @@ class _UserHomePageState extends State<UserHomePage> {
                       centers.email,
                       centers.phone,
                       centers.imagePath,
-                      centers.map,
+                      centers.latitude,
+                      centers.longitude,
                     ),
                   );
                 }).toList(), // Convert the mapped widgets into a list
@@ -216,7 +217,8 @@ class _UserHomePageState extends State<UserHomePage> {
       String email,
       String phone,
       String imagePath,
-      String map) {
+      double latitude,
+      double longitude,) {
     // Create a Center object for each card
     Centers centers = Centers(
       name: name,
@@ -225,7 +227,8 @@ class _UserHomePageState extends State<UserHomePage> {
       email: email,
       phone: phone,
       imagePath: imagePath,
-      map: map,
+      latitude: latitude,
+      longitude: longitude,
     );
 
     return GestureDetector(
