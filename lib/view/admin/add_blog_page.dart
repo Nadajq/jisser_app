@@ -81,7 +81,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: const Color(0xFFEAF7FA), // لون الخلفية
+        backgroundColor: const Color(0xFFFAFBFB), // لون الخلفية
         appBar: AppBar(
           backgroundColor: Colors.white,
           // لون شريط العنوان

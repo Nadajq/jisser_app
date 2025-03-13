@@ -1,14 +1,16 @@
 class Centers {
-  final String name;
-  final String location;
-  final String description;
-  final String email;
-  final String phone;
-  final String imagePath;
-  final double latitude;
-  final double longitude;
+   int id;
+   String name;
+   String location;
+   String description;
+   String email;
+   String phone;
+   String imagePath;
+   double latitude;
+   double longitude;
 
   Centers({
+    required this.id,
     required this.name,
     required this.location,
     required this.description,
@@ -18,11 +20,41 @@ class Centers {
     required this.latitude,
     required this.longitude,
   });
+  // Convert Supabase JSON to Dart object
+  factory Centers.fromMap(Map<String, dynamic> map) {
+    return Centers(
+      id: map['id'],
+      name: map['name'],
+      location: map['location'],
+      description: map['description'],
+      email: map['email'],
+      phone: map['phone'],
+      imagePath: map['imagePath'],
+      latitude: map['latitude'].toDouble(),
+      longitude: map['longitude'].toDouble(),
+    );
+  }
+
+  // Convert Dart object to Supabase JSON
+  Map<String, dynamic> tomap() {
+    return {
+      'id' : id,
+      'name': name,
+      'location': location,
+      'description': description,
+      'email': email,
+      'phone': phone,
+      'imagePath': imagePath,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
+  }
 }
 
+/*
 final List<Centers> centerslist = [
   Centers(
-    name: ' جمعية إرادةالتوحد ',
+    name: 'جمعية إرادة',
     location: 'نجران',
     description:
         'جمعية إرادة التوحد جمعية تُعنى بخدمة ذوي اضطراب التوحد بمنطقة نجران وتسعى لمساعدة ذوي اضطراب التوحد وأُسرهم ودعمهم تدريباً وتأهيلاً وتعليماً ليكونوا أعضاء فاعلين في المجتمع لتحقيق ذواتهم.',
@@ -77,4 +109,4 @@ final List<Centers> centerslist = [
     latitude: 26.090793809173423,
     longitude: 43.91821156916464,
   ), //26.090759453339324, 43.91820134958041 26.090793809173423, 43.91821156916464
-];
+];*/

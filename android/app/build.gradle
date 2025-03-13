@@ -30,6 +30,12 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    lintOptions {
+        checkReleaseBuilds false  // Disable lint checks for release builds (optional)
+        lintConfig file("lint.xml") // Use custom lint config (optional)
+        warning 'deprecation'  // Show deprecation warnings
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -51,9 +57,9 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            minifyEnabled true  // Enables ProGuard/R8 optimization
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -61,10 +67,7 @@ android {
 flutter {
     source = "../.."
 }
-/*
 dependencies {
-     Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:33.8.0')
-
-
-}*/
+    implementation "androidx.fragment:fragment:1.8.6"
+    implementation "androidx.appcompat:appcompat:1.7.0"
+}

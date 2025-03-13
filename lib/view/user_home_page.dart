@@ -4,6 +4,7 @@ import 'package:jisser_app/view/blog_info_page.dart';
 import '../model/blogs_model.dart';
 import '../model/center_model.dart';
 import '../model/specialist_model.dart';
+import '../services/center_service.dart';
 import 'Specialist_info_page.dart';
 import 'center_info_page.dart';
 
@@ -96,19 +97,28 @@ class _UserHomePageState extends State<UserHomePage> {
         ],
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
+      body:StreamBuilder<List<Centers>>(
+        stream: CenterService().stream, // Stream from the service
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.data!.isEmpty) {
+            return const Center(child: Text('No centers available.'));
+          }
+
+          // If we have data, display the list
+          return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal, // Allows horizontal scrolling.
-              reverse: true, // Reverse the scroll direction (right to left)
-              child: Row(
-                textDirection: TextDirection.rtl,
-                children: centerslist.map((centers) {
-                  // Go through each center in centerslist and create a widget for it
+            ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                var center = snapshot.data![index];
                   return GestureDetector(
                     onTap: () {
                       // Navigate to CenterInfoPage and pass the selected center
@@ -116,25 +126,23 @@ class _UserHomePageState extends State<UserHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CenterInfoPage(centers: centers),
+                              CenterInfoPage(),
                         ),
                       );
                     },
                     child: _buildCenterCard(
-                      centers
-                          .name, // Calls a function that creates a card widget displaying center details.
-                      centers.location,
-                      centers.description,
-                      centers.email,
-                      centers.phone,
-                      centers.imagePath,
-                      centers.latitude,
-                      centers.longitude,
+                      center.name, // Calls a function that creates a card widget displaying center details.
+                      center.location,
+                      center.description,
+                      center.email,
+                      center.phone,
+                      center.imagePath,
+                      center.latitude,
+                      center.longitude,
                     ),
                   );
-                }).toList(), // Convert the mapped widgets into a list
+                },
               ),
-            ),
             const SizedBox(height: 20),
             const Text("الأخصائيين",
                 style: TextStyle(
@@ -205,6 +213,8 @@ class _UserHomePageState extends State<UserHomePage> {
             ),
           ],
         ),
+      );
+          },
       ),
     );
   }
@@ -220,28 +230,8 @@ class _UserHomePageState extends State<UserHomePage> {
       double latitude,
       double longitude,) {
     // Create a Center object for each card
-    Centers centers = Centers(
-      name: name,
-      location: location,
-      description: description,
-      email: email,
-      phone: phone,
-      imagePath: imagePath,
-      latitude: latitude,
-      longitude: longitude,
-    );
 
-    return GestureDetector(
-      onTap: () {
-        // Navigate to CenterInfoPage and pass the Center object
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CenterInfoPage(centers: centers),
-          ),
-        );
-      },
-      child: Container(
+    return Container(
         width: 145,
         padding: const EdgeInsets.all(19),
         decoration: BoxDecoration(
@@ -260,11 +250,11 @@ class _UserHomePageState extends State<UserHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(centers.imagePath, height: 100, width: 100),
+            Image.asset(imagePath, height: 100, width: 100),
             const SizedBox(height: 19),
             Align(
               alignment: Alignment.centerRight,
-              child: Text(centers.name,
+              child: Text(name,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -275,29 +265,28 @@ class _UserHomePageState extends State<UserHomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const Icon(Icons.location_on, color: Colors.grey, size: 17),
-                Text(centers.location,
+                Text(location,
                     style: const TextStyle(color: Colors.grey, fontSize: 14)),
               ],
             ),
           ],
         ),
-      ),
     );
   }
 
   Widget _buildSpecialistCard(
-    //function creates and returns a card widget displaying Specialist details.
-    String id,
-    String name,
-    String specialty,
-    String imagePath,
-    double rating,
-    String qualification,
-    String yearsOfExperience,
-    List<String> sessionTimes,
-    List<String> sessionDurations,
-    bool active,
-  ) {
+      //function creates and returns a card widget displaying Specialist details.
+      String id,
+      String name,
+      String specialty,
+      String imagePath,
+      double rating,
+      String qualification,
+      String yearsOfExperience,
+      List<String> sessionTimes,
+      List<String> sessionDurations,
+      bool active,
+      ) {
     // Create a Specialist object for each card
     Specialist specialist = Specialist(
       id: id,
@@ -337,7 +326,7 @@ class _UserHomePageState extends State<UserHomePage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border:
-                    Border.all(color: Colors.grey, width: 1), // إضافة إطار أسود
+                Border.all(color: Colors.grey, width: 1), // إضافة إطار أسود
               ),
               child: CircleAvatar(
                 radius: 40,
@@ -348,7 +337,7 @@ class _UserHomePageState extends State<UserHomePage> {
             Text(name,
                 textAlign: TextAlign.center,
                 style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             Text(specialty,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 12, color: Colors.grey)),
