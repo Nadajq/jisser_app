@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jisser_app/view/blog_info_page.dart';
 
@@ -9,7 +10,9 @@ import 'Specialist_info_page.dart';
 import 'center_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
+
   const UserHomePage({super.key});
+
 
   @override
   _UserHomePageState createState() => _UserHomePageState();
@@ -250,7 +253,14 @@ class _UserHomePageState extends State<UserHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 100, width: 100),
+            CachedNetworkImage(
+              imageUrl: imagePath,
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
             const SizedBox(height: 19),
             Align(
               alignment: Alignment.centerRight,

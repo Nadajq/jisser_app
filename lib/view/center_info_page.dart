@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jisser_app/control/map_utils.dart';
 
@@ -76,11 +77,12 @@ final centerController = TextEditingController();
             return  SingleChildScrollView(
               child: Column(
                 children: [
-                  Image.network(
-                    center.imagePath,
+                  CachedNetworkImage(
+                    imageUrl: center.imagePath,
                     width: double.infinity,
-                    //height: 250,
-                    // fit: BoxFit.cover,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
 
                   // المحتوى النصي والمعلومات
