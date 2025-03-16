@@ -44,7 +44,7 @@ final centerController = TextEditingController();
           actions: [SizedBox(width: 48)], // توازن لموائمة الصورة في المنتصف
         ),
         body: StreamBuilder<List<Centers>>(
-          stream: CenterService().stream,
+          stream:  CenterService().getCentersStream(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
