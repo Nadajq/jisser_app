@@ -32,31 +32,9 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
       return _specialistSessionsPage(); // Default to user management page
     }
   }
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
 
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null && picked != selectedTime) {
-      setState(() {
-        selectedTime = picked;
-      });
-    }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +93,7 @@ class _SpecialistHomePageState extends State<SpecialistHomePage> {
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text("specialist home page"),
+            child: Text(" clients chat sessions list "),
           ),
         ],
       ),
