@@ -40,15 +40,27 @@ class _RatingPageState extends State<RatingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'صفحة التقييمات',
-          textAlign: TextAlign.right, // Right-align the app bar title
-        ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(Icons.close, color: Colors.blueAccent),
+        onPressed: () {
+          Navigator.pop(context);//الرجوع إلى الصفحة السابقة
+        },
       ),
+
+      actions: [SizedBox(width: 48)], // لتوازن العناصر في الشريط العلوي
+    ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset(
+              'assets/jisserLogo.jpeg',
+              width: 140,
+              height: 140,
+
+            ),
             Text(
               'تقييم الجلسه',
               style: TextStyle(fontSize: 24),
