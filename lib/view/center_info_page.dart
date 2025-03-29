@@ -1,22 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jisser_app/control/map_utils.dart';
+import 'package:jisser_app/generated/l10n.dart';
+import 'package:jisser_app/widgets/custom_snack_bar.dart';
 
 import '../model/center_model.dart';
 import '../services/center_service.dart'; // استيراد أداة فتح الخرائط
 
 class CenterInfoPage extends StatefulWidget {
-  const CenterInfoPage({super.key});
+  final Centers centers;
+  const CenterInfoPage({super.key, required this.centers});
 
   @override
   State<CenterInfoPage> createState() => _CenterInfoPageState();
 }
 
 class _CenterInfoPageState extends State<CenterInfoPage> {
- final centersDB = CenterService();
-final centerController = TextEditingController();
-  
+  final centersDB = CenterService();
+  final centerController = TextEditingController();
 
+  late String url = widget.centers.imagePath;
+  late String fixedUrl = url.replaceFirst("https:/", "https://");
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -26,7 +31,7 @@ final centerController = TextEditingController();
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,
+            icon: const Icon(Icons.arrow_back,
                 color: Colors.blueAccent, size: 28), // أيقونة الرجوع للخلف
             onPressed: () {
               // تنفيذ الرجوع للخلف
@@ -41,17 +46,19 @@ final centerController = TextEditingController();
               height: 40,
             ),
           ),
-          actions: [SizedBox(width: 48)], // توازن لموائمة الصورة في المنتصف
+          actions: const [
+            SizedBox(width: 48)
+          ], // توازن لموائمة الصورة في المنتصف
         ),
         body: StreamBuilder<List<Centers>>(
-          stream:  CenterService().getCentersStream(),
+          stream: CenterService().getCentersStream(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             // Check if the data is not empty
             if (snapshot.data!.isEmpty) {
-              return Center(child: Text('No centers available.'));
+              return const Center(child: Text('No centers available.'));
             }
 
             // Use a hardcoded value for centerId, for example 1:
@@ -71,18 +78,23 @@ final centerController = TextEditingController();
             );
 
             if (center.id == 0) {
-              return Center(child: Text('المركز غير موجود'));
+              return const Center(child: Text('المركز غير موجود'));
             }
 
-            return  SingleChildScrollView(
+            return SingleChildScrollView(
               child: Column(
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: center.imagePath,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.3,
+                    child: CachedNetworkImage(
+                      imageUrl: fixedUrl,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                      const Icon(Icons.error),
+                    ),
                   ),
 
                   // المحتوى النصي والمعلومات
@@ -95,58 +107,78 @@ final centerController = TextEditingController();
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            center.name,//here
-                            style: TextStyle(
+                            widget.centers.name, //here
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF071164),
                             ),
                           ),
 
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                           // الموقع
                           Row(
                             children: [
-                              Icon(Icons.location_on, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Text(center.location,//here
-                                  style: TextStyle(
+                              const Icon(Icons.location_on, color: Colors.grey),
+                              const SizedBox(width: 5),
+                              Text(widget.centers.location, //here
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   )),
                             ],
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
                           // وصف الجمعية
                           Text(
-                            center.description,//here
+                            widget.centers.description, //here
                             textAlign: TextAlign.right,
-                            style: TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 16),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
                           // معلومات الاتصال
-                          Row(
-                            children: [
-                              Icon(Icons.email, color: Colors.indigo),
-                              SizedBox(width: 5),
-                              Text(center.email,//here
-                                  style: TextStyle(fontSize: 16)),
-                            ],
+                          GestureDetector(
+                            onTap: () async {
+                              await Clipboard.setData(
+                                  ClipboardData(text: widget.centers.email));
+                              CustomSnackBar.snackBarwidget(
+                                  context: context,
+                                  color: Colors.green,
+                                  text: S.of(context).coping);
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(Icons.email, color: Colors.indigo),
+                                const SizedBox(width: 5),
+                                Text(widget.centers.email, //here
+                                    style: const TextStyle(fontSize: 16)),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
                           Row(
                             children: [
-                              Icon(Icons.phone, color: Colors.indigo),
-                              SizedBox(width: 5),
-                              Text(center.phone,//here
-                                  style: TextStyle(fontSize: 16)),
+                              const Icon(Icons.phone, color: Colors.indigo),
+                              const SizedBox(width: 5),
+                              GestureDetector(
+                                onTap: () async {
+                                  await Clipboard.setData(ClipboardData(
+                                      text: widget.centers.phone));
+                                  CustomSnackBar.snackBarwidget(
+                                      context: context,
+                                      color: Colors.green,
+                                      text: S.of(context).coping);
+                                },
+                                child: Text(widget.centers.phone, //here
+                                    style: const TextStyle(fontSize: 16)),
+                              ),
                             ],
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Padding(
@@ -159,13 +191,13 @@ final centerController = TextEditingController();
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.indigo,
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10)),
                                 onPressed: () {
-                                  MapUtils.openMap(
-                                      center.latitude, center.longitude);//here
+                                  MapUtils.openMap(widget.centers.latitude,
+                                      widget.centers.longitude); //here
                                 },
-                                child: Icon(Icons.location_on_outlined,
+                                child: const Icon(Icons.location_on_outlined,
                                     color: Color(0xffffffff), size: 50),
                               ),
                             ),

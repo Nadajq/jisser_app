@@ -1,249 +1,221 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jisser_app/auth/auth_service.dart';
+import 'package:jisser_app/cubit/change_langauge_cubit.dart';
+import 'package:jisser_app/generated/l10n.dart';
+import 'package:jisser_app/model/users_model.dart';
+import 'package:jisser_app/services/blogs_service.dart';
 import 'package:jisser_app/view/blog_info_page.dart';
-
-import '../auth/auth_service.dart';
-import '../model/blogs_model.dart';
-import '../model/center_model.dart';
-import '../model/specialist_model.dart';
-import '../services/center_service.dart';
-import 'Specialist_info_page.dart';
-import 'center_info_page.dart';
+import 'package:jisser_app/view/specialist_info_page.dart';
+import 'package:jisser_app/view/center_info_page.dart';
+import 'package:jisser_app/model/blogs_model.dart';
+import 'package:jisser_app/model/center_model.dart';
+import 'package:jisser_app/model/specialist_model.dart';
+import 'package:jisser_app/services/center_service.dart';
+import 'package:jisser_app/services/specialist_service.dart';
+import 'package:jisser_app/view/user_login_page.dart';
+import 'package:jisser_app/widgets/custom_snack_bar.dart';
 
 class UserHomePage extends StatefulWidget {
-  const UserHomePage({super.key});
+  final Users user;
+  const UserHomePage({super.key, required this.user});
 
   @override
   _UserHomePageState createState() => _UserHomePageState();
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  Specialist? selectedSpecialist;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String currentLanguage = '';
   final CenterService _centerService = CenterService();
-  final authService =AuthService();
-  void logout() async{
-    await authService.signOut();
-  }
+  final SpecialistService _specialistService = SpecialistService();
+  final BlogService _blogService = BlogService(); // Add BlogService
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/jisserLogo.jpeg",
-              height: 30,
-            )
-          ],
-        ),
-        actions: [
-          Container(
-            padding: const EdgeInsets.all(7),
-            child: PopupMenuButton<int>(
-              icon: const Icon(Icons.menu, color: Colors.blueAccent),
-              offset: const Offset(0, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              itemBuilder: (context) => [
-                PopupMenuItem<int>(
-                  value: 0,
-                  child: ListTile(
-                    trailing: const Icon(Icons.mail, color: Colors.blueAccent),
-                    title: const Text('jisser@gmail.com',
-                        style: TextStyle(fontSize: 13)),
-                    visualDensity: VisualDensity(horizontal: -4, vertical: -2),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                PopupMenuItem<int>(
-                  value: 1,
-                  child: ListTile(
-                    title: Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Icon(Icons.language,
-                            color: Colors.blueAccent, size: 20),
-                        SizedBox(width: 5),
-                        Text(' تغيير اللغة', style: TextStyle(fontSize: 13)),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                PopupMenuItem<int>(
-                  value: 2,
-                  child: ListTile(
-                    title: Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        IconButton(
-                            onPressed: logout,
-                            icon: Icon(Icons.logout),
-                            color: Color(0xfff90606),
-                            iconSize: 20),
-                        SizedBox(width: 5),
-                        Text(' تسجيل خروج ', style: TextStyle(fontSize: 13)),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        elevation: 0.0,
-      ),
-      body: StreamBuilder<List<Centers>>(
-        stream: _centerService.getCentersStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            print('Error: ${snapshot.error}');
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No centers available.'));
-          } else {
-            final centers = snapshot.data!;
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.25,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      reverse: true,
-                      itemCount: centers.length,
-                      itemBuilder: (context, index) {
-                        var center = centers[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CenterInfoPage(),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: _buildCenterCard(
-                              center.name,
-                              center.location,
-                              center.description,
-                              center.email,
-                              center.phone,
-                              center.imagePath,
-                              center.latitude,
-                              center.longitude,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("الأخصائيين",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF08174A)),
-                      textAlign: TextAlign.right),
-                  const SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    reverse: true,
-                    child: Row(
-                      textDirection: TextDirection.rtl,
-                      children: specialistsInfo.map((specialist) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedSpecialist = specialist;
-                            });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SpecialistInfoPage(specialist: specialist),
-                              ),
-                            );
-                          },
-                          child: _buildSpecialistCard(
-                            specialist.id,
-                            specialist.name,
-                            specialist.specialty,
-                            specialist.imageUrl,
-                            specialist.rating,
-                            specialist.qualification,
-                            specialist.yearsOfExperience,
-                            specialist.sessionTimes,
-                            specialist.sessionDurations,
-                            specialist.active,
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: blogsList.map((blog) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlogInfoPage(blogs: blog),
-                              ),
-                            );
-                          },
-                          child: _buildInfoCard(blog.title, blog.bgcolor,
-                              "assets/puzzle.png", blog.content, blog.publishDate),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: BlocBuilder<ChangeLangaugeCubit, ChangeLangaugeState>(
+        builder: (context, state) {
+          return Scaffold(
+            key: _scaffoldKey,
+            appBar: _buildAppBar(),
+            body: _buildBody(),
+          );
         },
       ),
     );
   }
 
-  Widget _buildCenterCard(
-      String name,
-      String location,
-      String description,
-      String email,
-      String phone,
-      String imagePath,
-      double latitude,
-      double longitude,) {
-    String url = imagePath;
-    String fixedUrl = url.replaceFirst("https:/", "https://"); // Add the missing slash //
+  AppBar _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/jisserLogo.jpeg",
+            height: 30,
+          )
+        ],
+      ),
+      actions: [
+        Container(
+          padding: const EdgeInsets.all(7),
+          child: PopupMenuButton<int>(
+            icon: const Icon(Icons.menu, color: Colors.blueAccent),
+            offset: const Offset(0, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(
+                value: 0,
+                child: ListTile(
+                  leading: const Icon(Icons.mail, color: Colors.blueAccent),
+                  title: Column(
+                    children: [
+                      Text(S.of(context).contact_us,
+                          style: const TextStyle(fontSize: 13)),
+                      GestureDetector(
+                        onTap: () async {
+                          await Clipboard.setData(
+                              const ClipboardData(text: "jisser@gmail.com"));
+
+                          CustomSnackBar.snackBarwidget(
+                              context: context,
+                              color: Colors.green,
+                              text: S.of(context).coping);
+                        },
+                        child: const Text("jisser@gmail.com",
+                            style: TextStyle(fontSize: 13)),
+                      ),
+                    ],
+                  ),
+                  visualDensity:
+                  const VisualDensity(horizontal: -4, vertical: -2),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 1,
+                child: ListTile(
+                  title: Row(
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      const Icon(Icons.language,
+                          color: Colors.blueAccent, size: 20),
+                      const SizedBox(width: 5),
+                      Text(S.of(context).change_language,
+                          style: const TextStyle(fontSize: 13)),
+                    ],
+                  ),
+                  onTap: () {
+                    BlocProvider.of<ChangeLangaugeCubit>(context)
+                        .changeLangauge();
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 2,
+                child: ListTile(
+                  title: Row(
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      const Icon(Icons.exit_to_app,
+                          color: Color(0xfff90606), size: 20),
+                      const SizedBox(width: 5),
+                      Text(S.of(context).logout,
+                          style: const TextStyle(fontSize: 13)),
+                    ],
+                  ),
+                  onTap: () {
+                    AuthService().signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserLoginPage()));
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+      elevation: 0.0,
+    );
+  }
+
+  Widget _buildBody() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          _buildCentersSection(),
+          _buildSpecialistsSection(),
+          _buildBlogsSection(), // Updated to fetch blogs from Supabase
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCentersSection() {
+    return StreamBuilder<List<Centers>>(
+      stream: _centerService.getCentersStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: SizedBox());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No centers available.'));
+        } else {
+          final centers = snapshot.data!;
+          return Column(
+            children: [
+              const SizedBox(height: 10),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.3,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: centers.length,
+                    itemBuilder: (context, index) {
+                      var center = centers[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CenterInfoPage(centers: center),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: _buildCenterCard(center),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildCenterCard(Centers center) {
+    String url = center.imagePath;
+    String fixedUrl = url.replaceFirst("https:/", "https://");
     return Container(
       width: 145,
       padding: const EdgeInsets.all(19),
@@ -263,18 +235,21 @@ class _UserHomePageState extends State<UserHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CachedNetworkImage(
-            imageUrl: fixedUrl,
-            height: 80,
-            width: 80,
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: fixedUrl,
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>
+              const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
           const SizedBox(height: 19),
           Align(
             alignment: Alignment.centerRight,
-            child: Text(name,
+            child: Text(center.name,
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -285,7 +260,7 @@ class _UserHomePageState extends State<UserHomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Icon(Icons.location_on, color: Colors.grey, size: 17),
-              Text(location,
+              Text(center.location,
                   style: const TextStyle(color: Colors.grey, fontSize: 14)),
             ],
           ),
@@ -294,126 +269,174 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  Widget _buildSpecialistCard(
-      String id,
-      String name,
-      String specialty,
-      String imagePath,
-      double rating,
-      String qualification,
-      String yearsOfExperience,
-      List<String> sessionTimes,
-      List<String> sessionDurations,
-      bool active,) {
-    Specialist specialist = Specialist(
-      id: id,
-      name: name,
-      imageUrl: imagePath,
-      email: '',
-      password: '',
-      specialty: specialty,
-      qualification: qualification,
-      yearsOfExperience: yearsOfExperience,
-      rating: rating,
-      sessionTimes: sessionTimes,
-      sessionDurations: sessionDurations,
-    );
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SpecialistInfoPage(specialist: specialist),
-          ),
-        );
-      },
-      child: Container(
-        width: 110,
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey, width: 1),
-              ),
-              child: CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage(imagePath),
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            Text(specialty,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 12, color: Colors.grey)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.star, color: Colors.amber, size: 14),
-                Text("$rating", style: const TextStyle(fontSize: 12)),
-              ],
-            ),
-          ],
+  Widget _buildSpecialistsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        const SizedBox(height: 20),
+        Text(S.of(context).specialists,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF08174A)),
+            textAlign: TextAlign.right),
+        const SizedBox(height: 10),
+        StreamBuilder<List<Specialist>>(
+          stream: _specialistService.getSpecialistsStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: SizedBox());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(S.of(context).no_specialists_available));
+            } else {
+              final specialists = snapshot.data!;
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Row(
+                  textDirection: TextDirection.rtl,
+                  children: specialists.map((specialist) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SpecialistInfoPage(
+                              specialist: specialist,
+                              users: widget.user,
+                            ),
+                          ),
+                        );
+                      },
+                      child: _buildSpecialistCard(specialist),
+                    );
+                  }).toList(),
+                ),
+              );
+            }
+          },
         ),
+      ],
+    );
+  }
+
+  Widget _buildSpecialistCard(Specialist specialist) {
+    return Container(
+      width: 110,
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: CachedNetworkImage(
+                imageUrl: specialist.imageUrl,
+                height: 100,
+                width: 100,
+                fit: BoxFit.fill,
+                placeholder: (context, url) =>
+                const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(specialist.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Text(specialist.specialty,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          specialist.rating != null
+              ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.star, color: Colors.amber, size: 14),
+              Text("${specialist.rating}.0",
+                  style: const TextStyle(fontSize: 12)),
+            ],
+          )
+              : const SizedBox(),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, Color? bgcolor, String imagePath,
-      String content, String publishDate) {
-    Color finalBgColor = bgcolor ?? Colors.blue;
-    Blogs blogs = Blogs(
-      id: '',
-      title: title,
-      content: content,
-      bgcolor: finalBgColor,
-      publishDate: publishDate,
-    );
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BlogInfoPage(blogs: blogs),
-          ),
-        );
+  Widget _buildBlogsSection() {
+    return StreamBuilder<List<Blogs>>(
+      stream: _blogService.getBlogsStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text(S.of(context).no_blogs_available));
+        } else {
+          final blogs = snapshot.data!;
+          return Column(
+            children: blogs.map((blog) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlogInfoPage(blogs: blog),
+                    ),
+                  );
+                },
+                child: _buildInfoCard(blog),
+              );
+            }).toList(),
+          );
+        }
       },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(14),
-        margin: const EdgeInsets.symmetric(vertical: 0),
-        decoration: BoxDecoration(
-          color: finalBgColor,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 5,
-              spreadRadius: 3,
-              offset: Offset(2, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                  blogs.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 17),
-                  textAlign: TextAlign.right),
-            ),
-            const SizedBox(width: 10),
-            Image.asset(imagePath, height: 50, width: 50),
-          ],
-        ),
+    );
+  }
+
+  Widget _buildInfoCard(Blogs blog) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      margin: const EdgeInsets.symmetric(vertical: 0),
+      decoration: BoxDecoration(
+        color: blog.bgcolor,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 5,
+            spreadRadius: 3,
+            offset: Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(blog.title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 17),
+                textAlign: TextAlign.right),
+          ),
+          const SizedBox(width: 10),
+          Image.asset("assets/puzzle.png", height: 50, width: 50),
+        ],
       ),
     );
   }

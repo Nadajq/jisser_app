@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'User_login_page.dart';
 
 class logoPage extends StatefulWidget {
   final Widget? child;
@@ -18,7 +17,7 @@ class _logoPageState extends State<logoPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => widget.child!),
-          (route) => false);
+              (route) => false);
     });
     super.initState();
   }
@@ -35,13 +34,16 @@ class _logoPageState extends State<logoPage> {
             crossAxisAlignment:
             CrossAxisAlignment.center,
             children: [
-             Image.asset(
-               'assets/jisserLogo.jpeg',
-                width: 150,
-               height: 150,
+              Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  'assets/waiting_logo.png',
+                  width: 150,
+                  height: 150,
 
+                ),
               ),
-              Text(
+              const Text(
                 "جسر",
                 style: TextStyle(
                     color: Color(0xFF546E78),

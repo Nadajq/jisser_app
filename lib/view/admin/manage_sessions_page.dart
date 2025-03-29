@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jisser_app/generated/l10n.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:jisser_app/model/sessions_model.dart';
-
-import '../../model/specialist_model.dart';
-import '../../model/users_model.dart';
-
+import 'package:jisser_app/model/specialist_model.dart';
+import 'package:jisser_app/model/users_model.dart';
 
 class ManageSessionsPage extends StatefulWidget {
   const ManageSessionsPage({super.key});
@@ -13,30 +13,64 @@ class ManageSessionsPage extends StatefulWidget {
 }
 
 class _ManageSessionsPageState extends State<ManageSessionsPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<Sessions> _filteredSessions = [];
+  List<Sessions> _allSessions = [];
+  List<Specialist> specialistsInfo = [];
+  List<Users> usersList = [];
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    _filteredSessions = List.from(sessionsList);  // تأكد من أن sessionsList معرّفة ومستوردة
+    _fetchData();
   }
 
+  Future<void> _fetchData() async {
+    try {
+      final sessionsResponse = await Supabase.instance.client
+          .from('sessions')
+          .select()
+          .order('created_at', ascending: false);
+      final specialistsResponse =
+      await Supabase.instance.client.from('specialists').select();
+
+      final usersResponse =
+      await Supabase.instance.client.from('userrs').select();
+      setState(() {
+        _allSessions = sessionsResponse
+            .map((session) => Sessions.fromJson(session))
+            .toList();
+        specialistsInfo = specialistsResponse
+            .map((specialist) => Specialist.fromMap(specialist))
+            .toList();
+        usersList = usersResponse.map((user) => Users.fromJson(user)).toList();
+        _filteredSessions = List.from(_allSessions);
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+
   void _filterSessions(String query) {
-    final searchLower = query.toLowerCase(); // Store lowercase once for efficiency
+    final searchLower = query.toLowerCase();
     setState(() {
-      _filteredSessions = sessionsList.where((session) {
-        final specialistName  = session.getSpecialistName(specialistsInfo).toLowerCase();
+      _filteredSessions = _allSessions.where((session) {
+        final specialistName =
+        session.getSpecialistName(specialistsInfo).toLowerCase();
         final userName = session.getUserName(usersList).toLowerCase();
-        return specialistName.contains(searchLower) || userName.contains(searchLower);
+        return specialistName.contains(searchLower) ||
+            userName.contains(searchLower);
       }).toList();
     });
   }
-  @override
-  void dispose() {
-    _searchController.dispose(); // Free up memory
-    super.dispose();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -47,11 +81,11 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text(
-                'إدارة الجلسات',
-                style: TextStyle(
+                S.of(context).manage_sessions,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -70,18 +104,17 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
                       controller: _searchController,
                       onChanged: _filterSessions,
                       decoration: InputDecoration(
-                        hintText: 'بحث',
+                        hintText: S.of(context).search,
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
-
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -104,17 +137,18 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
                     dataTextStyle: const TextStyle(
                       fontSize: 11,
                     ),
-                    columns: const [
-                      DataColumn(label: Text('الأخصائي')),
-                      DataColumn(label: Text('المستخدم')),
-                      DataColumn(label: Text('التاريخ')),
-                      DataColumn(label: Text('الوقت')),
-                      DataColumn(label: Text('المدة')),
-                      DataColumn(label: Text('الحالة')),
+                    columns:  [
+                      DataColumn(label: Text(S.of(context).specialist_name)),
+                      DataColumn(label: Text(S.of(context).user_name)),
+                      DataColumn(label: Text(S.of(context).date)),
+                      DataColumn(label: Text(S.of(context).time)),
+                      DataColumn(label: Text(S.of(context).duration)),
+                      DataColumn(label: Text(S.of(context).status)),
                     ],
                     rows: _filteredSessions.map((session) {
                       return DataRow(cells: [
-                        DataCell(Text(session.getSpecialistName(specialistsInfo))),
+                        DataCell(
+                            Text(session.getSpecialistName(specialistsInfo))),
                         DataCell(Text(session.getUserName(usersList))),
                         DataCell(Text(session.sessionDate)),
                         DataCell(Text(session.sessionTime)),
@@ -124,17 +158,16 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: session.active ? Colors.green : Colors.red,
+                              color: session.active ?  Colors.red:  Colors.green,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
-                              session.active ? Icons.check : Icons.close,
+                              session.active ? Icons.close: Icons.check ,
                               color: Colors.white,
                               size: 16,
                             ),
                           ),
                         ),
-
                       ]);
                     }).toList(),
                   ),

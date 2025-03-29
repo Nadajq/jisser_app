@@ -6,11 +6,9 @@ class CenterService {
 
   CenterService() : _supabaseClient = Supabase.instance.client;
 
-  // Stream to get all centers
   Stream<List<Centers>> getCentersStream() {
-    return _supabaseClient
-        .from('centers')
-        .stream(primaryKey: ['id'])
-        .map((data) => data.map((centersMap) => Centers.fromMap(centersMap)).toList());
+    return _supabaseClient.from('centers').stream(primaryKey: ['id']).map(
+          (data) => data.map((centersMap) => Centers.fromMap(centersMap)).toList(),
+    );
   }
 }

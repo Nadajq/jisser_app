@@ -1,79 +1,110 @@
 import 'package:flutter/material.dart';
-import 'package:jisser_app/view/admin/edit_blog_page.dart';
+import 'package:jisser_app/generated/l10n.dart';
 import 'package:jisser_app/view/admin/manage_blog_page.dart';
 import 'package:jisser_app/view/admin/manage_sessions_page.dart';
 import 'package:jisser_app/view/admin/manage_specialist_page.dart';
+import 'package:jisser_app/view/user_login_page.dart';
+import 'package:jisser_app/widgets/custom_snack_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../model/sessions_model.dart';
-import '../../model/users_model.dart';
-import 'add_blog_page.dart';
-
-// Define the manageUsersPage widget as a StatefulWidget
 class ManageUsersPage extends StatefulWidget {
+  const ManageUsersPage({super.key});
+
   @override
   _ManageUsersPage createState() => _ManageUsersPage();
 }
 
-// Define the state of the manageUsersPage widget
 class _ManageUsersPage extends State<ManageUsersPage> {
-  int _selectedIndex = 0; // Track selected tab index
+  int _selectedIndex = 0;
   final TextEditingController _searchController = TextEditingController();
-  List<Users> _filteredUsers = List.from(usersList);
-  // Handle bottom navigation taps
+  List<Map<String, dynamic>> _filteredUsers =[];
+  List<Map<String, dynamic>> _allUsers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
+  }
+
+  Future<void> _fetchUsers() async {
+    try {
+      final response = await Supabase.instance.client.from('userrs').select();
+      setState(() {
+        _allUsers = List<Map<String, dynamic>>.from(response);
+        _filteredUsers = List.from(_allUsers);
+      });
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  // Different pages based on the selected index
   Widget _getSelectedPage() {
     switch (_selectedIndex) {
       case 1:
-        return ManageSpecialistPage(); // Navigate to specialists page
+        return const ManageSpecialistPage();
       case 2:
-        return ManageSessionsPage(); // Navigate to sessions page
+        return const ManageSessionsPage();
       case 3:
-        return ManageBlogPage(); // Navigate to blog page
+        return const ManageBlogPage();
       default:
-        return _userManagementPage(); // Default to user management page
+        return _userManagementPage();
     }
   }
 
-  // Method to filter users based on the search query
   void _filterUsers(String query) {
     setState(() {
-      _filteredUsers = usersList.where((user) {
-        // Convert name and email to lowercase for case-insensitive matching
-        final name = user.name.toLowerCase();
-        final email = user.email.toLowerCase();
+      _filteredUsers = _allUsers.where((user) {
+        final name = user['name'].toString().toLowerCase();
+        final email = user['email'].toString().toLowerCase();
         final searchLower = query.toLowerCase();
-        // Return true if the name or email contains the search query
         return name.contains(searchLower) || email.contains(searchLower);
       }).toList();
     });
   }
 
-  void _deleteUser(Users users) {
+  Future<void> _deleteUser(Map<String, dynamic> user) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تأكيد الحذف'),
-        content: const Text('هل أنت متأكد أنك تريد حذف هذا المستخدم؟'),
+        title: Text(S.of(context).confirm_delete),
+        content: Text(S.of(context).are_you_sure_you_want_to_delete_this_user),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء'),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
-            onPressed: () {
-              setState(() {
-                usersList.remove(users);
-                _filteredUsers = List.from(usersList);
-              });
-              Navigator.pop(context);
+            onPressed: () async {
+              try {
+                final response = await Supabase.instance.client
+                    .from('userrs')
+                    .delete()
+                    .eq('id', user['id']);
+                setState(() {
+                  _allUsers.removeWhere((u) => u['id'] == user['id']);
+                  _filteredUsers = List.from(_allUsers);
+                });
+                setState(() {});
+                Navigator.pop(context);
+                CustomSnackBar.snackBarwidget(
+                    context: context,
+                    color: Colors.green,
+                    text: S.of(context).deteled_successfully);
+              } catch (e) {
+                print('Error deleting user: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error: $e")),
+                );
+              }
             },
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+            child:
+            Text(S.of(context).delete, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -83,42 +114,40 @@ class _ManageUsersPage extends State<ManageUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      // Set the text direction to right-to-left (to suit Arabic language)
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Color(0xfff3f7f9), // Background color of the page
-
+        backgroundColor: const Color(0xfff3f7f9),
         appBar: AppBar(
           backgroundColor: Colors.white,
-          // AppBar background color
           elevation: 0,
-          // Remove shadow from the AppBar
           title: Image.asset(
-            'assets/jisserLogo.jpeg', // Logo in the center
+            'assets/jisserLogo.jpeg',
             width: 40,
             height: 40,
           ),
           centerTitle: true,
-          // Center the title in the AppBar
-          actions: [
-            // Email icon in the top-right corner
-            const Padding(
+          actions: const [
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
-
             ),
           ],
-          leading: const Padding(
-            // Logout icon in the top-left corner
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.logout_sharp,
-              color: Colors.red,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UserLoginPage()));
+              },
+              child: const Icon(
+                Icons.logout_sharp,
+                color: Colors.red,
+              ),
             ),
           ),
         ),
-
-        body: _getSelectedPage(), // Show the selected page dynamically
-        // Bottom navigation bar for page navigation
+        body: _getSelectedPage(),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
           selectedItemColor: Colors.blue,
@@ -126,22 +155,12 @@ class _ManageUsersPage extends State<ManageUsersPage> {
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          // Handle tap to switch pages
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.groups), // Icon for users
-                  Text('المستخدمين'), // Users label
-                ],
-              ),
-              label: '', // No label here
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Icon(Icons.medical_services), // Icon for specialists
-                  Text('الأخصائيين'), // Specialists label
+                  const Icon(Icons.groups),
+                  Text(S.of(context).users),
                 ],
               ),
               label: '',
@@ -149,8 +168,8 @@ class _ManageUsersPage extends State<ManageUsersPage> {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.group), // Icon for sessions
-                  Text('الجلسات'), // Sessions label
+                  const Icon(Icons.medical_services),
+                  Text(S.of(context).specialists),
                 ],
               ),
               label: '',
@@ -158,8 +177,17 @@ class _ManageUsersPage extends State<ManageUsersPage> {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.menu_book), // Icon for blog
-                  Text('المدونة'), // Blog label
+                  const Icon(Icons.group),
+                  Text(S.of(context).sessions),
+                ],
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  const Icon(Icons.menu_book),
+                  Text(S.of(context).blogs),
                 ],
               ),
               label: '',
@@ -169,111 +197,88 @@ class _ManageUsersPage extends State<ManageUsersPage> {
       ),
     );
   }
-
-  // User management page content (example)
   Widget _userManagementPage() {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'إدارة المستخدمين', // Title in Arabic for managing users
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).manage_users,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          // Space between title and search box
-
-          // Search input field
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 300, // Set the width of the search field
-              child: TextField(
-                controller: _searchController,
-                // Controller to manage the text
-                onChanged: (value) {
-                  _filterUsers(value); // Filter users based on input
-                },
-                decoration: InputDecoration(
-                  hintText: 'بحث', // Arabic placeholder text for search
-                  prefixIcon: const Icon(Icons.search), // Search icon
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded borders
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    _filterUsers(value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: S.of(context).search,
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-
-          // Table to display user data
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            // Allow horizontal scrolling
-            child: Container(
+            Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: const Color(0xffeae9e9)),
-                borderRadius:
-                    BorderRadius.circular(8), // Rounded corners for table
+                borderRadius: BorderRadius.circular(8),
               ),
               child: DataTable(
                 columnSpacing: 18.0,
-                // Space between columns
                 dataRowHeight: 35,
-                // Row height
                 headingRowHeight: 35,
-                // Heading row height
                 headingTextStyle: const TextStyle(
                   color: Color(0xff2b2c2c),
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
                 dataTextStyle: const TextStyle(fontSize: 11),
-                columns: const [
-                  DataColumn(label: Text('اسم المستخدم')),
-                  // User name column
-                  DataColumn(label: Text('id')),
-                  // ID column
-                  DataColumn(label: Text('البريد الإلكتروني')),
-                  // Email column
-                  DataColumn(label: Text('حذف')),
-                  // Delete column
+                columns: [
+                  DataColumn(label: Text(S.of(context).user_name)),
+                  DataColumn(label: Text(S.of(context).email)),
+                  DataColumn(label: Text(S.of(context).delete)),
                 ],
-                rows: _buildUserRows(), // Display filtered or all users
+                rows: _buildUserRows(),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-
-  // Builds rows for the DataTable
   List<DataRow> _buildUserRows() {
     return _filteredUsers.map((user) {
       return DataRow(
         cells: [
-          DataCell(Text(user.name)), // User's name
-          DataCell(Text(user.id)), // User's ID
-          DataCell(Text(user.email)), // User's email
+          DataCell(Text(user['name'])),
+          DataCell(Text(user['email'])),
           DataCell(
-            // Delete button for each user
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-              onPressed: () => _deleteUser(user), // Deletes user on press
+              onPressed: () => _deleteUser(user),
             ),
           ),
         ],
       );
-    }).toList(); // Convert each user data to DataRow
+    }).toList();
   }
 }

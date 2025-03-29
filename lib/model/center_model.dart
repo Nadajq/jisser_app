@@ -1,13 +1,13 @@
 class Centers {
-   int id;
-   String name;
-   String location;
-   String description;
-   String email;
-   String phone;
-   String imagePath;
-   double latitude;
-   double longitude;
+  int id;
+  String name;
+  String location;
+  String description;
+  String email;
+  String phone;
+  String imagePath;
+  double latitude;
+  double longitude;
 
   Centers({
     required this.id,

@@ -1,117 +1,301 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:jisser_app/view/specialist/specialist_home_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jisser_app/auth/auth_specialists.dart';
+import 'package:jisser_app/cubit/change_langauge_cubit.dart';
+import 'package:jisser_app/generated/l10n.dart';
+import 'package:jisser_app/model/specialist_model.dart';
+import 'package:jisser_app/view/specialist/booking_list_page.dart';
 import 'package:jisser_app/view/specialist/specialist_signup_page.dart';
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
+import 'package:jisser_app/widgets/custom_snack_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-
-class SpecialistLoginPage extends StatelessWidget {
+class SpecialistLoginPage extends StatefulWidget {
   const SpecialistLoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.language,color: Colors.indigo,),// Language change icon
-            onPressed: () {
-              // Add your language-switching logic here
-              print("Change language");
-            },
-          ),
+  State<SpecialistLoginPage> createState() => _SpecialistLoginPageState();
+}
 
-        ),
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-          children: [ Column(
-            mainAxisAlignment:
-            MainAxisAlignment.start, // Moves content towards the top
-            crossAxisAlignment:
-            CrossAxisAlignment.center, // Centers content horizontally
-            children: [
-              Image.asset(
-                'assets/jisserLogo.jpeg',
-                width: 150,
-                height: 150,
+class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
-              ),
-              const Text(
-                "جسر",
-                style: TextStyle(
-                  color: Color(0xFF071164),
-                  fontSize: 27,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  " تسجيل الدخول كأخصائي",
-                  style: TextStyle(
-                    color: Color(0xFF071164),
-                    fontSize: 27,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-              const FormContainerWidget(
-                hintText: "البريد الالكتروني",
-                isPasswordField: false,
-              ),
-              const SizedBox(height: 20),
+  Future<void> _handleLogin() async {
+    // Validate inputs
+    if (_emailController.text.isEmpty) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).please_enter_email,
+      );
+      return;
+    }
 
-              const FormContainerWidget(
-                hintText: "كلمة المرور",
-                isPasswordField: true,
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>  SpecialistHomePage())); //button to go to user home page
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color:  Colors.indigo,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Center(child: Text("تسجيل الدخول",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
-                ),
-              ),
-              const SizedBox(height: 20,),
+    if (_passwordController.text.isEmpty) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).please_enter_password,
+      );
+      return;
+    }
 
-              Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SpecialistSignupPage(),
-                          ),
-                              (route) => false);
-                    },
-                    child: const Text("إنشاء حساب أخصائي",style: TextStyle(color: Colors.blue ),
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await AuthSpecialists().loginSpecialist(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (mounted) {
+        // Check specialists table
+        final specialistResponse = await Supabase.instance.client
+            .from('specialists')
+            .select()
+            .eq('email', _emailController.text)
+            .maybeSingle();
+
+        if (specialistResponse != null) {
+          // User found in specialists table
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BookingListPage(
+                    specialist: Specialist(
+                      id: specialistResponse['id'],
+                      name: specialistResponse['name'],
+                      email: specialistResponse['email'],
+                      imageUrl: specialistResponse['image_url'],
+                      pdfUrl: specialistResponse['pdf_url'],
+                      specialty: specialistResponse['specialty'],
+                      qualification: specialistResponse['qualification'],
+                      yearsOfExperience:
+                      specialistResponse['years_of_experience'],
+                      rating: specialistResponse['rating'],
+                      sessionTimes: specialistResponse['session_times'],
+                      sessionDurations:
+                      specialistResponse['session_durations'],
+                      date: specialistResponse['date'],
                     ),
+                  )));
+          CustomSnackBar.snackBarwidget(
+            context: context,
+            color: Colors.green,
+            text: S.of(context).login_successfully,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        if (e.toString().contains("هذا البريد الإلكتروني غير مسجل كأخصائي")) {
+          CustomSnackBar.snackBarwidget(
+            context: context,
+            color: Colors.red,
+            text: S.of(context).this_email_is_not_registered_as_specialist,
+          );
+        } else if (e.toString().contains("Invalid login credentials")) {
+          CustomSnackBar.snackBarwidget(
+            context: context,
+            color: Colors.red,
+            text: S.of(context).your_email_or_password_is_incorrect,
+          );
+        } else if (e.toString().contains("Connection timed out")) {
+          CustomSnackBar.snackBarwidget(
+            context: context,
+            color: Colors.red,
+            text: S.of(context).check_your_internet_connection,
+          );
+        } else {
+          CustomSnackBar.snackBarwidget(
+            context: context,
+            color: Colors.red,
+            text: S.of(context).there_was_an_error_try_again_later,
+          );
+        }
+        log("Login error: $e");
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChangeLangaugeCubit, ChangeLangaugeState>(
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              actions: [
+                Container(
+                  padding: const EdgeInsets.all(7),
+                  child: PopupMenuButton<int>(
+                    icon: const Icon(Icons.menu, color: Colors.blueAccent),
+                    offset: const Offset(0, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    itemBuilder: (context) => [
+                      PopupMenuItem<int>(
+                        value: 0,
+                        child: ListTile(
+                          title: Row(
+                            textDirection: TextDirection.rtl,
+                            children: [
+                              const Icon(Icons.language,
+                                  color: Colors.blueAccent, size: 20),
+                              const SizedBox(width: 5),
+                              Text(S.of(context).change_language,
+                                  style: const TextStyle(fontSize: 13)),
+                            ],
+                          ),
+                          onTap: () {
+                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      PopupMenuItem<int>(
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            textDirection: TextDirection.rtl,
+                            children: [
+                              const Icon(Icons.exit_to_app,
+                                  color: Color(0xfff90606), size: 20),
+                              const SizedBox(width: 5),
+                              Text(S.of(context).back,
+                                  style: const TextStyle(fontSize: 13)),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 5,),
-
-                  const Text("ليس لديك حساب؟"),
-
-                ],
-              ),
-
-            ],
+                ),
+              ],
+            ),
+            body: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/waiting_logo.png',
+                      width: 150,
+                      height: 150,
+                    ),
+                    Text(
+                      S.of(context).jisser,
+                      style: const TextStyle(
+                        color: Color(0xFF071164),
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        S.of(context).login_as_specialist,
+                        style: const TextStyle(
+                          color: Color(0xFF071164),
+                          fontSize: 27,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    FormContainerWidget(
+                      controller: _emailController,
+                      hintText: S.of(context).email,
+                      isPasswordField: false,
+                    ),
+                    const SizedBox(height: 20),
+                    FormContainerWidget(
+                      controller: _passwordController,
+                      hintText: S.of(context).password,
+                      isPasswordField: true,
+                    ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: _isLoading ? null : _handleLogin,
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: _isLoading ? Colors.grey : Colors.indigo,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                              color: Colors.white)
+                              : Text(
+                            S.of(context).login_in,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                const SpecialistSignupPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            S.of(context).create_specialist_account,
+                            style: const TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(S.of(context).you_dont_have_an_account),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ]
-        ),
-      ),
+        );
+      },
     );
   }
 }
