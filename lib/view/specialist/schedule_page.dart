@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jisser_app/auth/auth_service.dart';
 import 'package:jisser_app/cubit/change_langauge_cubit.dart';
@@ -207,10 +208,26 @@ class _SchedulePageState extends State<SchedulePage> {
                     PopupMenuItem<int>(
                       value: 0,
                       child: ListTile(
-                        trailing:
-                        const Icon(Icons.mail, color: Colors.blueAccent),
-                        title: const Text("jisser@gmail.com",
-                            style: TextStyle(fontSize: 13)),
+                        leading: const Icon(Icons.mail, color: Colors.blueAccent),
+                        title: Column(
+                          children: [
+                            Text(S.of(context).contact_us,
+                                style: const TextStyle(fontSize: 13)),
+                            GestureDetector(
+                              onTap: () async {
+                                await Clipboard.setData(
+                                    const ClipboardData(text: "jisser@gmail.com"));
+
+                                CustomSnackBar.snackBarwidget(
+                                    context: context,
+                                    color: Colors.green,
+                                    text: S.of(context).coping);
+                              },
+                              child: const Text("jisser@gmail.com",
+                                  style: TextStyle(fontSize: 13)),
+                            ),
+                          ],
+                        ),
                         visualDensity:
                         const VisualDensity(horizontal: -4, vertical: -2),
                         onTap: () {
