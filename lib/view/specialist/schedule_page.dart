@@ -6,7 +6,7 @@ import 'package:jisser_app/cubit/change_langauge_cubit.dart';
 import 'package:jisser_app/generated/l10n.dart';
 import 'package:jisser_app/model/specialist_model.dart';
 import 'package:jisser_app/view/specialist/booking_list_page.dart';
-import 'package:jisser_app/view/user_login_page.dart';
+import 'package:jisser_app/view/specialist/specialist_login_page.dart';
 import 'package:intl/intl.dart';
 import 'package:jisser_app/widgets/custom_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,6 +22,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   DateTime? selectedDate;
   List<TimeOfDay?> selectedTimes = List.filled(3, null);
+  final SupabaseClient supabase = Supabase.instance.client;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -90,6 +91,37 @@ class _SchedulePageState extends State<SchedulePage> {
         });
       }
     }
+  }
+
+  showDialogBox(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+                title: Text(S.of(context).confirm_delete),
+                content:
+                    Text(S.of(context).are_sure_you_want_to_delete_the_account),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(S.of(context).cancel),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await Supabase.instance.client
+                          .from('specialists')
+                          .delete()
+                          .eq('id', widget.specialist.id);
+                      AuthService().signOut();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SpecialistLoginPage()));
+                    },
+                    child: Text(S.of(context).delete,
+                        style: const TextStyle(color: Colors.red)),
+                  ),
+                ]));
   }
 
   int _compareTime(TimeOfDay t1, TimeOfDay t2) {
@@ -217,7 +249,6 @@ class _SchedulePageState extends State<SchedulePage> {
                               onTap: () async {
                                 await Clipboard.setData(
                                     const ClipboardData(text: "jisser@gmail.com"));
-
                                 CustomSnackBar.snackBarwidget(
                                     context: context,
                                     color: Colors.green,
@@ -267,11 +298,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           ],
                         ),
                         onTap: () {
-                          AuthService().signOut();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const UserLoginPage()));
+                          showDialogBox(context);
                         },
                       ),
                     ),
@@ -325,30 +352,30 @@ class _SchedulePageState extends State<SchedulePage> {
                 // Three Time Slots
                 ...List.generate(
                     3,
-                        (index) => Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextButton(
-                            onPressed: () => _selectTime(context, index),
-                            child: Text(
-                              selectedTimes[index] == null
-                                  ? '${S.of(context).choose_time} ${index + 1}'
-                                  : '${S.of(context).time} ${index + 1}: ${selectedTimes[index]!.format(context)}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
+                    (index) => Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                onPressed: () => _selectTime(context, index),
+                                child: Text(
+                                  selectedTimes[index] == null
+                                      ? '${S.of(context).choose_time} ${index + 1}'
+                                      : '${S.of(context).time} ${index + 1}: ${selectedTimes[index]!.format(context)}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    )),
+                            const SizedBox(height: 16),
+                          ],
+                        )),
 
                 const SizedBox(height: 20),
 
@@ -386,8 +413,8 @@ class _SchedulePageState extends State<SchedulePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => SchedulePage(
-                            specialist: widget.specialist,
-                          )),
+                                specialist: widget.specialist,
+                              )),
                     );
                   },
                   child: Column(

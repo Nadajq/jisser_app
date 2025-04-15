@@ -20,7 +20,6 @@
     "please_enter_confirm_password": "يرجى تأكيد كلمة المرور",
     "the_password_does_not_match": "كلمة المرور غير متطابقة",
     "change_language": "تغيير اللغة",
-    "back": "جوع",
     "create_new_account": "انشاء حساب ",
     "user_name": "اسم المستخدم",
     "you_dont_have_an_account_in_jisser": "لديك حساب في جسر؟",
@@ -84,7 +83,6 @@
     "status": "الحالة",
     "edit": "تعديل",
     "manage_sessions": "إدارة الجلسات",
-    "duartion": "المدة",
     "are_you_sure_you_want_to_delete_this_blog": "هل أنت متأكد أنك تريد حذف هذه المقالة؟",
     "manage_blogs": "ادارة المدونات",
     "blog_title": "العنوان",
@@ -108,5 +106,17 @@
     "there_is_no_messages": "لا توجد رسائل",
     "writing_a_message": "اكتب رسالة...",
     "contact_us": "تواصل معنا",
-    "coping":"تم النسخ بنجاح"
+    "coping":"تم النسخ بنجاح",
+    "duration": "المدة",
+    "the_account_has_been_created_successfully": "تم انشاء الحساب بنجاح",
+    "password_must_be_at_least_8_characters_long": "كلمة المرور يجب ان تكون على الاقل 8 حروف",
+    "passwrod_must_contain_at_least_one_uppercase_letter": "كلمة المرور يجب ان تحتوي على حرف كبير",
+    "passwrod_must_contain_at_least_one_lowercase_letter": "كلمة المرور يجب ان تحتوي على حرف صغير",
+    "passwrod_must_contain_at_least_one_number": "كلمة المرور يجب ان تحتوي على رقم",
+    "passwrod_must_contain_at_least_one_special_character": "كلمة المرور يجب ان تحتوي على حرف خاص",
+    "back": "العودة",
+    "are_sure_you_want_to_delete_the_account": "هل انت متاكد انك تريد حذف الحساب",
+    "add_admin": "اضافة مسؤول",
+    "admin_added_successfully": "تم اضافة المسؤول"
+
 }

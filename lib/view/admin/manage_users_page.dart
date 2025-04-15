@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jisser_app/cubit/change_langauge_cubit.dart';
 import 'package:jisser_app/generated/l10n.dart';
+import 'package:jisser_app/view/admin/add_admin.dart';
+import 'package:jisser_app/view/admin/admin_login_page.dart';
 import 'package:jisser_app/view/admin/manage_blog_page.dart';
 import 'package:jisser_app/view/admin/manage_sessions_page.dart';
 import 'package:jisser_app/view/admin/manage_specialist_page.dart';
@@ -17,7 +21,7 @@ class ManageUsersPage extends StatefulWidget {
 class _ManageUsersPage extends State<ManageUsersPage> {
   int _selectedIndex = 0;
   final TextEditingController _searchController = TextEditingController();
-  List<Map<String, dynamic>> _filteredUsers =[];
+  List<Map<String, dynamic>> _filteredUsers = [];
   List<Map<String, dynamic>> _allUsers = [];
 
   @override
@@ -103,8 +107,8 @@ class _ManageUsersPage extends State<ManageUsersPage> {
                 );
               }
             },
-            child:
-            Text(S.of(context).delete, style: TextStyle(color: Colors.red)),
+            child: Text(S.of(context).delete,
+                style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -118,34 +122,93 @@ class _ManageUsersPage extends State<ManageUsersPage> {
       child: Scaffold(
         backgroundColor: const Color(0xfff3f7f9),
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Image.asset(
-            'assets/jisserLogo.jpeg',
-            width: 40,
-            height: 40,
-          ),
+          automaticallyImplyLeading: false,
           centerTitle: true,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-            ),
-          ],
-          leading: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UserLoginPage()));
-              },
-              child: const Icon(
-                Icons.logout_sharp,
-                color: Colors.red,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/jisserLogo.jpeg",
+                height: 30,
+              )
+            ],
+          ),
+          actions: [
+            Container(
+              padding: const EdgeInsets.all(7),
+              child: PopupMenuButton<int>(
+                icon: const Icon(Icons.menu, color: Colors.blueAccent),
+                offset: const Offset(0, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                itemBuilder: (context) => [
+
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          const Icon(Icons.language,
+                              color: Colors.blueAccent, size: 20),
+                          const SizedBox(width: 5),
+                          Text(S.of(context).change_language,
+                              style: const TextStyle(fontSize: 13)),
+                        ],
+                      ),
+                      onTap: () {
+                        BlocProvider.of<ChangeLangaugeCubit>(context)
+                            .changeLangauge();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 2,
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          const Icon(Icons.add,
+                              color: Color(0xfff90606), size: 20),
+                          const SizedBox(width: 5),
+                          Text(S.of(context).add_admin,
+                              style: const TextStyle(fontSize: 13)),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AddAdmin()));
+                      },
+                    ),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 2,
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          const Icon(Icons.exit_to_app,
+                              color: Color(0xfff90606), size: 20),
+                          const SizedBox(width: 5),
+                          Text(S.of(context).logout,
+                              style: const TextStyle(fontSize: 13)),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AdminLoginPage()));
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
+          ],
+          elevation: 0.0,
         ),
         body: _getSelectedPage(),
         bottomNavigationBar: BottomNavigationBar(
@@ -197,6 +260,7 @@ class _ManageUsersPage extends State<ManageUsersPage> {
       ),
     );
   }
+
   Widget _userManagementPage() {
     return Center(
       child: SingleChildScrollView(

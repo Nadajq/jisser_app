@@ -29,19 +29,19 @@ class _WaitingPageState extends State<WaitingPage> {
     // Start the repeating animation
     _startAnimation();
     Future.delayed(const Duration(seconds: 5), () {
-      if (mounted && widget.session != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatPage(
-              user: widget.user,
-              specialist: widget.specialist,
-              session: widget.session!,
-            ),
-          ),
-        );
-      }
-    });
+  if (mounted && widget.session != null) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(
+          user: widget.user,
+          specialist: widget.specialist,
+          session: widget.session!,
+        ),
+      ),
+    );
+  }
+});
   }
 
   void _startAnimation() {

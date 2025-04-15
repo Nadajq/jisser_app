@@ -63,7 +63,7 @@ class _CenterInfoPageState extends State<CenterInfoPage> {
 
             // Use a hardcoded value for centerId, for example 1:
             final center = snapshot.data!.firstWhere(
-                  (c) => c.id == 1, // Hardcoded centerId value
+              (c) => c.id == 1, // Hardcoded centerId value
               orElse: () => Centers(
                 id: 0,
                 name: 'غير موجود',
@@ -91,9 +91,9 @@ class _CenterInfoPageState extends State<CenterInfoPage> {
                       width: double.infinity,
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
+                          const Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
+                          const Icon(Icons.error),
                     ),
                   ),
 

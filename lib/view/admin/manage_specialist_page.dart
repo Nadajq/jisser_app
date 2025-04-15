@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisser_app/generated/l10n.dart';
 import 'package:jisser_app/model/specialist_model.dart';
+import 'package:jisser_app/widgets/custom_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'edit_specialist_page.dart';
 
@@ -21,6 +22,7 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
     _searchController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -30,21 +32,23 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
   Future<void> _fetchSpecialists() async {
     final response = await supabase.from('specialists').select('*');
     setState(() {
-      specialistsInfo = response.map<Specialist>((data) => Specialist(
-        id: data['id'],
-        name: data['name'],
-        imageUrl: data['image_url'],
-        pdfUrl: data['pdf_url'],
-        email: data['email'],
-        specialty: data['specialty'],
-        qualification: data['qualification'],
-        yearsOfExperience: data['years_of_experience'],
-        active: data['active'],
-        rating: data['rating'],
-        sessionDurations: data['session_duration'],
-        sessionTimes: data['session_times'],
-        date: data['date'],
-      )).toList();
+      specialistsInfo = response
+          .map<Specialist>((data) => Specialist(
+                id: data['id'],
+                name: data['name'],
+                imageUrl: data['image_url'],
+                pdfUrl: data['pdf_url'],
+                email: data['email'],
+                specialty: data['specialty'],
+                qualification: data['qualification'],
+                yearsOfExperience: data['years_of_experience'],
+                active: data['active'],
+                rating: data['rating'],
+                sessionDurations: data['session_duration'],
+                sessionTimes: data['session_times'],
+                date: data['date'],
+              ))
+          .toList();
       _filteredSpecialists = specialistsInfo;
     });
   }
@@ -55,14 +59,50 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
         final name = specialist.name.toLowerCase();
         final qualification = specialist.qualification.toLowerCase();
         final searchLower = query.toLowerCase();
-        return name.contains(searchLower) || qualification.contains(searchLower);
+        return name.contains(searchLower) ||
+            qualification.contains(searchLower);
       }).toList();
     });
   }
 
   void _deleteSpecialist(Specialist specialist) async {
-    await supabase.from('specialists').delete().match({'id': specialist.id});
-    _fetchSpecialists();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).confirm_delete),
+        content: Text(S.of(context).are_you_sure_you_want_to_delete_this_user),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                await supabase
+                    .from('specialists')
+                    .delete()
+                    .match({'id': specialist.id});
+                _fetchSpecialists();
+                setState(() {});
+                Navigator.pop(context);
+                CustomSnackBar.snackBarwidget(
+                    context: context,
+                    color: Colors.green,
+                    text: S.of(context).deteled_successfully);
+              } catch (e) {
+                print('Error deleting user: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error: $e")),
+                );
+              }
+            },
+            child: Text(S.of(context).delete,
+                style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -76,10 +116,10 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
           children: [
             const SizedBox(height: 20),
             Padding(
-              padding:const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 S.of(context).manage_specialists,
-                style:const TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -128,9 +168,10 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                     dataTextStyle: const TextStyle(
                       fontSize: 11,
                     ),
-                    columns:  [
+                    columns: [
                       DataColumn(label: Text(S.of(context).specialist_name)),
-                      DataColumn(label: Text(S.of(context).years_of_experience)),
+                      DataColumn(
+                          label: Text(S.of(context).years_of_experience)),
                       // DataColumn(label: Text("التخصص")),
                       // DataColumn(label: Text('المؤهل')),
                       DataColumn(label: Text(S.of(context).status)),
@@ -144,8 +185,12 @@ class _ManageSpecialistPageState extends State<ManageSpecialistPage> {
                         // DataCell(Text(specialist.specialty)),
                         // DataCell(Text(specialist.qualification)),
                         DataCell(Icon(
-                          specialist.active == true ? Icons.check_circle : Icons.cancel,
-                          color: specialist.active == true ? Colors.green : Colors.red,
+                          specialist.active == true
+                              ? Icons.check_circle
+                              : Icons.cancel,
+                          color: specialist.active == true
+                              ? Colors.green
+                              : Colors.red,
                         )),
                         DataCell(IconButton(
                           icon: const Icon(Icons.edit, color: Colors.green),

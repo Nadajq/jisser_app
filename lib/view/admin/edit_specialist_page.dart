@@ -10,10 +10,10 @@ class EditSpecialistPage extends StatefulWidget {
   const EditSpecialistPage({super.key, required this.specialist});
 
   @override
-  _EditSpecialistPageState createState() => _EditSpecialistPageState();
+  EditSpecialistPageState createState() => EditSpecialistPageState();
 }
 
-class _EditSpecialistPageState extends State<EditSpecialistPage> {
+class EditSpecialistPageState extends State<EditSpecialistPage> {
   final SupabaseClient supabase = Supabase.instance.client;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -28,9 +28,7 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
     emailController.text = widget.specialist.email;
     specialization = widget.specialist.specialty;
     qualification = widget.specialist.qualification;
-    accountStatus = widget.specialist.active == true ? 'نشط' : 'غير نشط';
-        /*? S.of(context).active
-        : S.of(context).not_active;*/
+    accountStatus = widget.specialist.active == true ? "نشط" : "غير نشط";
   }
 
   void _submitForm() async {
@@ -110,17 +108,17 @@ class _EditSpecialistPageState extends State<EditSpecialistPage> {
                 const SizedBox(height: 16),
                 buildLabeledDropdown(' : ${S.of(context).specialization}',
                     Specialist.specialties, specialization, (value) {
-                      setState(() {
-                        specialization = value;
-                      });
-                    }),
+                  setState(() {
+                    specialization = value;
+                  });
+                }),
                 const SizedBox(height: 16),
                 buildLabeledDropdown(': ${S.of(context).qualification}',
                     Specialist.qualifications, qualification, (value) {
-                      setState(() {
-                        qualification = value;
-                      });
-                    }),
+                  setState(() {
+                    qualification = value;
+                  });
+                }),
                 const SizedBox(height: 16),
                 if (widget.specialist.pdfUrl.isNotEmpty)
                   ElevatedButton(

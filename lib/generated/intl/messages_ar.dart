@@ -23,8 +23,16 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "active": MessageLookupByLibrary.simpleMessage("نشط"),
+    "add_admin": MessageLookupByLibrary.simpleMessage("اضافة مسؤول"),
     "add_new_blog": MessageLookupByLibrary.simpleMessage("إضافة مدونة جديدة"),
     "adding": MessageLookupByLibrary.simpleMessage("إضافة"),
+    "admin_added_successfully": MessageLookupByLibrary.simpleMessage(
+      "تم اضافة المسؤول",
+    ),
+    "are_sure_you_want_to_delete_the_account":
+        MessageLookupByLibrary.simpleMessage(
+          "هل انت متاكد انك تريد حذف الحساب",
+        ),
     "are_you_sure_you_want_to_delete_this_blog":
         MessageLookupByLibrary.simpleMessage(
           "هل أنت متأكد أنك تريد حذف هذه المقالة؟",
@@ -33,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
         ),
-    "back": MessageLookupByLibrary.simpleMessage("جوع"),
+    "back": MessageLookupByLibrary.simpleMessage("العودة"),
     "blog_title": MessageLookupByLibrary.simpleMessage("العنوان"),
     "blogs": MessageLookupByLibrary.simpleMessage("المدونات"),
     "book_session": MessageLookupByLibrary.simpleMessage("حجز الجلسة"),
@@ -67,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deteled_successfully": MessageLookupByLibrary.simpleMessage(
       "تم الحذف بنجاح",
     ),
+    "duration": MessageLookupByLibrary.simpleMessage("المدة"),
     "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
     "edit_blog": MessageLookupByLibrary.simpleMessage("تعديل المدونة"),
     "edit_specialist_account": MessageLookupByLibrary.simpleMessage(
@@ -107,6 +116,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "not_active": MessageLookupByLibrary.simpleMessage("غير نشط"),
     "offer_sessions": MessageLookupByLibrary.simpleMessage("تقديم الجلسات"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+    "password_must_be_at_least_8_characters_long":
+        MessageLookupByLibrary.simpleMessage(
+          "كلمة المرور يجب ان تكون على الاقل 8 حروف",
+        ),
+    "passwrod_must_contain_at_least_one_lowercase_letter":
+        MessageLookupByLibrary.simpleMessage(
+          "كلمة المرور يجب ان تحتوي على حرف صغير",
+        ),
+    "passwrod_must_contain_at_least_one_number":
+        MessageLookupByLibrary.simpleMessage(
+          "كلمة المرور يجب ان تحتوي على رقم",
+        ),
+    "passwrod_must_contain_at_least_one_special_character":
+        MessageLookupByLibrary.simpleMessage(
+          "كلمة المرور يجب ان تحتوي على حرف خاص",
+        ),
+    "passwrod_must_contain_at_least_one_uppercase_letter":
+        MessageLookupByLibrary.simpleMessage(
+          "كلمة المرور يجب ان تحتوي على حرف كبير",
+        ),
     "please_enter_confirm_password": MessageLookupByLibrary.simpleMessage(
       "يرجى تأكيد كلمة المرور",
     ),
@@ -170,6 +199,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "successfully_updated": MessageLookupByLibrary.simpleMessage(
       "تم تعديل البيانات بنجاح",
     ),
+    "the_account_has_been_created_successfully":
+        MessageLookupByLibrary.simpleMessage("تم انشاء الحساب بنجاح"),
     "the_password_does_not_match": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور غير متطابقة",
     ),

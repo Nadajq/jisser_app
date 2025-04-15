@@ -17,7 +17,7 @@ class _logoPageState extends State<logoPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => widget.child!),
-              (route) => false);
+          (route) => false);
     });
     super.initState();
   }
@@ -34,15 +34,15 @@ class _logoPageState extends State<logoPage> {
             crossAxisAlignment:
             CrossAxisAlignment.center,
             children: [
-              Hero(
-                tag: 'logo',
-                child: Image.asset(
-                  'assets/waiting_logo.png',
+             Hero(
+               tag: 'logo',
+               child: Image.asset(
+                 'assets/waiting_logo.png',
                   width: 150,
-                  height: 150,
-
+                 height: 150,
+               
                 ),
-              ),
+             ),
               const Text(
                 "جسر",
                 style: TextStyle(

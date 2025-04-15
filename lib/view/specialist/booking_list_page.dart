@@ -9,7 +9,7 @@ import 'package:jisser_app/model/specialist_model.dart';
 import 'package:jisser_app/model/users_model.dart';
 import 'package:jisser_app/view/chat_page/chat_page.dart';
 import 'package:jisser_app/view/specialist/schedule_page.dart';
-import 'package:jisser_app/view/user_login_page.dart';
+import 'package:jisser_app/view/specialist/specialist_login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../widgets/custom_snack_bar.dart';
@@ -88,6 +88,37 @@ class _BookingListPageState extends State<BookingListPage> {
     }
   }
 
+  showDialogBox(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+                title: Text(S.of(context).confirm_delete),
+                content:
+                    Text(S.of(context).are_sure_you_want_to_delete_the_account),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(S.of(context).cancel),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await Supabase.instance.client
+                          .from('specialists')
+                          .delete()
+                          .eq('id', widget.specialist.id);
+                      AuthService().signOut();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SpecialistLoginPage()));
+                    },
+                    child: Text(S.of(context).delete,
+                        style: const TextStyle(color: Colors.red)),
+                  ),
+                ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChangeLangaugeCubit, ChangeLangaugeState>(
@@ -122,7 +153,6 @@ class _BookingListPageState extends State<BookingListPage> {
                                 onTap: () async {
                                   await Clipboard.setData(
                                       const ClipboardData(text: "jisser@gmail.com"));
-
                                   CustomSnackBar.snackBarwidget(
                                       context: context,
                                       color: Colors.green,
@@ -153,7 +183,8 @@ class _BookingListPageState extends State<BookingListPage> {
                             ],
                           ),
                           onTap: () {
-                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            BlocProvider.of<ChangeLangaugeCubit>(context)
+                                .changeLangauge();
                             Navigator.pop(context);
                           },
                         ),
@@ -171,12 +202,7 @@ class _BookingListPageState extends State<BookingListPage> {
                             ],
                           ),
                           onTap: () {
-                            AuthService().signOut();
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const UserLoginPage()),
-                            );
+                            showDialogBox(context);
                           },
                         ),
                       ),

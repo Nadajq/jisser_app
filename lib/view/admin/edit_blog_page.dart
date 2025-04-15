@@ -91,14 +91,14 @@ class _EditBlogPageState extends State<EditBlogPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                Text(
+                 Text(
                   S.of(context).edit_blog,
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 const SizedBox(height: 30),
                 Row(
                   children: [
-                    Text('${S.of(context).blog_title}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                     Text('${S.of(context).blog_title}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
                     Expanded(
                       child: TextField(
@@ -116,7 +116,7 @@ class _EditBlogPageState extends State<EditBlogPage> {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text('${S.of(context).publish_date}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                     Text('${S.of(context).publish_date}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
                     Expanded(
                       child: TextField(
@@ -140,7 +140,7 @@ class _EditBlogPageState extends State<EditBlogPage> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Text('${S.of(context).content}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                 Text('${S.of(context).content}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _contentController,

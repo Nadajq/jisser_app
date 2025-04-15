@@ -5,6 +5,7 @@ import 'package:jisser_app/generated/l10n.dart';
 
 import 'package:jisser_app/view/widgets/form_container_widget.dart';
 import 'package:jisser_app/widgets/custom_snack_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'manage_users_page.dart';
 
@@ -23,6 +24,72 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loginAdmin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    // Check hardcoded admin credentials (optional fallback)
+    if (email == "admin" && password == "admin") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ManageUsersPage(),
+        ),
+      );
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        text: S.of(context).login_successfully,
+        color: Colors.green,
+      );
+      return;
+    }
+
+    try {
+      final supabase = Supabase.instance.client;
+
+      // 1. First try to sign in
+      final AuthResponse res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      // 2. Check if user exists in admin table
+      final adminData = await supabase
+          .from('admin') // or your admin table name
+          .select()
+          .eq('email', email)
+          .eq('role', 'admin') // assuming you have a role column
+          .single();
+
+      // Success - navigate to admin page
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ManageUsersPage(),
+          ),
+        );
+        CustomSnackBar.snackBarwidget(
+          context: context,
+          text: S.of(context).login_successfully,
+          color: Colors.green,
+        );
+      }
+    } on AuthException catch (error) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        text: error.message,
+        color: Colors.red,
+      );
+    } catch (error) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        text: S.of(context).your_email_or_password_is_incorrect,
+        color: Colors.red,
+      );
+    }
   }
 
   @override
@@ -58,7 +125,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             ],
                           ),
                           onTap: () {
-                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            BlocProvider.of<ChangeLangaugeCubit>(context)
+                                .changeLangauge();
                             Navigator.pop(context);
                           },
                         ),
@@ -91,10 +159,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment:
-                  MainAxisAlignment.start,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
                       'assets/waiting_logo.png',
@@ -136,26 +202,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
-                        if (_emailController.text == "admin" &&
-                            _passwordController.text == "admin") {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ManageUsersPage(),
-                              ));
-                          CustomSnackBar.snackBarwidget(
-                            context: context,
-                            text: S.of(context).login_successfully,
-                            color: Colors.green,
-                          );
-                        } else {
-                          CustomSnackBar.snackBarwidget(
-                            context: context,
-                            text:
-                            S.of(context).your_email_or_password_is_incorrect,
-                            color: Colors.red,
-                          );
-                        }
+                        _loginAdmin();
                         //button to go to user home page
                       },
                       child: Container(
@@ -167,10 +214,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         ),
                         child: Center(
                             child: Text(
-                              S.of(context).login_in,
-                              style: const TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.bold),
-                            )),
+                          S.of(context).login_in,
+                          style: const TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )),
                       ),
                     ),
                   ],

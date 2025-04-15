@@ -217,14 +217,14 @@ class _UserLoginPageState extends State<UserLoginPage> {
                         child: Center(
                           child: _isLoading
                               ? const CircularProgressIndicator(
-                              color: Colors.white)
+                                  color: Colors.white)
                               : Text(
-                            S.of(context).login_in,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                  S.of(context).login_in,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -238,14 +238,14 @@ class _UserLoginPageState extends State<UserLoginPage> {
                           onTap: _isLoading
                               ? null
                               : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                const UserSignUpPage(),
-                              ),
-                            );
-                          },
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const UserSignUpPage(),
+                                    ),
+                                  );
+                                },
                           child: Text(
                             S.of(context).create_account,
                             style: const TextStyle(color: Colors.blue),
@@ -258,14 +258,14 @@ class _UserLoginPageState extends State<UserLoginPage> {
                       onTap: _isLoading
                           ? null
                           : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const SpecialistLoginPage(),
-                          ),
-                        );
-                      },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SpecialistLoginPage(),
+                                ),
+                              );
+                            },
                       child: Container(
                         width: double.infinity,
                         height: 50,
@@ -289,13 +289,13 @@ class _UserLoginPageState extends State<UserLoginPage> {
                       onTap: _isLoading
                           ? null
                           : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AdminLoginPage(),
-                          ),
-                        );
-                      },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminLoginPage(),
+                                ),
+                              );
+                            },
                       child: Container(
                         width: double.infinity,
                         height: 50,

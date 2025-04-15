@@ -238,20 +238,18 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
         ],
         active: false,
         date:
-        "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}",
+            "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}",
       );
-
       if (mounted) {
         CustomSnackBar.snackBarwidget(
           context: context,
           color: Colors.green,
-          text: S.of(context).login_successfully,
+          text: S.of(context).the_account_has_been_created_successfully,
         );
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const SpecialistLoginPage()),
-              (route) => false,
+          (route) => false,
         );
       }
     } catch (e) {
@@ -321,7 +319,8 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
                             ],
                           ),
                           onTap: () {
-                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            BlocProvider.of<ChangeLangaugeCubit>(context)
+                                .changeLangauge();
                             Navigator.pop(context);
                           },
                         ),
@@ -418,7 +417,7 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
                             hintText: S.of(context).specialization,
                             border: InputBorder.none,
                             contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
+                                const EdgeInsets.symmetric(horizontal: 16),
                           ),
                           items: specialties.map((specialty) {
                             return DropdownMenuItem<String>(
@@ -445,7 +444,7 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
                             hintText: S.of(context).qualification,
                             border: InputBorder.none,
                             contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
+                                const EdgeInsets.symmetric(horizontal: 16),
                           ),
                           items: qualifications.map((qualification) {
                             return DropdownMenuItem<String>(
@@ -527,14 +526,14 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
                         child: Center(
                           child: _isLoading
                               ? const CircularProgressIndicator(
-                              color: Colors.white)
+                                  color: Colors.white)
                               : Text(
-                            S.of(context).create_account,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                  S.of(context).create_account,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -548,15 +547,15 @@ class _SpecialistSignupPageState extends State<SpecialistSignupPage> {
                           onTap: _isLoading
                               ? null
                               : () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                const SpecialistLoginPage(),
-                              ),
-                                  (route) => false,
-                            );
-                          },
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SpecialistLoginPage(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                },
                           child: Text(
                             S.of(context).login_as_specialist,
                             style: const TextStyle(color: Colors.blue),

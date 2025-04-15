@@ -15,8 +15,8 @@ class ManageSessionsPage extends StatefulWidget {
 class _ManageSessionsPageState extends State<ManageSessionsPage> {
   final TextEditingController _searchController = TextEditingController();
   List<Sessions> _filteredSessions = [];
-  List<Sessions> _allSessions = [];
-  List<Specialist> specialistsInfo = [];
+  List<Sessions> _allSessions = []; 
+  List<Specialist> specialistsInfo = []; 
   List<Users> usersList = [];
 
   @override
@@ -28,7 +28,7 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    _fetchData(); 
   }
 
   Future<void> _fetchData() async {
@@ -36,12 +36,12 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
       final sessionsResponse = await Supabase.instance.client
           .from('sessions')
           .select()
-          .order('created_at', ascending: false);
+          .order('created_at', ascending: false); 
       final specialistsResponse =
-      await Supabase.instance.client.from('specialists').select();
+          await Supabase.instance.client.from('specialists').select();
 
       final usersResponse =
-      await Supabase.instance.client.from('userrs').select();
+          await Supabase.instance.client.from('userrs').select();
       setState(() {
         _allSessions = sessionsResponse
             .map((session) => Sessions.fromJson(session))
@@ -50,20 +50,20 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
             .map((specialist) => Specialist.fromMap(specialist))
             .toList();
         usersList = usersResponse.map((user) => Users.fromJson(user)).toList();
-        _filteredSessions = List.from(_allSessions);
+        _filteredSessions = List.from(_allSessions); 
       });
     } catch (e) {
       print('Error fetching data: $e');
     }
   }
 
-
+  
   void _filterSessions(String query) {
     final searchLower = query.toLowerCase();
     setState(() {
       _filteredSessions = _allSessions.where((session) {
         final specialistName =
-        session.getSpecialistName(specialistsInfo).toLowerCase();
+            session.getSpecialistName(specialistsInfo).toLowerCase();
         final userName = session.getUserName(usersList).toLowerCase();
         return specialistName.contains(searchLower) ||
             userName.contains(searchLower);
@@ -81,7 +81,7 @@ class _ManageSessionsPageState extends State<ManageSessionsPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            Padding(
+             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 S.of(context).manage_sessions,

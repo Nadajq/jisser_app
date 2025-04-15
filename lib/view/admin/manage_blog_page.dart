@@ -35,21 +35,21 @@ class _ManageBlogPageState extends State<ManageBlogPage> {
 
   Future<void> _fetchBlogs() async {
     try {
-      final response = await supabase.from('blogs').select('*');
-      // log(response.toString());
-      setState(() {
-        blogsList = (response as List).map((blog) => Blogs(
-          id: blog['id'],
-          title: blog['title'],
-          content: blog['content'],
-          publishDate: blog['created_at'],
-        )).toList();
-        _filteredBlogs = List.from(blogsList);
-      });
-    }  catch (e) {
-      log(e.toString());
-      // TODO
-    }
+  final response = await supabase.from('blogs').select('*');
+  // log(response.toString());
+  setState(() {
+    blogsList = (response as List).map((blog) => Blogs(
+      id: blog['id'],
+      title: blog['title'],
+      content: blog['content'],
+      publishDate: blog['created_at'],
+    )).toList();
+    _filteredBlogs = List.from(blogsList);
+  });
+}  catch (e) {
+  log(e.toString());
+  // TODO
+}
   }
 
   void _filterBlogs(String query) {
@@ -100,7 +100,7 @@ class _ManageBlogPageState extends State<ManageBlogPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            Padding(
+             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 S.of(context).manage_blogs,
@@ -184,10 +184,10 @@ class _ManageBlogPageState extends State<ManageBlogPage> {
                     rows: _filteredBlogs.map((blogs) {
                       return DataRow(cells: [
                         DataCell(SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.4,
-                            child: Text(
-                                overflow:  TextOverflow.ellipsis,
-                                blogs.title))),
+                          width: MediaQuery.sizeOf(context).width * 0.4,
+                          child: Text(
+                            overflow:  TextOverflow.ellipsis,
+                            blogs.title))),
                         // DataCell(Text(blogs.publishDate)),
                         DataCell(IconButton(
                           icon: const Icon(Icons.edit, color: Colors.green),

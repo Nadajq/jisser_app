@@ -7,8 +7,7 @@ import 'package:jisser_app/generated/l10n.dart';
 import 'package:jisser_app/model/specialist_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:jisser_app/model/users_model.dart';
-import 'package:jisser_app/view/waiting_page%20.dart';
-//import 'package:jisser_app/view/waiting_page.dart';
+import 'package:jisser_app/view/waiting_page.dart';
 import 'package:jisser_app/widgets/custom_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../control/Stripe_keys.dart';
@@ -61,16 +60,16 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
   paymentSheetInitialization(amountToBeCharge, currency) async {
     try {
       intentPaymentData =
-      await makeIntentForPayment(amountToBeCharge, currency);
+          await makeIntentForPayment(amountToBeCharge, currency);
       await Stripe.instance
           .initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-            allowsDelayedPaymentMethods: true,
-            paymentIntentClientSecret: intentPaymentData!["client_secret"],
-            style: ThemeMode.dark,
-            merchantDisplayName: "جسر",
-            primaryButtonLabel: "Pay", // Customizing the button text
-          ))
+              paymentSheetParameters: SetupPaymentSheetParameters(
+        allowsDelayedPaymentMethods: true,
+        paymentIntentClientSecret: intentPaymentData!["client_secret"],
+        style: ThemeMode.dark,
+        merchantDisplayName: "جسر",
+        primaryButtonLabel: "Pay", // Customizing the button text
+      ))
           .then((val) {
         print(val);
       });
@@ -160,60 +159,60 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
     }
   }
 
-  Future<Sessions> _createSession() async {
-    try {
-      // Create a new session object
-      final session = Sessions(
-        sessionId: "0", // Temporary ID, will be replaced after insertion
-        specialistId: widget.specialist.id,
-        userId: widget.users.id,
-        sessionDate:
-        "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}",
-        sessionTime: _selectedTime!,
-        duration: _selectedDuration!,
-        active: true,
-        chatId: "0",
-      );
+ Future<Sessions> _createSession() async {
+  try {
+    // Create a new session object
+    final session = Sessions(
+      sessionId: "0", // Temporary ID, will be replaced after insertion
+      specialistId: widget.specialist.id,
+      userId: widget.users.id,
+      sessionDate:
+          "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}",
+      sessionTime: _selectedTime!,
+      duration: _selectedDuration!,
+      active: true,
+      chatId: "0",
+    );
 
-      // Insert the session into the Supabase table
-      await Supabase.instance.client.from('sessions').insert({
-        'specialist_id': session.specialistId,
-        'user_id': session.userId,
-        'session_date': session.sessionDate,
-        'session_time': session.sessionTime,
-        'duration': session.duration,
-        'active': session.active,
-        'chat_id': session.chatId,
-        "created_at": DateTime.now().toIso8601String(),
-      });
+    // Insert the session into the Supabase table
+    await Supabase.instance.client.from('sessions').insert({
+      'specialist_id': session.specialistId,
+      'user_id': session.userId,
+      'session_date': session.sessionDate,
+      'session_time': session.sessionTime,
+      'duration': session.duration,
+      'active': session.active,
+      'chat_id': session.chatId,
+      "created_at": DateTime.now().toIso8601String(),
+    });
 
-      // Fetch the last inserted session
-      final response = await Supabase.instance.client
-          .from('sessions')
-          .select()
-          .eq('specialist_id', session.specialistId)
-          .eq('user_id', session.userId)
-          .order('created_at', ascending: false) // Order by creation time
-          .limit(1)
-          .single();
+    // Fetch the last inserted session
+    final response = await Supabase.instance.client
+        .from('sessions')
+        .select()
+        .eq('specialist_id', session.specialistId)
+        .eq('user_id', session.userId)
+        .order('created_at', ascending: false) // Order by creation time
+        .limit(1)
+        .single();
 
-      // Map the response to a Sessions object
-      var updatedSession = Sessions(
-        sessionId: response['id']?.toString() ?? '',
-        specialistId: response['specialist_id']?.toString() ?? '',
-        userId: response['user_id']?.toString() ?? '',
-        sessionDate: response['session_date'] ?? '',
-        sessionTime: response['session_time'] ?? '',
-        duration: response['duration'] ?? '',
-        active: response['active'] ?? false,
-        chatId: response['chat_id']?.toString(),
-      );
+    // Map the response to a Sessions object
+    var updatedSession = Sessions(
+      sessionId: response['id']?.toString() ?? '',
+      specialistId: response['specialist_id']?.toString() ?? '',
+      userId: response['user_id']?.toString() ?? '',
+      sessionDate: response['session_date'] ?? '',
+      sessionTime: response['session_time'] ?? '',
+      duration: response['duration'] ?? '',
+      active: response['active'] ?? false,
+      chatId: response['chat_id']?.toString(),
+    );
 
-      return updatedSession;
-    } catch (e) {
-      throw Exception('فشل في حفظ بيانات الجلسة: ${e.toString()}');
-    }
+    return updatedSession;
+  } catch (e) {
+    throw Exception('فشل في حفظ بيانات الجلسة: ${e.toString()}');
   }
+}
 
   String _getErrorMessage(String error) {
     if (error.contains('Connection')) {
@@ -241,7 +240,7 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
           ),
           title: Center(
               child:
-              Image.asset('assets/jisserLogo.jpeg', width: 40, height: 40)),
+                  Image.asset('assets/jisserLogo.jpeg', width: 40, height: 40)),
           actions: const [SizedBox(width: 48)],
         ),
         body: Padding(
@@ -260,11 +259,11 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
                         width: 100,
                         fit: BoxFit.fill,
                         placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
+                            const Center(child: CircularProgressIndicator()),
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                   const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -279,7 +278,7 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
                         Text(
                           widget.specialist.specialty,
                           style:
-                          TextStyle(fontSize: 16, color: Colors.grey[600]),
+                              TextStyle(fontSize: 16, color: Colors.grey[600]),
                         ),
                       ],
                     ),
@@ -305,7 +304,7 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
                 const SizedBox(height: 24),
                 Text(S.of(context).session_time,
                     style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -318,16 +317,16 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
                 const SizedBox(height: 24),
                 Text(S.of(context).session_duration,
                     style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: widget.specialist.sessionDurations!.map((duration) {
                     return FittedBox(
                       child: buildRadioButton(duration, _selectedDuration,
-                              (value) {
-                            setState(() => _selectedDuration = value!);
-                          }),
+                          (value) {
+                        setState(() => _selectedDuration = value!);
+                      }),
                     );
                   }).toList(),
                 ),
@@ -344,15 +343,15 @@ class _SpecialistInfoPageState extends State<SpecialistInfoPage> {
                     ),
                     child: _isLoading
                         ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                          color: Colors.white, strokeWidth: 2),
-                    )
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                                color: Colors.white, strokeWidth: 2),
+                          )
                         :  Text(
-                      S.of(context).book_session  ,
-                      style: const  TextStyle(fontSize: 18, color: Colors.white),
-                    ),
+                          S.of(context).book_session  ,
+                            style: const  TextStyle(fontSize: 18, color: Colors.white),
+                          ),
                   ),
                 ),
               ],

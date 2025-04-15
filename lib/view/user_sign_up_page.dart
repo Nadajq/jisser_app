@@ -68,6 +68,54 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
       return false;
     }
 
+    // Password length check
+    if (_passwordController.text.length < 8) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).password_must_be_at_least_8_characters_long,
+      );
+      return false;
+    }
+
+    // Password complexity checks
+    if (!_passwordController.text.contains(RegExp(r'[A-Z]'))) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).passwrod_must_contain_at_least_one_uppercase_letter,
+      );
+      return false;
+    }
+
+    if (!_passwordController.text.contains(RegExp(r'[a-z]'))) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).passwrod_must_contain_at_least_one_lowercase_letter,
+      );
+      return false;
+    }
+
+    if (!_passwordController.text.contains(RegExp(r'[0-9]'))) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text: S.of(context).passwrod_must_contain_at_least_one_number,
+      );
+      return false;
+    }
+
+    if (!_passwordController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      CustomSnackBar.snackBarwidget(
+        context: context,
+        color: Colors.red,
+        text:
+            S.of(context).passwrod_must_contain_at_least_one_special_character,
+      );
+      return false;
+    }
+
     if (_passwordController.text != _confirmPasswordController.text) {
       CustomSnackBar.snackBarwidget(
         context: context,
@@ -110,13 +158,13 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
         CustomSnackBar.snackBarwidget(
           context: context,
           color: Colors.green,
-          text: S.of(context).login_successfully,
+          text: S.of(context).the_account_has_been_created_successfully,
         );
 
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const UserLoginPage()),
-              (route) => false,
+          (route) => false,
         );
       }
     } catch (e) {
@@ -125,7 +173,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
           CustomSnackBar.snackBarwidget(
             context: context,
             color: Colors.red,
-            text: S.of(context).thsi_email_is_not_registered,
+            text: S.of(context).this_email_is_already_registered,
           );
         } else if (e.toString().contains("Connection timed out") ||
             e.toString().contains("ClientException with SocketException")) {
@@ -185,7 +233,8 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                             ],
                           ),
                           onTap: () {
-                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            BlocProvider.of<ChangeLangaugeCubit>(context)
+                                .changeLangauge();
                             Navigator.pop(context);
                           },
                         ),
@@ -200,7 +249,7 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                                   color: Color(0xfff90606), size: 20),
                               const SizedBox(width: 5),
                               Text(S.of(context).back,
-                                  style: TextStyle(fontSize: 13)),
+                                  style: const TextStyle(fontSize: 13)),
                             ],
                           ),
                           onTap: () {
@@ -283,14 +332,14 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                         child: Center(
                           child: _isLoading
                               ? const CircularProgressIndicator(
-                              color: Colors.white)
+                                  color: Colors.white)
                               : Text(
-                            S.of(context).create_new_account,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                  S.of(context).create_new_account,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -304,17 +353,18 @@ class _UserSignUpPageState extends State<UserSignUpPage> {
                           onTap: _isLoading
                               ? null
                               : () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UserLoginPage(),
-                              ),
-                                  (route) => false,
-                            );
-                          },
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const UserLoginPage(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                },
                           child: Text(
                             S.of(context).login_in,
-                            style: TextStyle(color: Colors.blue),
+                            style: const TextStyle(color: Colors.blue),
                           ),
                         ),
                       ],

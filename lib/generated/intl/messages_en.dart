@@ -23,8 +23,16 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "active": MessageLookupByLibrary.simpleMessage("active"),
+    "add_admin": MessageLookupByLibrary.simpleMessage("add admin"),
     "add_new_blog": MessageLookupByLibrary.simpleMessage("add new blog"),
     "adding": MessageLookupByLibrary.simpleMessage("adding"),
+    "admin_added_successfully": MessageLookupByLibrary.simpleMessage(
+      "admin added successfully",
+    ),
+    "are_sure_you_want_to_delete_the_account":
+        MessageLookupByLibrary.simpleMessage(
+          "Are sure you want to delete the account",
+        ),
     "are_you_sure_you_want_to_delete_this_blog":
         MessageLookupByLibrary.simpleMessage(
           "Are you sure you want to delete this blog?",
@@ -110,6 +118,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "not_active": MessageLookupByLibrary.simpleMessage("not active"),
     "offer_sessions": MessageLookupByLibrary.simpleMessage("offer sessions"),
     "password": MessageLookupByLibrary.simpleMessage("password"),
+    "password_must_be_at_least_8_characters_long":
+        MessageLookupByLibrary.simpleMessage(
+          " password must be at least 8 characters long",
+        ),
+    "passwrod_must_contain_at_least_one_lowercase_letter":
+        MessageLookupByLibrary.simpleMessage(
+          "Password must contain at least one lowercase letter",
+        ),
+    "passwrod_must_contain_at_least_one_number":
+        MessageLookupByLibrary.simpleMessage(
+          "Password must contain at least one number",
+        ),
+    "passwrod_must_contain_at_least_one_special_character":
+        MessageLookupByLibrary.simpleMessage(
+          "Password must contain at least one special character",
+        ),
+    "passwrod_must_contain_at_least_one_uppercase_letter":
+        MessageLookupByLibrary.simpleMessage(
+          "Password must contain at least one uppercase letter",
+        ),
     "please_enter_confirm_password": MessageLookupByLibrary.simpleMessage(
       "please enter confirm password",
     ),
@@ -175,6 +203,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "successfully_updated": MessageLookupByLibrary.simpleMessage(
       "successfully updated",
     ),
+    "the_account_has_been_created_successfully":
+        MessageLookupByLibrary.simpleMessage(
+          "the account has been created successfully",
+        ),
     "the_password_does_not_match": MessageLookupByLibrary.simpleMessage(
       "the password does not match",
     ),

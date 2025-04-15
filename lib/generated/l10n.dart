@@ -240,11 +240,6 @@ class S {
     );
   }
 
-  /// `Back`
-  String get back {
-    return Intl.message('Back', name: 'back', desc: '', args: []);
-  }
-
   /// `Create account`
   String get create_new_account {
     return Intl.message(
@@ -775,11 +770,6 @@ class S {
     );
   }
 
-  /// `duration`
-  String get duration {
-    return Intl.message('duration', name: 'duration', desc: '', args: []);
-  }
-
   /// `Are you sure you want to delete this blog?`
   String get are_you_sure_you_want_to_delete_this_blog {
     return Intl.message(
@@ -975,6 +965,101 @@ class S {
     return Intl.message(
       'coping successfully',
       name: 'coping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `duration`
+  String get duration {
+    return Intl.message('duration', name: 'duration', desc: '', args: []);
+  }
+
+  /// `the account has been created successfully`
+  String get the_account_has_been_created_successfully {
+    return Intl.message(
+      'the account has been created successfully',
+      name: 'the_account_has_been_created_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` password must be at least 8 characters long`
+  String get password_must_be_at_least_8_characters_long {
+    return Intl.message(
+      ' password must be at least 8 characters long',
+      name: 'password_must_be_at_least_8_characters_long',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain at least one uppercase letter`
+  String get passwrod_must_contain_at_least_one_uppercase_letter {
+    return Intl.message(
+      'Password must contain at least one uppercase letter',
+      name: 'passwrod_must_contain_at_least_one_uppercase_letter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain at least one lowercase letter`
+  String get passwrod_must_contain_at_least_one_lowercase_letter {
+    return Intl.message(
+      'Password must contain at least one lowercase letter',
+      name: 'passwrod_must_contain_at_least_one_lowercase_letter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain at least one number`
+  String get passwrod_must_contain_at_least_one_number {
+    return Intl.message(
+      'Password must contain at least one number',
+      name: 'passwrod_must_contain_at_least_one_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain at least one special character`
+  String get passwrod_must_contain_at_least_one_special_character {
+    return Intl.message(
+      'Password must contain at least one special character',
+      name: 'passwrod_must_contain_at_least_one_special_character',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message('Back', name: 'back', desc: '', args: []);
+  }
+
+  /// `Are sure you want to delete the account`
+  String get are_sure_you_want_to_delete_the_account {
+    return Intl.message(
+      'Are sure you want to delete the account',
+      name: 'are_sure_you_want_to_delete_the_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `add admin`
+  String get add_admin {
+    return Intl.message('add admin', name: 'add_admin', desc: '', args: []);
+  }
+
+  /// `admin added successfully`
+  String get admin_added_successfully {
+    return Intl.message(
+      'admin added successfully',
+      name: 'admin_added_successfully',
       desc: '',
       args: [],
     );

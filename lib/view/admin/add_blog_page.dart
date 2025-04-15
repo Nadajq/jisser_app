@@ -31,7 +31,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
       setState(() {
         _selectedDate = pickedDate;
         _dateController.text =
-        "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+            "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
       });
     }
   }

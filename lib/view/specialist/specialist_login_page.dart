@@ -69,28 +69,38 @@ class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
             .maybeSingle();
 
         if (specialistResponse != null) {
-          // User found in specialists table
+          // Check if account is active
+          if (specialistResponse['active'] == true) {
+            CustomSnackBar.snackBarwidget(
+              context: context,
+              color: Colors.red,
+              text: 'الرجاء الانتظار حتى يتم تنشيط حسابك',
+            );
+            return;
+          }
+
+          // User found in specialists table and account is active
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => BookingListPage(
-                    specialist: Specialist(
-                      id: specialistResponse['id'],
-                      name: specialistResponse['name'],
-                      email: specialistResponse['email'],
-                      imageUrl: specialistResponse['image_url'],
-                      pdfUrl: specialistResponse['pdf_url'],
-                      specialty: specialistResponse['specialty'],
-                      qualification: specialistResponse['qualification'],
-                      yearsOfExperience:
-                      specialistResponse['years_of_experience'],
-                      rating: specialistResponse['rating'],
-                      sessionTimes: specialistResponse['session_times'],
-                      sessionDurations:
-                      specialistResponse['session_durations'],
-                      date: specialistResponse['date'],
-                    ),
-                  )));
+                        specialist: Specialist(
+                          id: specialistResponse['id'],
+                          name: specialistResponse['name'],
+                          email: specialistResponse['email'],
+                          imageUrl: specialistResponse['image_url'],
+                          pdfUrl: specialistResponse['pdf_url'],
+                          specialty: specialistResponse['specialty'],
+                          qualification: specialistResponse['qualification'],
+                          yearsOfExperience:
+                              specialistResponse['years_of_experience'],
+                          rating: specialistResponse['rating'],
+                          sessionTimes: specialistResponse['session_times'],
+                          sessionDurations:
+                              specialistResponse['session_durations'],
+                          date: specialistResponse['date'],
+                        ),
+                      )));
           CustomSnackBar.snackBarwidget(
             context: context,
             color: Colors.green,
@@ -169,7 +179,8 @@ class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
                             ],
                           ),
                           onTap: () {
-                            BlocProvider.of<ChangeLangaugeCubit>(context).changeLangauge();
+                            BlocProvider.of<ChangeLangaugeCubit>(context)
+                                .changeLangauge();
                             Navigator.pop(context);
                           },
                         ),
@@ -255,14 +266,14 @@ class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
                         child: Center(
                           child: _isLoading
                               ? const CircularProgressIndicator(
-                              color: Colors.white)
+                                  color: Colors.white)
                               : Text(
-                            S.of(context).login_in,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                  S.of(context).login_in,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -276,7 +287,7 @@ class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                const SpecialistSignupPage(),
+                                    const SpecialistSignupPage(),
                               ),
                             );
                           },
