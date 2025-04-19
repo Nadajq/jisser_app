@@ -117,5 +117,6 @@
     "back": "Back",
     "are_sure_you_want_to_delete_the_account" : "Are sure you want to delete the account",
     "add_admin": "add admin",
-    "admin_added_successfully" : "admin added successfully"
+    "admin_added_successfully" : "admin added successfully",
+    "delete_account" : "delete account"
 }

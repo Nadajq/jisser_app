@@ -64,7 +64,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           .single();
 
       // Success - navigate to admin page
-      if (mounted) {
+      //if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -76,7 +76,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           text: S.of(context).login_successfully,
           color: Colors.green,
         );
-      }
+        return;
+     // }
     } on AuthException catch (error) {
       CustomSnackBar.snackBarwidget(
         context: context,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jisser_app/auth/auth_service.dart';
 import 'package:jisser_app/cubit/change_langauge_cubit.dart';
@@ -97,31 +96,31 @@ class _SchedulePageState extends State<SchedulePage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-                title: Text(S.of(context).confirm_delete),
-                content:
-                    Text(S.of(context).are_sure_you_want_to_delete_the_account),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(S.of(context).cancel),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await Supabase.instance.client
-                          .from('specialists')
-                          .delete()
-                          .eq('id', widget.specialist.id);
-                      AuthService().signOut();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const SpecialistLoginPage()));
-                    },
-                    child: Text(S.of(context).delete,
-                        style: const TextStyle(color: Colors.red)),
-                  ),
-                ]));
+            title: Text(S.of(context).confirm_delete),
+            content:
+            Text(S.of(context).are_sure_you_want_to_delete_the_account),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(S.of(context).cancel),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await Supabase.instance.client
+                      .from('specialists')
+                      .delete()
+                      .eq('id', widget.specialist.id);
+                  AuthService().signOut();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const SpecialistLoginPage()));
+                },
+                child: Text(S.of(context).delete,
+                    style: const TextStyle(color: Colors.red)),
+              ),
+            ]));
   }
 
   int _compareTime(TimeOfDay t1, TimeOfDay t2) {
@@ -240,25 +239,10 @@ class _SchedulePageState extends State<SchedulePage> {
                     PopupMenuItem<int>(
                       value: 0,
                       child: ListTile(
-                        leading: const Icon(Icons.mail, color: Colors.blueAccent),
-                        title: Column(
-                          children: [
-                            Text(S.of(context).contact_us,
-                                style: const TextStyle(fontSize: 13)),
-                            GestureDetector(
-                              onTap: () async {
-                                await Clipboard.setData(
-                                    const ClipboardData(text: "jisser@gmail.com"));
-                                CustomSnackBar.snackBarwidget(
-                                    context: context,
-                                    color: Colors.green,
-                                    text: S.of(context).coping);
-                              },
-                              child: const Text("jisser@gmail.com",
-                                  style: TextStyle(fontSize: 13)),
-                            ),
-                          ],
-                        ),
+                        trailing:
+                        const Icon(Icons.mail, color: Colors.blueAccent),
+                        title: const Text("jisser@gmail.com",
+                            style: TextStyle(fontSize: 13)),
                         visualDensity:
                         const VisualDensity(horizontal: -4, vertical: -2),
                         onTap: () {
@@ -287,6 +271,30 @@ class _SchedulePageState extends State<SchedulePage> {
                     ),
                     PopupMenuItem<int>(
                       value: 2,
+                      child: ListTile(
+                        title: Row(
+                          // textDirection: TextDirection.rtl,
+                          children: [
+                            const Icon(Icons.exit_to_app,
+                                color: Colors.red, size: 20),
+                            const SizedBox(width: 5),
+                            Text(S.of(context).logout,
+                                style: const TextStyle(fontSize: 13)),
+                          ],
+                        ),
+                        onTap: () {
+                          AuthService().signOut();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const SpecialistLoginPage()));
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 3,
                       child: ListTile(
                         title: Row(
                           children: [
@@ -352,30 +360,30 @@ class _SchedulePageState extends State<SchedulePage> {
                 // Three Time Slots
                 ...List.generate(
                     3,
-                    (index) => Column(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () => _selectTime(context, index),
-                                child: Text(
-                                  selectedTimes[index] == null
-                                      ? '${S.of(context).choose_time} ${index + 1}'
-                                      : '${S.of(context).time} ${index + 1}: ${selectedTimes[index]!.format(context)}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
+                        (index) => Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            onPressed: () => _selectTime(context, index),
+                            child: Text(
+                              selectedTimes[index] == null
+                                  ? '${S.of(context).choose_time} ${index + 1}'
+                                  : '${S.of(context).time} ${index + 1}: ${selectedTimes[index]!.format(context)}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
                               ),
                             ),
-                            const SizedBox(height: 16),
-                          ],
-                        )),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    )),
 
                 const SizedBox(height: 20),
 
@@ -413,8 +421,8 @@ class _SchedulePageState extends State<SchedulePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => SchedulePage(
-                                specialist: widget.specialist,
-                              )),
+                            specialist: widget.specialist,
+                          )),
                     );
                   },
                   child: Column(

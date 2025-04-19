@@ -94,7 +94,7 @@ class _UserHomePageState extends State<UserHomePage> {
                     ],
                   ),
                   visualDensity:
-                      const VisualDensity(horizontal: -4, vertical: -2),
+                  const VisualDensity(horizontal: -4, vertical: -2),
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -127,9 +127,32 @@ class _UserHomePageState extends State<UserHomePage> {
                     textDirection: TextDirection.rtl,
                     children: [
                       const Icon(Icons.exit_to_app,
-                          color: Color(0xfff90606), size: 20),
+                          color: Colors.red, size: 20),
                       const SizedBox(width: 5),
                       Text(S.of(context).logout,
+                          style: const TextStyle(fontSize: 13)),
+                    ],
+                  ),
+                  onTap: () {
+                    AuthService().signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserLoginPage()));
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 3,
+                child: ListTile(
+                  title: Row(
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      const Icon(Icons.delete,
+                          color: Color(0xfff90606), size: 20),
+                      const SizedBox(width: 5),
+                      Text(S.of(context).delete_account,
                           style: const TextStyle(fontSize: 13)),
                     ],
                   ),
@@ -150,57 +173,55 @@ class _UserHomePageState extends State<UserHomePage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-                title: Text(S.of(context).confirm_delete),
-                content:
-                    Text(S.of(context).are_sure_you_want_to_delete_the_account),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(S.of(context).cancel),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      try {
-                        final sessionsResponse = await Supabase.instance.client
-                            .from('sessions')
-                            .select('id')
-                            .eq('user_id', widget.user.id);
+            title: Text(S.of(context).confirm_delete),
+            content:
+            Text(S.of(context).are_sure_you_want_to_delete_the_account),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(S.of(context).cancel),
+              ),
+              TextButton(
+                onPressed: () async {
+                  try {
+                    final sessionsResponse = await Supabase.instance.client
+                        .from('sessions')
+                        .select('id')
+                        .eq('user_id', widget.user.id);
+                    final sessionIds = sessionsResponse
+                        .map((session) => session['id'])
+                        .toList();
 
-                        final sessionIds = sessionsResponse
-                            .map((session) => session['id'])
-                            .toList();
+                    if (sessionIds.isNotEmpty) {
+                      await Supabase.instance.client
+                          .from('messages')
+                          .delete()
+                          .inFilter('session_id', sessionIds);
+                    }
 
-                        if (sessionIds.isNotEmpty) {
-                          await Supabase.instance.client
-                              .from('messages')
-                              .delete()
-                              .inFilter('session_id',
-                              sessionIds);
-                        }
+                    await Supabase.instance.client
+                        .from('sessions')
+                        .delete()
+                        .eq('user_id', widget.user.id);
 
-                        await Supabase.instance.client
-                            .from('sessions')
-                            .delete()
-                            .eq('user_id', widget.user.id);
+                    await Supabase.instance.client
+                        .from('userrs')
+                        .delete()
+                        .eq('id', widget.user.id);
 
-                        await Supabase.instance.client
-                            .from('userrs')
-                            .delete()
-                            .eq('id', widget.user.id);
-
-                        AuthService().signOut();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UserLoginPage()));
-                      } catch (e) {
-                        print("Error deleting user: $e");
-                      }
-                    },
-                    child: Text(S.of(context).delete,
-                        style: const TextStyle(color: Colors.red)),
-                  ),
-                ]));
+                    AuthService().signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserLoginPage()));
+                  } catch (e) {
+                    print("Error deleting user: $e");
+                  }
+                },
+                child: Text(S.of(context).delete,
+                    style: const TextStyle(color: Colors.red)),
+              ),
+            ]));
   }
 
   Widget _buildBody() {
@@ -295,7 +316,7 @@ class _UserHomePageState extends State<UserHomePage> {
               width: 100,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
+              const Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
@@ -395,7 +416,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 width: 100,
                 fit: BoxFit.fill,
                 placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
+                const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
@@ -406,7 +427,7 @@ class _UserHomePageState extends State<UserHomePage> {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
           Text(specialist.specialty,
               textAlign: TextAlign.center,
               maxLines: 1,
@@ -414,13 +435,13 @@ class _UserHomePageState extends State<UserHomePage> {
               style: const TextStyle(fontSize: 12, color: Colors.grey)),
           specialist.rating != null
               ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 14),
-                    Text("${specialist.rating}.0",
-                        style: const TextStyle(fontSize: 12)),
-                  ],
-                )
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.star, color: Colors.amber, size: 14),
+              Text("${specialist.rating}.0",
+                  style: const TextStyle(fontSize: 12)),
+            ],
+          )
               : const SizedBox(),
         ],
       ),

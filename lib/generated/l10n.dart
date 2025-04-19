@@ -1064,6 +1064,16 @@ class S {
       args: [],
     );
   }
+
+  /// `delete account`
+  String get delete_account {
+    return Intl.message(
+      'delete account',
+      name: 'delete_account',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

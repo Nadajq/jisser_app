@@ -117,6 +117,7 @@
     "back": "العودة",
     "are_sure_you_want_to_delete_the_account": "هل انت متاكد انك تريد حذف الحساب",
     "add_admin": "اضافة مسؤول",
-    "admin_added_successfully": "تم اضافة المسؤول"
+    "admin_added_successfully": "تم اضافة المسؤول",
+    "delete_account" :  "حذف الحساب"
 
 }

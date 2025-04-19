@@ -133,7 +133,13 @@ class _AddAdminState extends State<AddAdmin> {
           context: context,
           color: Colors.green,
           text: S.of(context).admin_added_successfully);
-      Navigator.pop(context); // Return to previous screen
+      setState(() {
+        emailController.clear();
+        passwordController.clear();
+
+        Navigator.pop(context);
+      }); // Return to previous screen
+
       // }
     } catch (e) {
       if (mounted) {

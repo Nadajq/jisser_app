@@ -72,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "delete_account": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
     "deteled_successfully": MessageLookupByLibrary.simpleMessage(
       "تم الحذف بنجاح",
     ),
