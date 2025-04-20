@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jisser_app/auth/auth_service.dart';
 import 'package:jisser_app/cubit/change_langauge_cubit.dart';
@@ -10,6 +11,8 @@ import 'package:jisser_app/view/chat_page/chat_page.dart';
 import 'package:jisser_app/view/specialist/schedule_page.dart';
 import 'package:jisser_app/view/specialist/specialist_login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../widgets/custom_snack_bar.dart';
 
 class BookingListPage extends StatefulWidget {
   final Specialist specialist;
@@ -141,13 +144,30 @@ class _BookingListPageState extends State<BookingListPage> {
                       PopupMenuItem<int>(
                         value: 0,
                         child: ListTile(
-                          trailing:
-                          const Icon(Icons.mail, color: Colors.blueAccent),
-                          title: const Text("jisser@gmail.com",
-                              style: TextStyle(fontSize: 13)),
+                          leading: const Icon(Icons.mail, color: Colors.blueAccent),
+                          title: Column(
+                            children: [
+                              Text(S.of(context).contact_us,
+                                  style: const TextStyle(fontSize: 13)),
+                              GestureDetector(
+                                onTap: () async {
+                                  await Clipboard.setData(
+                                      const ClipboardData(text: "jisser@gmail.com"));
+                                  CustomSnackBar.snackBarwidget(
+                                      context: context,
+                                      color: Colors.green,
+                                      text: S.of(context).coping);
+                                },
+                                child: const Text("jisser@gmail.com",
+                                    style: TextStyle(fontSize: 13)),
+                              ),
+                            ],
+                          ),
                           visualDensity:
                           const VisualDensity(horizontal: -4, vertical: -2),
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                         ),
                       ),
                       PopupMenuItem<int>(
@@ -182,14 +202,14 @@ class _BookingListPageState extends State<BookingListPage> {
                                   style: const TextStyle(fontSize: 13)),
                             ],
                           ),
-                          onTap: () {
-                            AuthService().signOut();
+                          onTap: () async {
+                          await  AuthService().signOut();
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                     const SpecialistLoginPage()));
-                            Navigator.pop(context);
+
                           },
                         ),
                       ),
@@ -198,10 +218,10 @@ class _BookingListPageState extends State<BookingListPage> {
                         child: ListTile(
                           title: Row(
                             children: [
-                              const Icon(Icons.exit_to_app,
+                              const Icon(Icons.delete,
                                   color: Color(0xfff90606), size: 20),
                               const SizedBox(width: 5),
-                              Text(S.of(context).logout,
+                              Text(S.of(context).delete_account,
                                   style: const TextStyle(fontSize: 13)),
                             ],
                           ),

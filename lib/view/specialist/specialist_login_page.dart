@@ -70,7 +70,7 @@ class _SpecialistLoginPageState extends State<SpecialistLoginPage> {
 
         if (specialistResponse != null) {
           // Check if account is active
-          if (specialistResponse['active'] == true) {
+          if (specialistResponse['active'] == false) {
             CustomSnackBar.snackBarwidget(
               context: context,
               color: Colors.red,

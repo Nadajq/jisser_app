@@ -133,13 +133,13 @@ class _UserHomePageState extends State<UserHomePage> {
                           style: const TextStyle(fontSize: 13)),
                     ],
                   ),
-                  onTap: () {
-                    AuthService().signOut();
+                  onTap: () async{
+                  await  AuthService().signOut();
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const UserLoginPage()));
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                   },
                 ),
               ),
